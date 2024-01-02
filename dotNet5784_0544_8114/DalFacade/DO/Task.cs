@@ -24,7 +24,7 @@ public record Task
         Difficulty = difficulty;
     }
 
-    public Task() { };
+    public Task() { }
 
     public int ID { get; set; }
     public String? NickName { set; get; }

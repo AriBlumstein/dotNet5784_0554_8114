@@ -22,7 +22,7 @@ public record Dependency
 
     public Dependency() { }
 
-    public int ID {  get; set; }
+    public int ID { get; init; }
     public int? DependentID { get; set; } //what depends on me
     public int? RequisiteID { get; set; } //what I depend upon
     public String? CustomerEmail { get; set; }

@@ -26,7 +26,7 @@ public record Task
 
     public Task() { }
 
-    public int ID { get; set; }
+    public int ID { get; init; }
     public String? NickName { set; get; }
     public String Description { set; get; }
     public Boolean Milestone { set; get; }

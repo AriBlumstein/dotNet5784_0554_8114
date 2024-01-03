@@ -7,7 +7,7 @@ public record Engineer
     {
         this.ID = id;
         this.Name = name;
-        this.Cost = Cost;  
+        this.Cost = cost;  
         this.Email = email;
         this.Exp = exp;
 

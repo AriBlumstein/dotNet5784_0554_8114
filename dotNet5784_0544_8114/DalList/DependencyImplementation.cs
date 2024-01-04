@@ -25,7 +25,7 @@ internal class DependencyImplementation : IDependency
         int numRemoved = DataSource.Dependencies.RemoveAll(t => t.ID == id);
         if (numRemoved == 0)
         {
-            throw new Exception("This ID does not exist");
+            throw new Exception($"Dependency with ID={id} does not exist");
         }
         if (numRemoved > 1)
         {
@@ -40,6 +40,7 @@ internal class DependencyImplementation : IDependency
     /// <returns>the Dependency if it exists, null otherwise</returns>
     public DO.Dependency? Read(int id)
     {
+        if (!DataSource.itemExists(id, typeof(DO.Dependency))) throw new Exception($"Dependency with ID={id} does not exist");
         return DataSource.Dependencies.Find(t => t.ID == id);
     }
 

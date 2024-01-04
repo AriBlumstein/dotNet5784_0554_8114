@@ -24,7 +24,7 @@ public class TaskImplementation : ITask
         int numRemoved = DataSource.Tasks.RemoveAll(t=>t.ID == id); 
         if (numRemoved == 0)
         {
-            throw new Exception("This ID does not exist");
+            throw new Exception($"Task with ID={id} does not exist");
         }
         if (numRemoved > 1)
         {
@@ -39,6 +39,7 @@ public class TaskImplementation : ITask
     /// <returns>the task if it exists, null otherwise</returns>
     public DO.Task? Read(int id)
     {
+        if (!DataSource.itemExists(id, typeof(DO.Task))) throw new Exception($"Task with ID={id} does not exist");
         return DataSource.Tasks.Find(t=>t.ID == id); 
     }
 

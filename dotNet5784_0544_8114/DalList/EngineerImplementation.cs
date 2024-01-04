@@ -12,6 +12,7 @@ internal class EngineerImplementation : IEngineer
     /// <returns>The id of the new Engineer</returns>
     public int Create(DO.Engineer item)
     {
+        if (DataSource.itemExists(item.ID, typeof(DO.Engineer))) throw new Exception($"Engineer with ID={item.ID} already exists");
         DO.Engineer _item = item;
         DataSource.Engineers.Add(_item);
         return item.ID;
@@ -22,7 +23,7 @@ internal class EngineerImplementation : IEngineer
         int numRemoved = DataSource.Engineers.RemoveAll(t => t.ID == id);
         if (numRemoved == 0)
         {
-            throw new Exception("This ID does not exist");
+            throw new Exception($"Engineer with ID={id} does not exist");
         }
         if (numRemoved > 1)
         {
@@ -37,6 +38,7 @@ internal class EngineerImplementation : IEngineer
     /// <returns>the Engineer if it exists, null otherwise</returns>
     public DO.Engineer? Read(int id)
     {
+        if (!DataSource.itemExists(id, typeof(DO.Engineer))) throw new Exception($"Engineer with ID={id} does not exist");
         return DataSource.Engineers.Find(t => t.ID == id);
     }
 

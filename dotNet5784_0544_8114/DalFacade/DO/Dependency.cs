@@ -2,13 +2,26 @@
 
 namespace DO;
 
+/// <summary>
+/// data structure that represents a dependency
+/// </summary>
+
 public record Dependency
 { 
 
 
     private static int _cur = 0; //used for assigning id
-
-    public Dependency(int? dependentID=null, int? requisiteID=null, string? customerEmail=null, string? address=null, DateTime? orderDate=null, DateTime? shippingDate=null, DateTime? deliveryDate=null)
+    /// <summary>
+    /// parameter constructor
+    /// </summary>
+    /// <param name="dependentID"></param>
+    /// <param name="requisiteID"></param>
+    /// <param name="customerEmail"></param>
+    /// <param name="address"></param>
+    /// <param name="orderDate"></param>
+    /// <param name="shippingDate"></param>
+    /// <param name="deliveryDate"></param>
+    public Dependency(int dependentID, int requisiteID, string customerEmail, string address, DateTime orderDate, DateTime? shippingDate, DateTime? deliveryDate)
     {
         ID = ++_cur;
         DependentID = dependentID;
@@ -23,11 +36,11 @@ public record Dependency
     public Dependency() { }
 
     public int ID { get; init; }
-    public int? DependentID { get; set; } //what depends on me
-    public int? RequisiteID { get; set; } //what I depend upon
-    public String? CustomerEmail { get; set; }
-    public String? Address { get; set; }
-    public DateTime? OrderDate { get; set; }
-    public DateTime? ShippingDate { get; set; }
-    public DateTime? DeliveryDate { get; set; }
+    public int DependentID { get; set; } //what depends on me
+    public int RequisiteID { get; set; } //what I depend upon
+    public String CustomerEmail { get; set; }
+    public String Address { get; set; }
+    public DateTime OrderDate { get; set; }
+    public DateTime? ShippingDate { get; set; } = null;
+    public DateTime? DeliveryDate { get; set; } = null;
 }

@@ -1,23 +1,22 @@
 ﻿
 namespace DO;
 
+/// <summary>
+/// data object to represent an engineer
+/// </summary>
+/// <param name="ID"></param>
+/// <param name="Name"></param>
+/// <param name="Cost"></param>
+/// <param name="Email"></param>
+/// <param name="Exp"></param>
 public record Engineer
+(
+    int ID,
+    String Name,
+    double Cost,
+    String Email,
+    Experience Exp
+)
 {
-    public Engineer(int id=0, string name="", double cost=0, String? email=null, Experience exp=Experience.Beginner)
-    {
-        this.ID = id;
-        this.Name = name;
-        this.Cost = cost;  
-        this.Email = email;
-        this.Exp = exp;
-
-    }
-
-    public Engineer() { }
-
-    public int ID { get; set; }
-    public String Name { get; set; }
-    public double Cost { get; set; }
-    public String? Email { get; set; }
-    public Experience Exp { get; set; }
+   public Engineer() : this(0,"",0,"",Experience.Beginner) { }
 }

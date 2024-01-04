@@ -1,14 +1,35 @@
 ﻿
 namespace DO;
 
+
+/// <summary>
+/// data object to represent a task
+/// </summary>
+
 public record Task
 {
 
     private static int _cur=0; //used for assigning id
 
-    public Task(DateTime created, DateTime? projectedStart, DateTime actualStart, DateTime deadline, int duration, DateTime actualEnd, string? nickName=null, string description="", bool milestone=false, string deliverable="", string? notes=null, int assignedEngineer=-1, Experience difficulty=Experience.Beginner)
+    /// <summary>
+    /// parameter constructor
+    /// </summary>
+    /// <param name="nickName"></param>
+    /// <param name="description"></param>
+    /// <param name="milestone"></param>
+    /// <param name="created"></param>
+    /// <param name="projectedStart"></param>
+    /// <param name="actualStart"></param>
+    /// <param name="deadline"></param>
+    /// <param name="duration"></param>
+    /// <param name="actualEnd"></param>
+    /// <param name="deliverable"></param>
+    /// <param name="notes"></param>
+    /// <param name="assignedEngineer"></param>
+    /// <param name="difficulty"></param>
+    public Task(string nickName, string description, bool milestone, DateTime created, DateTime? projectedStart, DateTime? actualStart, DateTime? deadline, int? duration, DateTime? actualEnd, string? deliverable, string? notes, int? assignedEngineer, Experience? difficulty)
     {
-        ID= ++_cur;
+        ID = ++_cur;
         NickName = nickName;
         Description = description;
         Milestone = milestone;
@@ -24,22 +45,22 @@ public record Task
         Difficulty = difficulty;
     }
 
-    public Task() { }
+    public Task() { ID = ++_cur; }
 
     public int ID { get; init; }
-    public String? NickName { set; get; }
-    public String Description { set; get; }
-    public Boolean Milestone { set; get; }
-    public DateTime Created { set; get; }
-    public DateTime? ProjectedStart { set; get; }
-    public DateTime ActualStart { set; get; }
-    public DateTime Deadline { set; get; }
-    public int Duration { set; get; }
-    public DateTime ActualEnd { set; get; }
-    public String Deliverable { set; get; }
-    public String? Notes { set; get; }
-    public int AssignedEngineer { set; get; }
-    public Experience Difficulty { set; get; }
+    public String NickName { get; init; }
+    public String Description {get; init;}
+    public Boolean Milestone {get; init;}
+    public DateTime Created {get; init;}
+    public DateTime? ProjectedStart { get; init; } = null;
+    public DateTime? ActualStart { get; init; } = null;
+    public DateTime? Deadline { get; init; } = null;
+    public int? Duration { get; init; } = null;
+    public DateTime? ActualEnd { get; init; } = null;
+    public String? Deliverable { get; init; } = null;
+    public String? Notes { get; init; } = null;
+    public int? AssignedEngineer { get; init; } = null;
+    public Experience? Difficulty { get; init; } = null;
 
 
    

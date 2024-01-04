@@ -9,11 +9,10 @@ namespace DO;
 public record Task
 {
 
-    private static int _cur=0; //used for assigning id
-
     /// <summary>
     /// parameter constructor
     /// </summary>
+    /// <param name="id"></param>
     /// <param name="nickName"></param>
     /// <param name="description"></param>
     /// <param name="milestone"></param>
@@ -27,9 +26,9 @@ public record Task
     /// <param name="notes"></param>
     /// <param name="assignedEngineer"></param>
     /// <param name="difficulty"></param>
-    public Task(string nickName, string description, bool milestone, DateTime created, DateTime? projectedStart, DateTime? actualStart, DateTime? deadline, int? duration, DateTime? actualEnd, string? deliverable, string? notes, int? assignedEngineer, Experience? difficulty)
+    public Task(int id, string nickName, string description, bool milestone, DateTime created, DateTime? projectedStart, DateTime? actualStart, DateTime? deadline, int? duration, DateTime? actualEnd, string? deliverable, string? notes, int? assignedEngineer, Experience? difficulty)
     {
-        ID = ++_cur;
+        ID = id;
         NickName = nickName;
         Description = description;
         Milestone = milestone;

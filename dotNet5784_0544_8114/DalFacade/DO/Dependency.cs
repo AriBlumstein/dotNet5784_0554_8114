@@ -10,10 +10,11 @@ public record Dependency
 { 
 
 
-    private static int _cur = 0; //used for assigning id
+
     /// <summary>
     /// parameter constructor
     /// </summary>
+    /// <param name="id"></param>
     /// <param name="dependentID"></param>
     /// <param name="requisiteID"></param>
     /// <param name="customerEmail"></param>
@@ -21,9 +22,9 @@ public record Dependency
     /// <param name="orderDate"></param>
     /// <param name="shippingDate"></param>
     /// <param name="deliveryDate"></param>
-    public Dependency(int dependentID, int requisiteID, string customerEmail, string address, DateTime orderDate, DateTime? shippingDate, DateTime? deliveryDate)
+    public Dependency( int id, int dependentID, int requisiteID, string customerEmail, string address, DateTime orderDate, DateTime? shippingDate, DateTime? deliveryDate)
     {
-        ID = ++_cur;
+        ID=id;
         DependentID = dependentID;
         RequisiteID = requisiteID;
         CustomerEmail = customerEmail;

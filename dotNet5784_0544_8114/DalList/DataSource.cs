@@ -18,10 +18,10 @@ internal static class DataSource
     internal class Config
     {
         internal static int dependencyID = 1;
-        internal static int NextdepencyID { get => dependencyID++; }
+        internal static int NextDependencyID { get => dependencyID++; }
 
         internal static int taskID = 1;
-        internal static int TaskID { get => dependencyID++; }
+        internal static int NextTaskID { get => dependencyID++; }
     }
 
 }

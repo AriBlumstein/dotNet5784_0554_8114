@@ -24,6 +24,11 @@ internal static class DataSource
 
         internal static int taskID = 1;
         internal static int NextTaskID { get => dependencyID++; }
+
+        internal static DateTime? projectStart=null;
+
+        internal static DateTime? projectEnd=null;
+
     }
 
     internal static bool itemExists(int id, Type type)

@@ -2,6 +2,7 @@
 namespace DalTest;
 using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// class to initialize the databases for the purpose of the test
@@ -147,6 +148,27 @@ public static class Initialization
             DateTime dateTime = randomOldDay();
             s_dalDependency!.Create(new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null));
         }
+    }
+
+    /// <summary>
+    /// initialze initialization
+    /// </summary>
+    /// <param name="dalTask"></param>
+    /// <param name="dalEngineer"></param>
+    /// <param name="dalDependency"></param>
+    /// <exception cref="NullReferenceException"></exception>
+
+    public static void Do(ITask dalTask, IEngineer dalEngineer, IDependency dalDependency)
+    {
+        String _except = "DAL cannot be null";
+        s_dalTask = dalTask ?? throw new NullReferenceException(_except);
+        s_dalEngineer= dalEngineer ?? throw new NullReferenceException(_except);
+        s_dalDependency=dalDependency?? throw new NullReferenceException(_except);
+
+        createEngineers();
+        createTasks();
+        createDependencies();
+
     }
 
 }

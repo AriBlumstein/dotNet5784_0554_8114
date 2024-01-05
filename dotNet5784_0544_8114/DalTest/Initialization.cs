@@ -13,7 +13,13 @@ public static class Initialization
     private static IDependency? s_dalDependency;
 
     private static readonly Random s_rand= new ();
-
+    private static Random gen = new Random();
+    private static DateTime RandomOldDay()
+    {
+        DateTime start = new DateTime(2007, 1, 1);
+        int range = (new DateTime(2018,1,1) - start).Days;
+        return start.AddDays(gen.Next(range));
+    }
     private static void createTasks() { }
 
     /// <summary>
@@ -39,8 +45,16 @@ public static class Initialization
             s_dalEngineer!.Create(new Engineer(_id, _name, rate, _name + "@company.com", _e));
         }
     }
-}
 
-    private static void createDependencies() { }
+    private static void createDependencies() {
+        List<Task> tasks = s_dalTask!.ReadAll();
+        for (int i = 0; i < 40; i++)
+        {
+            int rand1 = s_rand.Next(0, tasks.Count()), rand2 =s_rand.Next(0,tasks.Count());
+            int dependentID = tasks[rand1].ID, requisiteID = tasks[rand2].ID;          
+            DateTime dateTime = RandomOldDay();
+            s_dalDependency!.Create(new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null));
+        }
+    }
 
 }

@@ -25,9 +25,9 @@ internal static class DataSource
         internal static int taskID = 1;
         internal static int NextTaskID { get => dependencyID++; }
 
-        internal static DateTime? projectStart=null;
+        internal static DateTime? projectStart=new DateTime(2007, 1, 1);
 
-        internal static DateTime? projectEnd=null;
+        internal static DateTime? projectEnd = new DateTime(2018, 1, 1);
 
     }
 

@@ -44,7 +44,7 @@ public record Task
         Difficulty = difficulty;
     }
 
-    public Task() { ID = ++_cur; }
+    public Task() { }
 
     public int ID { get; init; }
     public String NickName { get; init; }

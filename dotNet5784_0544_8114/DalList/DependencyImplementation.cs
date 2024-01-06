@@ -1,6 +1,7 @@
 ﻿
 using DO;
 using DalApi;
+
 namespace Dal;
 
 internal class DependencyImplementation : IDependency
@@ -16,7 +17,12 @@ internal class DependencyImplementation : IDependency
     {
         int id = DataSource.Config.NextDependencyID;
         DO.Dependency _item = item with { ID = id };
+        if (checkCircularDependency(item))
+        {
+            throw new Exception("This item causes a circular dependency");
+        }
         DataSource.Dependencies.Add(_item);
+        
         return id;
     }
 
@@ -62,4 +68,30 @@ internal class DependencyImplementation : IDependency
         Delete(item.ID);
         Create(item);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="item">the new dependency to check if it creates a circular dependency</param>
+    /// <returns>true if circular dependency, false otherwise</returns>
+    public bool checkCircularDependency(DO.Dependency item)
+    {
+        List<DO.Dependency> dependencies = DataSource.Dependencies;
+        bool checkCircularHelper(DO.Dependency item, int dependentID)
+        {
+            List<DO.Dependency> chain = new List<DO.Dependency>();
+            bool res;
+            chain = dependencies.FindAll(d => d.DependentID == item.RequisiteID);
+            foreach (var d in chain)
+            {
+                if (d.RequisiteID == dependentID)
+                    return true;
+                 res=checkCircularHelper(d,dependentID);
+                if (res) return res;
+            }
+            return false;
+        }
+        return checkCircularHelper(item, item.RequisiteID);
+        
+          }
 }

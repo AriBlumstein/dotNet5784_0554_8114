@@ -1,6 +1,7 @@
 ﻿
 using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 namespace Dal;
 
@@ -15,8 +16,12 @@ public class DependencyImplementation : IDependency
     /// <returns>The id of the new Dependency</returns>
     public int Create(DO.Dependency item)
     {
+        if (ReadAll().FindAll(i => (i.DependentID == item.DependentID && i.RequisiteID == item.RequisiteID)).Count() > 0)
+            throw new Exception($"Dependency where {item.DependentID} is dependent on {item.RequisiteID} already exists");
+
         int id = DataSource.Config.NextDependencyID;
         DO.Dependency _item = item with { ID = id };
+
         if (checkCircularDependency(item))
         {
             throw new Exception("This item causes a circular dependency");
@@ -76,12 +81,21 @@ public class DependencyImplementation : IDependency
     /// <returns>true if circular dependency, false otherwise</returns>
     public bool checkCircularDependency(DO.Dependency item)
     {
-        List<DO.Dependency> dependencies = DataSource.Dependencies;
+
+        Console.WriteLine(item.RequisiteID);
+        Console.WriteLine(item.DependentID);
+        Console.WriteLine("break");
+
+        if (item.RequisiteID==item.DependentID)
+        {
+            return true;
+        }
+
         bool checkCircularHelper(DO.Dependency item, int dependentID)
         {
             List<DO.Dependency> chain = new List<DO.Dependency>();
             bool res;
-            chain = dependencies.FindAll(d => d.DependentID == item.RequisiteID);
+            chain = DataSource.Dependencies.FindAll(i => i.DependentID == item.RequisiteID);
             foreach (var d in chain)
             {
                 if (d.RequisiteID == dependentID)
@@ -91,7 +105,7 @@ public class DependencyImplementation : IDependency
             }
             return false;
         }
-        return checkCircularHelper(item, item.RequisiteID);
+        return checkCircularHelper(item, item.DependentID);
         
           }
 }

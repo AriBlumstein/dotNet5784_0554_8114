@@ -30,6 +30,6 @@ public record Dependency
     /// <summary>
     /// empty constuctor(
     /// </summary>
-    public Dependency(): this(-1,-1,-1,"","", DateTime.Now) { }
+    public Dependency(): this(-1,-1,-2,"","", DateTime.Now) { }
 
 }

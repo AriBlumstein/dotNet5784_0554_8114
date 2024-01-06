@@ -3,65 +3,41 @@ namespace DO;
 
 
 /// <summary>
-/// data object to represent a task
+/// task to be done
 /// </summary>
+/// <param name="ID"></param>
+/// <param name="NickName"></param>
+/// <param name="Description"></param>
+/// <param name="Milestone"></param>
+/// <param name="Created"></param>
+/// <param name="ProjectedStart"></param>
+/// <param name="ActualStart"></param>
+/// <param name="Deadline"></param>
+/// <param name="Duration"></param>
+/// <param name="ActualEnd"></param>
+/// <param name="Deliverable"></param>
+/// <param name="Notes"></param>
+/// <param name="AssignedEngineer"></param>
+/// <param name="Difficulty"></param>
 
 public record Task
+(
+     int ID,
+     String NickName, 
+     String Description,
+     Boolean Milestone, 
+     DateTime Created,
+     DateTime? ProjectedStart  = null,
+     DateTime? ActualStart  = null,
+     DateTime? Deadline  = null,
+     int? Duration  = null,
+     DateTime? ActualEnd  = null,
+     String? Deliverable  = null,
+     String? Notes  = null,
+     int? AssignedEngineer  = null,
+     Experience? Difficulty  = null
+
+)
 {
-
-    /// <summary>
-    /// parameter constructor
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="nickName"></param>
-    /// <param name="description"></param>
-    /// <param name="milestone"></param>
-    /// <param name="created"></param>
-    /// <param name="projectedStart"></param>
-    /// <param name="actualStart"></param>
-    /// <param name="deadline"></param>
-    /// <param name="duration"></param>
-    /// <param name="actualEnd"></param>
-    /// <param name="deliverable"></param>
-    /// <param name="notes"></param>
-    /// <param name="assignedEngineer"></param>
-    /// <param name="difficulty"></param>
-    public Task(int id, string nickName, string description, bool milestone, DateTime created, DateTime? projectedStart, DateTime? actualStart, DateTime? deadline, int? duration, DateTime? actualEnd, string? deliverable, string? notes, int? assignedEngineer, Experience? difficulty)
-    {
-        ID = id;
-        NickName = nickName;
-        Description = description;
-        Milestone = milestone;
-        Created = created;
-        ProjectedStart = projectedStart;
-        ActualStart = actualStart;
-        Deadline = deadline;
-        Duration = duration;
-        ActualEnd = actualEnd;
-        Deliverable = deliverable;
-        Notes = notes;
-        AssignedEngineer = assignedEngineer;
-        Difficulty = difficulty;
-    }
-
-    public Task() { }
-
-    public int ID { get; init; }
-    public String NickName { get; init; }
-    public String Description {get; init;}
-    public Boolean Milestone {get; init;}
-    public DateTime Created {get; init;}
-    public DateTime? ProjectedStart { get; init; } = null;
-    public DateTime? ActualStart { get; init; } = null;
-    public DateTime? Deadline { get; init; } = null;
-    public int? Duration { get; init; } = null;
-    public DateTime? ActualEnd { get; init; } = null;
-    public String? Deliverable { get; init; } = null;
-    public String? Notes { get; init; } = null;
-    public int? AssignedEngineer { get; init; } = null;
-    public Experience? Difficulty { get; init; } = null;
-
-
-   
-
+    public Task() : this(0, "", "", false, DateTime.Now) { }
 }

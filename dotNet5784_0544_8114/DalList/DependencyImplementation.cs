@@ -4,7 +4,7 @@ using DalApi;
 
 namespace Dal;
 
-internal class DependencyImplementation : IDependency
+public class DependencyImplementation : IDependency
 
 
 {

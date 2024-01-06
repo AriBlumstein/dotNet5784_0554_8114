@@ -124,9 +124,22 @@ public static class Initialization
         foreach (var _name in names)
         {
             int _id;
-            do
+            bool unique = false;
+            do {
                 _id = s_rand.Next(MIN_ID, MAX_ID);
-            while (s_dalEngineer!.Read(_id) != null);
+                try
+                {
+                    
+                    s_dalEngineer!.Read(_id);
+                }
+                catch(Exception ex)
+                {
+                    unique = true;
+                }
+
+
+               }  
+            while (!unique);
             Experience _e = randExpereince();
 
             double rate = (double)s_rand.Next(200, 10000);

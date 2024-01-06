@@ -3,7 +3,7 @@ using DalApi;
 
 namespace Dal;
 
-internal class EngineerImplementation : IEngineer
+public class EngineerImplementation : IEngineer
 {
     /// <summary>
     /// Implementation of create function to add a Engineer to the data source

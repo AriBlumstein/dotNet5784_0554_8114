@@ -141,13 +141,30 @@ public static class Initialization
     /// </summary>
     private static void createDependencies() {
         List<Task> tasks = s_dalTask!.ReadAll();
-        for (int i = 0; i < 40; i++)
+
+        // Create the minimum requirement initial dependencies 
+        s_dalDependency!.Create(new Dependency(-1, 2, 1, "", "", randomOldDay(), null, null));
+        s_dalDependency!.Create(new Dependency(-1, 2, 5, "", "", randomOldDay(), null, null));
+        s_dalDependency!.Create(new Dependency(-1, 2, 6, "", "", randomOldDay(), null, null));
+        s_dalDependency!.Create(new Dependency(-1, 20, 1, "", "", randomOldDay(), null, null));
+        s_dalDependency!.Create(new Dependency(-1, 20, 5, "", "", randomOldDay(), null, null));
+        s_dalDependency!.Create(new Dependency(-1, 20, 6, "", "", randomOldDay(), null, null));
+        
+        // create the remaining random dependencies 
+        for (int i = 0; i < 34; i++)
         {
             int rand1 = s_rand.Next(0, tasks.Count()), rand2 =s_rand.Next(0,tasks.Count());
             int dependentID = tasks[rand1].ID, requisiteID = tasks[rand2].ID;          
             DateTime dateTime = randomOldDay();
-            s_dalDependency!.Create(new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null));
+            try
+            {
+                s_dalDependency!.Create(new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null));
+            } catch (Exception ex) //catch if circular dependency was created.
+            {
+                i--; 
+            }
         }
+
     }
 
     /// <summary>

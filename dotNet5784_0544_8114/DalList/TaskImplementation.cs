@@ -15,7 +15,7 @@ public class TaskImplementation : ITask
     {
         int id = DataSource.Config.NextTaskID;
         DO.Task _item = item with { ID = id };
-        if(ReadAll().FindAll(i=>i.NickName == item.NickName).Count()>0)
+        if(ReadAll().FindAll(i=>i.NickName == item.NickName && i.Description==item.Description).Count()>0)
         {
             throw new Exception($"Task {item.NickName} already exists");
         }

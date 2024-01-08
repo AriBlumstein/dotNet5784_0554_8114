@@ -192,7 +192,7 @@ public static class Initialization
     /// <param name="dalDependency"></param>
     /// <exception cref="NullReferenceException"></exception>
 
-    public static void Do(ITask dalTask, IEngineer dalEngineer, IDependency dalDependency)
+    public static void Do(ITask? dalTask, IEngineer? dalEngineer, IDependency? dalDependency)
     {
         String _except = "DAL cannot be null";
         s_dalTask = dalTask ?? throw new NullReferenceException(_except);

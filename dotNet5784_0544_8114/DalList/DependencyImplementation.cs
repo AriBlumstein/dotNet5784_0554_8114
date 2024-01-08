@@ -92,10 +92,6 @@ public class DependencyImplementation : IDependency
     public bool checkCircularDependency(DO.Dependency item)
     {
 
-        Console.WriteLine(item.RequisiteID);
-        Console.WriteLine(item.DependentID);
-        Console.WriteLine("break");
-
         if (item.RequisiteID==item.DependentID)
         {
             return true;

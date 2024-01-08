@@ -176,7 +176,6 @@ public static class Initialization
                 s_dalDependency!.Create(new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null));
             } catch (Exception ex) //catch if circular dependency was created.
             {
-                Console.WriteLine(ex.Message);
                 i--; 
             }
         }

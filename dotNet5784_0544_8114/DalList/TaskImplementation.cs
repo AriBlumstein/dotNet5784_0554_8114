@@ -14,11 +14,8 @@ public class TaskImplementation : ITask
     public int Create(DO.Task item)
     {
         int id = DataSource.Config.NextTaskID;
+        
         DO.Task _item = item with { ID = id };
-        if(ReadAll().FindAll(i=>i.NickName == item.NickName && i.Description==item.Description).Count()>0)
-        {
-            throw new Exception($"Task {item.NickName} already exists");
-        }
 
         DataSource.Tasks.Add(_item);
         return id;
@@ -26,15 +23,15 @@ public class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        int numRemoved = DataSource.Tasks.RemoveAll(t=>t.ID == id); 
-        if (numRemoved == 0)
+        DO.Task? cur = (DataSource.Tasks.Find(i => i.ID == id));
+
+        if (cur == null)
         {
             throw new Exception($"Task with ID={id} does not exist");
         }
-        if (numRemoved > 1)
-        {
-            throw new Exception("There is a much bigger problem ):");
-        }
+
+        int index = DataSource.Tasks.IndexOf(cur);
+        DataSource.Tasks[index] = cur with { Active = false };
     }
 
     /// <summary>
@@ -54,7 +51,7 @@ public class TaskImplementation : ITask
     /// <returns></returns>
     public List<DO.Task> ReadAll()
     {
-        return new List<DO.Task>(DataSource.Tasks);
+        return DataSource.Tasks.FindAll(i => i.Active);
     }
     
     /// <summary>

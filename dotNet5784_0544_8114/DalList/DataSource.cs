@@ -37,15 +37,15 @@ internal static class DataSource
         bool exists = false;
         if (type == typeof(DO.Dependency))
         {
-            exists= Dependencies.Exists(d=> d.ID == id);
+            exists= Dependencies.Exists(d=> d.ID == id&&d.Active);
         }
         else if (type == typeof(DO.Engineer)) {
-            exists= Engineers.Exists(d => d.ID == id);
+            exists= Engineers.Exists(d => d.ID == id&&d.Active);
         }
         
         else if (type == typeof(DO.Task))
         {
-            exists= Tasks.Exists(d => d.ID == id);
+            exists= Tasks.Exists(d => d.ID == id && d.Active);
         }
         return exists;
      

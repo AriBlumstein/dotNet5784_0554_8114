@@ -24,7 +24,8 @@ public record Dependency
     String Address,
     DateTime OrderDate,
     DateTime? ShippingDate = null,
-    DateTime? DeliveryDate = null
+    DateTime? DeliveryDate = null,
+    bool Active = true
 )
 {
     /// <summary>

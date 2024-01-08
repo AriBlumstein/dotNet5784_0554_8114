@@ -35,7 +35,8 @@ public record Task
      String? Deliverable  = null,
      String? Notes  = null,
      int? AssignedEngineer  = null,
-     Experience? Difficulty  = null
+     Experience? Difficulty  = null,
+     bool Active=true
 
 )
 {

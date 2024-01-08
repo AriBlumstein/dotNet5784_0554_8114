@@ -16,32 +16,42 @@ public class DependencyImplementation : IDependency
     /// <returns>The id of the new Dependency</returns>
     public int Create(DO.Dependency item)
     {
-        if (ReadAll().FindAll(i => (i.DependentID == item.DependentID && i.RequisiteID == item.RequisiteID)).Count() > 0)
+        if (ReadAll().FindAll(i => (i.DependentID == item.DependentID && i.RequisiteID == item.RequisiteID && i.Active)).Count() > 0)
             throw new Exception($"Dependency where {item.DependentID} is dependent on {item.RequisiteID} already exists");
-
-        int id = DataSource.Config.NextDependencyID;
-        DO.Dependency _item = item with { ID = id };
-
+        
         if (checkCircularDependency(item))
         {
             throw new Exception("This item causes a circular dependency");
         }
+
+        int id = DataSource.Config.NextDependencyID;
+        DO.Dependency _item = item with { ID = id };
+
         DataSource.Dependencies.Add(_item);
         
         return id;
     }
 
+    /// <summary>
+    /// deletes a dependency
+    /// </summary>
+    /// <param name="id"></param>
+    /// <exception cref="Exception"></exception>
+
     public void Delete(int id)
     {
-        int numRemoved = DataSource.Dependencies.RemoveAll(t => t.ID == id);
-        if (numRemoved == 0)
+
+        Dependency? cur=(DataSource.Dependencies.Find(i=> i.ID == id));
+        
+        if (cur==null)
         {
             throw new Exception($"Dependency with ID={id} does not exist");
         }
-        if (numRemoved > 1)
-        {
-            throw new Exception("There is a much bigger problem ):");
-        }
+
+        int index = DataSource.Dependencies.IndexOf(cur);
+        DataSource.Dependencies[index] = cur with { Active = false };
+        
+
     }
 
     /// <summary>
@@ -61,7 +71,7 @@ public class DependencyImplementation : IDependency
     /// <returns></returns>
     public List<DO.Dependency> ReadAll()
     {
-        return new List<DO.Dependency>(DataSource.Dependencies);
+        return DataSource.Dependencies.FindAll(i=> i.Active);
     }
 
     /// <summary>
@@ -95,7 +105,7 @@ public class DependencyImplementation : IDependency
         {
             List<DO.Dependency> chain = new List<DO.Dependency>();
             bool res;
-            chain = DataSource.Dependencies.FindAll(i => i.DependentID == item.RequisiteID);
+            chain = DataSource.Dependencies.FindAll(i => i.DependentID == item.RequisiteID && i.Active);
             foreach (var d in chain)
             {
                 if (d.RequisiteID == dependentID)

@@ -13,22 +13,22 @@ public class EngineerImplementation : IEngineer
     public int Create(DO.Engineer item)
     {
         if (DataSource.itemExists(item.ID, typeof(DO.Engineer))) throw new Exception($"Engineer with ID={item.ID} already exists");
-        DO.Engineer _item = item;
+        DO.Engineer _item = item; //we do not want our user to point to the same refernce anymore
         DataSource.Engineers.Add(_item);
         return item.ID;
     }
 
     public void Delete(int id)
     {
-        int numRemoved = DataSource.Engineers.RemoveAll(t => t.ID == id);
-        if (numRemoved == 0)
+        Engineer? cur = (DataSource.Engineers.Find(i => i.ID == id));
+
+        if (cur == null)
         {
             throw new Exception($"Engineer with ID={id} does not exist");
         }
-        if (numRemoved > 1)
-        {
-            throw new Exception("There is a much bigger problem ):");
-        }
+
+        int index = DataSource.Engineers.IndexOf(cur);
+        DataSource.Engineers[index] = cur with { Active = false };
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ public class EngineerImplementation : IEngineer
     /// <returns></returns>
     public List<DO.Engineer> ReadAll()
     {
-        return new List<DO.Engineer>(DataSource.Engineers);
+        return DataSource.Engineers.FindAll(i => i.Active == true);
     }
 
     /// <summary>

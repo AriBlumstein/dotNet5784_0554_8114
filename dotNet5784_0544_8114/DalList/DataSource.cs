@@ -10,7 +10,11 @@ namespace Dal;
 internal static class DataSource
 {
 
-    internal static Random random = new Random();
+    internal static Random random = new Random(); 
+
+    /// <summary>
+    /// databases for the different attributes
+    /// </summary>
     internal static List<DO.Dependency> Dependencies { get; } = new();
     internal static List<DO.Engineer> Engineers { get; } = new();
 
@@ -18,7 +22,12 @@ internal static class DataSource
 
 
     internal class Config
-    {
+    {   
+
+        /// <summary>
+        /// automatic ids for task and dependency as well as an arbitrary start and and date
+        /// </summary>
+        
         internal static int dependencyID = 1;
         internal static int NextDependencyID { get => dependencyID++; }
 
@@ -31,6 +40,13 @@ internal static class DataSource
 
     }
 
+
+    /// <summary>
+    /// checks if an item exists already in its respective list
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="type"></param>
+    /// <returns>bool</returns>
     internal static bool itemExists(int id, Type type)
     {
        

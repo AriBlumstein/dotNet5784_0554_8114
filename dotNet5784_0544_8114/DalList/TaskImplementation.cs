@@ -60,7 +60,8 @@ public class TaskImplementation : ITask
     /// <param name="item"></param>
     public void Update(DO.Task item)
     {
-        Delete(item.ID);
+        //we assume by eliminate, make it inactive
+        Delete(item.ID); 
         Create(item);
     }
 }

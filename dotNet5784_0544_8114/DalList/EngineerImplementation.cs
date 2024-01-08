@@ -57,6 +57,7 @@ public class EngineerImplementation : IEngineer
     /// <param name="item"></param>
     public void Update(DO.Engineer item)
     {
+        //we assume by eliminate, make it inactive
         Delete(item.ID);
         Create(item);
     }

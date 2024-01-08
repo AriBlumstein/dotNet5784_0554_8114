@@ -96,20 +96,20 @@ public static class Initialization
 
         foreach (string name in names)
         {
-
+            //get a random Experience
             Experience _e=randExpereince();
 
-            DateTime start=randomOldDay();
+            //get a random date
+            DateTime _start=randomOldDay();
 
+            //random duration
+            int _duration = s_rand.Next(5, 100);
 
-            int duration = s_rand.Next(5, 100);
+            //random date
+            DateTime _end=_start.AddDays(_duration);
 
-            DateTime end=start.AddDays(duration);
-
-
-
-
-            s_dalTask!.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, start, null, null, end, duration, null, null, null, null, _e));
+            //create the task, the id can be -1, because we are here coming from the "business layer simulation" and can update later
+            s_dalTask!.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, _start, null, null, _end, _duration, null, null, null, null, _e));
         }
     }
 
@@ -124,28 +124,32 @@ public static class Initialization
         foreach (var _name in names)
         {
             int _id;
-            bool unique = false;
+            bool _unique = false;
             do {
                 _id = s_rand.Next(MIN_ID, MAX_ID);
                 try
                 {
-                    
+                    //see if the the id does not already exist
                     s_dalEngineer!.Read(_id);
                 }
                 catch(Exception ex)
                 {
-                    unique = true;
+                    //if we caught an exception, it does not
+                    _unique = true;
                 }
 
 
                }  
-            while (!unique);
+            while (!_unique);
+
+            //get random experience
             Experience _e = randExpereince();
 
-            double rate = (double)s_rand.Next(200, 10000);
+            //get random salary
+            double _rate = (double)s_rand.Next(200, 10000);
 
 
-            s_dalEngineer!.Create(new Engineer(_id, _name, rate, _name + "@company.com", _e));
+            s_dalEngineer!.Create(new Engineer(_id, _name, _rate, _name + "@company.com", _e));
         }
     }
 
@@ -155,7 +159,7 @@ public static class Initialization
     private static void createDependencies() {
         List<Task> tasks = s_dalTask!.ReadAll();
 
-        // Create the requirement initial dependencies
+        // Create the required initial dependencies
         s_dalDependency!.Create(new Dependency(-1, 2, 1, "", "", randomOldDay(), null, null));
         s_dalDependency!.Create(new Dependency(-1, 2, 5, "", "", randomOldDay(), null, null));
         s_dalDependency!.Create(new Dependency(-1, 2, 6, "", "", randomOldDay(), null, null));
@@ -165,18 +169,21 @@ public static class Initialization
        
         
         // create the remaining random dependencies 
-        
         for (int i = 0; i < 34; i++)
         {
+            //get random task numbers
             int rand1 = s_rand.Next(0, tasks.Count()), rand2 =s_rand.Next(0,tasks.Count());
+
             int dependentID = tasks[rand1].ID, requisiteID = tasks[rand2].ID;          
+           
+            //get a random day
             DateTime dateTime = randomOldDay();
             try
             {
                 s_dalDependency!.Create(new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null));
             } catch (Exception ex) //catch if circular dependency was created.
             {
-                i--; 
+                i--; //must try to make a new dependency 
             }
         }
         

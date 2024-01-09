@@ -16,9 +16,6 @@ public class DependencyImplementation : IDependency
     /// <returns>The id of the new Dependency</returns>
     public int Create(DO.Dependency item)
     {
-        //first check if a dependency like it already exists
-        if (ReadAll().FindAll(i => (i.DependentID == item.DependentID && i.RequisiteID == item.RequisiteID && i.Active)).Count() > 0)
-            throw new Exception($"Dependency where {item.DependentID} is dependent on {item.RequisiteID} already exists");
 
         //now check if it will cause a cirlcular dependency if added
         if (checkCircularDependency(item))

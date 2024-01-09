@@ -16,8 +16,6 @@ public class DependencyImplementation : IDependency
     /// <returns>The id of the new Dependency</returns>
     public int Create(DO.Dependency item)
     {
-
-
         //create it
         int id = DataSource.Config.NextDependencyID;
 

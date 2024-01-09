@@ -158,12 +158,12 @@ public static class Initialization
         List<Task> tasks = s_dalTask!.ReadAll();
 
         // Create the required initial dependencies
-        s_dalDependency!.Create(new Dependency(-1, 2, 1, "a@gmail.com", "1600 Pennsylvania Ave.", randomOldDay(), null, null));
-        s_dalDependency!.Create(new Dependency(-1, 2, 5, "b@gmail.com", "1234 random rd.", randomOldDay(), null, null));
-        s_dalDependency!.Create(new Dependency(-1, 2, 6, "c@gmail.com", "123 sesame st", randomOldDay(), null, null));
-        s_dalDependency!.Create(new Dependency(-1, 20, 1, "d@gmail.com", "100 franklin ave.", randomOldDay(), null, null));
-        s_dalDependency!.Create(new Dependency(-1, 20, 5, "e@yahoo.com", "404 not found.", randomOldDay(), null, null));
-        s_dalDependency!.Create(new Dependency(-1, 20, 6, "f@hotmail.com", "200 Ok. apt 1", randomOldDay(), null, null));
+        s_dalDependency!.Create(new Dependency(-1, 2, 1, "a@gmail.com", "1600 Pennsylvania Ave.", randomOldDay()));
+        s_dalDependency!.Create(new Dependency(-1, 2, 5, "b@gmail.com", "1234 random rd.", randomOldDay()));
+        s_dalDependency!.Create(new Dependency(-1, 2, 6, "c@gmail.com", "123 sesame st", randomOldDay()));
+        s_dalDependency!.Create(new Dependency(-1, 20, 1, "d@gmail.com", "100 franklin ave.", randomOldDay()));
+        s_dalDependency!.Create(new Dependency(-1, 20, 5, "e@yahoo.com", "404 not found.", randomOldDay()));
+        s_dalDependency!.Create(new Dependency(-1, 20, 6, "f@hotmail.com", "200 Ok. apt 1", randomOldDay()));
        
         
         // create the remaining random dependencies 
@@ -185,7 +185,6 @@ public static class Initialization
             s_dalDependency.Create(newD);
 
         }
-        
 
     }
 

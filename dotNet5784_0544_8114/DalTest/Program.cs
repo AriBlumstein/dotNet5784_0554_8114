@@ -61,7 +61,8 @@ internal class Program
     {
         int id;
         string input;
-        
+        Console.WriteLine();
+
         do
         {
             Console.WriteLine(printOptions("task"));
@@ -85,6 +86,7 @@ internal class Program
                         foreach (DO.Task t in s_dalTask!.ReadAll())
                         {
                             Console.WriteLine(t);
+                            Console.WriteLine();
                         }
                         break;
                     case "e":
@@ -125,6 +127,7 @@ internal class Program
         {
             Console.WriteLine(printOptions("engineer"));
             input = Console.ReadLine();
+            Console.WriteLine();
             try
             {
                 switch (input)
@@ -144,6 +147,8 @@ internal class Program
                         foreach (DO.Engineer t in s_dalEngineer!.ReadAll())
                         {
                             Console.WriteLine(t);
+                            Console.WriteLine();
+
                         }
                         break;
                     case "e":
@@ -185,6 +190,7 @@ internal class Program
         {
             Console.WriteLine(printOptions("dependency"));
             input = Console.ReadLine();
+            Console.WriteLine();
             try
             {
                 switch (input)
@@ -204,6 +210,8 @@ internal class Program
                         foreach (DO.Dependency t in s_dalDependency!.ReadAll())
                         {
                             Console.WriteLine(t);
+                            Console.WriteLine();
+
                         }
                         break;
                     case "e":

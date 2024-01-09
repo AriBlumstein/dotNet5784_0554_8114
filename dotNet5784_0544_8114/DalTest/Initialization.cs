@@ -176,13 +176,14 @@ public static class Initialization
            
             //get a random day
             DateTime dateTime = randomOldDay();
-            try
-            {
-                s_dalDependency!.Create(new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null));
-            } catch (Exception ex) //catch if circular dependency was created.
-            {
+            DO.Dependency newD = new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null);
+           
+            if (checkCircularDependency(newD)){
                 i--; //must try to make a new dependency 
+                continue;
             }
+            s_dalDependency.Create(newD);
+
         }
         
 
@@ -208,5 +209,38 @@ public static class Initialization
         createDependencies();
 
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="item">the new dependency to check if it creates a circular dependency</param>
+    /// <returns>true if circular dependency, false otherwise</returns>
+    static bool checkCircularDependency(DO.Dependency item)
+    {
+
+        if (item.RequisiteID == item.DependentID)
+        {
+            return true;
+        }
+
+        bool checkCircularHelper(DO.Dependency item, int dependentID)
+        {
+            List<DO.Dependency> chain = new List<DO.Dependency>();
+            bool res;
+            chain = s_dalDependency!.ReadAll().FindAll(i => i.DependentID == item.RequisiteID && i.Active);
+            foreach (var d in chain)
+            {
+                if (d.RequisiteID == dependentID)
+                    return true;
+                res = checkCircularHelper(d, dependentID);
+                if (res) return res;
+            }
+            return false;
+        }
+        return checkCircularHelper(item, item.DependentID);
+
+    }
+
 
 }

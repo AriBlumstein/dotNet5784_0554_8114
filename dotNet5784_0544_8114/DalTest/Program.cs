@@ -36,6 +36,9 @@ internal class Program
                 case "2":
                     engineerHandler();
                     break;
+                case "3":
+                    dependencyHandler();
+                    break;
                 default:
                     break;
             }
@@ -173,6 +176,66 @@ internal class Program
     }
 
 
+    private static void dependencyHandler()
+    {
+        int id;
+        string input;
+
+        do
+        {
+            Console.WriteLine(printOptions("dependency"));
+            input = Console.ReadLine();
+            try
+            {
+                switch (input)
+                {
+                    case "a":
+                        return;
+                    case "b":
+                        //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
+                        s_dalDependency!.Create(createDependency());
+                        break;
+                    case "c":
+                        Console.WriteLine("Enter the ID of the task");
+                        input = Console.ReadLine();
+                        Console.WriteLine(s_dalDependency!.Read(int.Parse(input)));
+                        break;
+                    case "d":
+                        foreach (DO.Dependency t in s_dalDependency!.ReadAll())
+                        {
+                            Console.WriteLine(t);
+                        }
+                        break;
+                    case "e":
+                        Console.WriteLine("Enter the ID of the task you want to update");
+                        id = int.Parse(Console.ReadLine());
+                        Console.WriteLine(s_dalDependency!.Read(id)); // print the task
+                        DO.Dependency updatedDependency = createDependency() with { ID = id };
+                        s_dalDependency.Update(updatedDependency);
+                        break;
+                    case "f":
+                        Console.WriteLine("Enter id of item you want to delete");
+                        int del = int.Parse(Console.ReadLine());
+                        s_dalDependency!.Delete(del);
+                        break;
+                    default:
+                        Console.WriteLine("Not one of the options");
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        } while (input != "a");
+
+
+
+
+
+    }
+
+
     private static DO.Task createTask()
     {
         Console.WriteLine("Enter all of the relevant information seperated by a comma - Nickname, Description, Mile stone, created");
@@ -189,15 +252,30 @@ internal class Program
     private static DO.Engineer createEngineer()
     {
         Console.WriteLine("Enter all of the relevant information seperated by a comma - ID, name, cost, email, and level");
-        int ID;
-        double cost;
-        Experience level;
+        int _ID;
+        double _cost;
+        Experience _level;
 
         string input = Console.ReadLine();
         List<string> elements = input.Split(',').ToList();
 
-        if (int.TryParse(elements[0], out ID) && double.TryParse(elements[2], out cost) && Enum.TryParse(elements[4], out level))
-            return new DO.Engineer(ID, elements[1], cost, elements[3], level);
+        if (int.TryParse(elements[0], out _ID) && double.TryParse(elements[2], out _cost) && Enum.TryParse(elements[4], out _level))
+            return new DO.Engineer(_ID, elements[1], _cost, elements[3], _level);
+        throw new Exception("Error in input");
+
+    }
+
+    private static DO.Dependency createDependency()
+    {
+        Console.WriteLine("Enter all of the relevant information seperated by a comma - Dependent ID, Requisite ID, customer email, shipping address, order date");
+        int _dID, _rID;
+        DateTime _date;
+
+        string input = Console.ReadLine();
+        List<string> elements = input.Split(',').ToList();
+
+        if (int.TryParse(elements[0], out _dID) && int.TryParse(elements[1], out _rID) && DateTime.TryParse(elements[4], out _date ))
+            return new DO.Dependency(-1, _dID, _rID, elements[2], elements[3], _date);
         throw new Exception("Error in input");
 
     }

@@ -17,9 +17,10 @@ internal class Program
         do
         {
             Console.WriteLine(
-                @"
+                """
                 0. Exit the main menu
-                1. Test out Task");
+                1. Test out Task
+                """);
             input = Console.ReadLine();
             
             switch (input)
@@ -36,60 +37,71 @@ internal class Program
         
     }
 
+    private static string printOptions(string noun)
+    {
+        return $"""
+            a) Go back
+            b) Add  {noun} to the entity list - Create().
+            c) Display {noun} using an {noun}’s identifier -Read().
+            d) Display the {noun} list -ReadAll().
+            e) Update {noun} - Update().
+            f) Delete  {noun} from the {noun} list – Delete().
+            """;
+    }
     private static void taskHandler()
     {
         int id;
-        Console.WriteLine(@"
-            a) Go back
-            b) Add an object to the entity list - Create().
-            c) Display and object using an object’s identifier - Read().
-            d) Display the object list - ReadAll().
-            e) Update an object - Update().
-            f) Delete* an object from the object list – Delete().");
-        string input = Console.ReadLine();
-        try 
+        string input;
+        
+        do
         {
-
-            switch (input)
+            Console.WriteLine(printOptions("task"));
+            input = Console.ReadLine();
+            try
             {
-                case "a":
-                    return;
-                case "b":
-                    //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
-                    s_dalTask!.Create(createTask());
-                    break;
-                case "c":
-                    Console.WriteLine("Enter the ID of the task");
-                    input = Console.ReadLine();
-                    Console.WriteLine(s_dalTask!.Read(int.Parse(input)));
-                    break;
-                case "d":
-                    foreach(DO.Task t in s_dalTask!.ReadAll())
-                    {
-                        Console.WriteLine(t);
-                    }
-                    break;
-                case "e":
-                    Console.WriteLine("Enter the ID of the task you want to update");
-                    id = int.Parse(Console.ReadLine());
-                    Console.WriteLine(s_dalTask!.Read(id)); // print the task
-                    DO.Task updatedTask = createTask() with { ID = id };
-                    s_dalTask.Update(updatedTask);
-                    break;
-                case "f":
-                    Console.WriteLine("Enter id of item you want to delete");
-                    int del = int.Parse(Console.ReadLine());
-                    s_dalTask!.Delete(del);
-                    break;
-                default:
-                    Console.WriteLine("Not one of the options");
-                    break;
+                switch (input)
+                {
+                    case "a":
+                        return;
+                    case "b":
+                        //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
+                        s_dalTask!.Create(createTask());
+                        break;
+                    case "c":
+                        Console.WriteLine("Enter the ID of the task");
+                        input = Console.ReadLine();
+                        Console.WriteLine(s_dalTask!.Read(int.Parse(input)));
+                        break;
+                    case "d":
+                        foreach (DO.Task t in s_dalTask!.ReadAll())
+                        {
+                            Console.WriteLine(t);
+                        }
+                        break;
+                    case "e":
+                        Console.WriteLine("Enter the ID of the task you want to update");
+                        id = int.Parse(Console.ReadLine());
+                        Console.WriteLine(s_dalTask!.Read(id)); // print the task
+                        DO.Task updatedTask = createTask() with { ID = id };
+                        s_dalTask.Update(updatedTask);
+                        break;
+                    case "f":
+                        Console.WriteLine("Enter id of item you want to delete");
+                        int del = int.Parse(Console.ReadLine());
+                        s_dalTask!.Delete(del);
+                        break;
+                    default:
+                        Console.WriteLine("Not one of the options");
+                        break;
+                }
             }
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        } while (input != "a");
+        
+       
 
 
         

@@ -5,6 +5,9 @@ namespace DalApi;
 
 using DO;
 
+/// <summary>
+/// Interface for Engineer database
+/// </summary>
 public interface IEngineer
 {
     int Create(Engineer item); // Creates new entity object in DAL
@@ -12,4 +15,6 @@ public interface IEngineer
     List<Engineer> ReadAll(); // stage 1 only, Reads all entity objects
     void Update(Engineer item); // Updates entity object
     void Delete(int id); // Deletes an object by its Id
+
+    Engineer finder(int id); //find the item
 }

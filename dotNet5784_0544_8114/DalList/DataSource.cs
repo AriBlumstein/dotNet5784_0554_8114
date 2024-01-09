@@ -10,7 +10,7 @@ namespace Dal;
 internal static class DataSource
 {
 
-    internal static Random random = new Random(); 
+    internal static readonly Random random = new Random(); 
 
     /// <summary>
     /// databases for the different attributes
@@ -28,11 +28,15 @@ internal static class DataSource
         /// automatic ids for task and dependency as well as an arbitrary start and and date
         /// </summary>
         
-        internal static int dependencyID = 1;
-        internal static int NextDependencyID { get => dependencyID++; }
+        internal const int startdependencyID = 1;
 
-        internal static int taskID = 1;
-        internal static int NextTaskID { get => taskID++; }
+        private static int nextDependencyID = startdependencyID;
+        internal static int NextDependencyID { get => nextDependencyID++; }
+
+        internal const int startTaskID = 1;
+
+        internal static int nextTaskID = startTaskID;
+        internal static int NextTaskID { get => nextTaskID++; }
 
         internal static DateTime? projectStart=new DateTime(2007, 1, 1);
 

@@ -38,6 +38,7 @@ internal class Program
 
     private static void taskHandler()
     {
+        int id;
         Console.WriteLine(@"
             a) Go back
             b) Add an object to the entity list - Create().
@@ -70,7 +71,7 @@ internal class Program
                     break;
                 case "e":
                     Console.WriteLine("Enter the ID of the task you want to update");
-                    int id = int.Parse(Console.ReadLine());
+                    id = int.Parse(Console.ReadLine());
                     Console.WriteLine(s_dalTask!.Read(id)); // print the task
                     DO.Task updatedTask = createTask() with { ID = id };
                     s_dalTask.Update(updatedTask);

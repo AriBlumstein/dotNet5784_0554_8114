@@ -4,7 +4,9 @@
 namespace DalApi;
 using DO;
 
-
+/// <summary>
+/// interface for Dependency database
+/// </summary>
 public interface IDependency
 {
     int Create(Dependency item); // Creates new entity object in DAL
@@ -13,5 +15,6 @@ public interface IDependency
     void Update(Dependency item); // Updates entity object
     void Delete(int id); // Deletes an object by its Id
 
+    Dependency finder(int id); //find the item
     bool checkCircularDependency(Dependency dependency); //we want to make sure there is no circular dependency
 }

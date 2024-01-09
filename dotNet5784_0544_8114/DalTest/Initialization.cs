@@ -2,7 +2,6 @@
 namespace DalTest;
 using DO;
 using DalApi;
-using System.Runtime.CompilerServices;
 
 /// <summary>
 /// class to initialize the databases for the purpose of the test
@@ -14,7 +13,7 @@ public static class Initialization
     private static IDependency? s_dalDependency;
 
     private static readonly Random s_rand= new ();
-    private static Random gen = new Random();
+    
 
     /// <summary>
     /// get a random date
@@ -24,7 +23,7 @@ public static class Initialization
     {
         DateTime start = new DateTime(2007, 1, 1);
         int range = (new DateTime(2017,1,1) - start).Days;
-        return start.AddDays(gen.Next(range));
+        return start.AddDays(s_rand.Next(range));
     }
 
 
@@ -124,23 +123,22 @@ public static class Initialization
         foreach (var _name in names)
         {
             int _id;
-            bool _unique = false;
+            bool unique = false;
+            DO.Engineer? cur;
             do {
                 _id = s_rand.Next(MIN_ID, MAX_ID);
                 try
                 {
                     //see if the the id does not already exist
-                    s_dalEngineer!.Read(_id);
+                    cur = s_dalEngineer!.Read(_id);
                 }
                 catch(Exception ex)
                 {
-                    //if we caught an exception, it does not
-                    _unique = true;
+                    unique= true;
                 }
-
-
-               }  
-            while (!_unique);
+            
+               }
+            while (!unique);
 
             //get random experience
             Experience _e = randExpereince();

@@ -21,18 +21,21 @@ public class TaskImplementation : ITask
         return id;
     }
 
+    /// <summary>
+    /// delete a task
+    /// </summary>
+    /// <param name="id"></param>
+
     public void Delete(int id)
     {
-        DO.Task? cur = (DataSource.Tasks.Find(i => i.ID == id));
-
-        if (cur == null)
-        {
-            throw new Exception($"Task with ID={id} does not exist");
-        }
+        DO.Task? cur = finder(id);
 
         int index = DataSource.Tasks.IndexOf(cur);
+
         DataSource.Tasks[index] = cur with { Active = false };
     }
+
+  
 
     /// <summary>
     /// Returns a reference to a Task object
@@ -41,8 +44,7 @@ public class TaskImplementation : ITask
     /// <returns>the task if it exists, null otherwise</returns>
     public DO.Task? Read(int id)
     {
-        if (!DataSource.itemExists(id, typeof(DO.Task))) throw new Exception($"Task with ID={id} does not exist");
-        return DataSource.Tasks.Find(t=>t.ID == id); 
+        return finder(id);
     }
 
     /// <summary>
@@ -60,8 +62,29 @@ public class TaskImplementation : ITask
     /// <param name="item"></param>
     public void Update(DO.Task item)
     {
-        //we assume by eliminate, make it inactive
-        Delete(item.ID); 
-        Create(item);
+        DO.Task cur = finder(item.ID); //find the original item
+
+        int index = DataSource.Tasks.IndexOf(cur); //find its index
+
+        DataSource.Tasks[index] = item; //eliminate original, add new one
+    }
+
+
+    /// <summary>
+    /// see if tasks exists by checking its id and returns its reference, throws if it doesn't exist
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>a reference if it exists</returns>
+    /// <exception cref="Exception"></exception>
+    public DO.Task finder(int id)
+    {
+        DO.Task? cur = (DataSource.Tasks.Find(i => i.ID == id && i.Active));
+
+        if (cur == null)
+        {
+            throw new Exception($"Task with ID={id} does not exist");
+        }
+
+        return cur;
     }
 }

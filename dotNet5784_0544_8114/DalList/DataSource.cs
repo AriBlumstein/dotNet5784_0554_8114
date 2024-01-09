@@ -45,30 +45,4 @@ internal static class DataSource
     }
 
 
-    /// <summary>
-    /// checks if an item exists already in its respective list
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="type"></param>
-    /// <returns>bool</returns>
-    internal static bool itemExists(int id, Type type)
-    {
-       
-        bool exists = false;
-        if (type == typeof(DO.Dependency))
-        {
-            exists= Dependencies.Exists(d=> d.ID == id&&d.Active);
-        }
-        else if (type == typeof(DO.Engineer)) {
-            exists= Engineers.Exists(d => d.ID == id&&d.Active);
-        }
-        
-        else if (type == typeof(DO.Task))
-        {
-            exists= Tasks.Exists(d => d.ID == id && d.Active);
-        }
-        return exists;
-     
-    }
-
 }

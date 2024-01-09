@@ -18,7 +18,7 @@ public class EngineerImplementation : IEngineer
         //return item.ID;
         try
         {
-            finder(item.ID);
+            Read(item.ID);
             throw new Exception($"Engineer with ID={item.ID} already exists");
         }
         catch (Exception ex)
@@ -36,7 +36,7 @@ public class EngineerImplementation : IEngineer
     /// <param name="id"></param>
     public void Delete(int id)
     {
-        Engineer? cur = finder(id);
+        Engineer cur = Read(id);
 
         int index = DataSource.Engineers.IndexOf(cur); //get the index its in
 
@@ -49,9 +49,18 @@ public class EngineerImplementation : IEngineer
     /// </summary>
     /// <param name="id"></param>
     /// <returns>the Engineer if it exists, null otherwise</returns>
-    public DO.Engineer? Read(int id)
-    { 
-        return finder(id);
+    /// /// <exception cref="Exception"></exception>
+    public DO.Engineer Read(int id)
+    {
+    
+        Engineer? cur = (DataSource.Engineers.Find(i => i.ID == id && i.Active));
+
+        if (cur == null)
+        {
+            throw new Exception($"Engineer with ID={id} does not exist");
+        }
+
+            return cur;
     }
 
     /// <summary>
@@ -69,7 +78,7 @@ public class EngineerImplementation : IEngineer
     /// <param name="item"></param>
     public void Update(DO.Engineer item)
     {
-        DO.Engineer cur = finder(item.ID);  //find the original
+        DO.Engineer cur = Read(item.ID);  //find the original
 
         int index = DataSource.Engineers.IndexOf(cur); //gets its index
 
@@ -78,23 +87,5 @@ public class EngineerImplementation : IEngineer
     }
 
 
-
-    /// <summary>
-    /// finds an Engineer based of its id, returns a reference to it, throws if the engineer does not exist
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-
-    public Engineer finder(int id)
-    {
-        Engineer? cur = (DataSource.Engineers.Find(i => i.ID == id && i.Active));
-
-        if (cur == null)
-        {
-            throw new Exception($"Engineer with ID={id} does not exist");
-        }
-
-        return cur;
-    }
+    
 }

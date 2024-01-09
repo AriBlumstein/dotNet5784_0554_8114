@@ -19,7 +19,7 @@ public class DependencyImplementation : IDependency
         //first check if a dependency like it already exists
         if (ReadAll().FindAll(i => (i.DependentID == item.DependentID && i.RequisiteID == item.RequisiteID && i.Active)).Count() > 0)
             throw new Exception($"Dependency where {item.DependentID} is dependent on {item.RequisiteID} already exists");
-        
+
         //now check if it will cause a cirlcular dependency if added
         if (checkCircularDependency(item))
         {
@@ -32,7 +32,7 @@ public class DependencyImplementation : IDependency
         DO.Dependency _item = item with { ID = id };
 
         DataSource.Dependencies.Add(_item);
-        
+
         return id;
     }
 
@@ -40,11 +40,10 @@ public class DependencyImplementation : IDependency
     /// deletes a dependency
     /// </summary>
     /// <param name="id"></param>
-    
 
     public void Delete(int id)
     {
-        Dependency? cur = finder(id);
+        Dependency cur = Read(id);
 
         int index = DataSource.Dependencies.IndexOf(cur);
 
@@ -52,16 +51,24 @@ public class DependencyImplementation : IDependency
 
     }
 
-   
+
 
     /// <summary>
     /// Returns a reference to a Dependency object
     /// </summary>
     /// <param name="id"></param>
     /// <returns>the Dependency if it exists, null otherwise</returns>
-    public DO.Dependency? Read(int id)
+    /// /// <exception cref="Exception"></exception>
+    public DO.Dependency Read(int id)
     {
-        return finder(id);
+        Dependency? cur = (DataSource.Dependencies.Find(i => i.ID == id && i.Active));
+
+        if (cur == null)
+        {
+            throw new Exception($"Dependency with ID={id} does not exist");
+        }
+
+        return cur;
     }
 
     /// <summary>
@@ -70,7 +77,7 @@ public class DependencyImplementation : IDependency
     /// <returns></returns>
     public List<DO.Dependency> ReadAll()
     {
-        return DataSource.Dependencies.FindAll(i=> i.Active);
+        return DataSource.Dependencies.FindAll(i => i.Active);
     }
 
     /// <summary>
@@ -79,7 +86,7 @@ public class DependencyImplementation : IDependency
     /// <param name="item"></param>
     public void Update(DO.Dependency item)
     {
-        DO.Dependency cur = finder(item.ID);  //find the original
+        DO.Dependency cur = Read(item.ID);  //find the original
 
         int index = DataSource.Dependencies.IndexOf(cur); //gets its index
 
@@ -95,7 +102,7 @@ public class DependencyImplementation : IDependency
     public bool checkCircularDependency(DO.Dependency item)
     {
 
-        if (item.RequisiteID==item.DependentID)
+        if (item.RequisiteID == item.DependentID)
         {
             return true;
         }
@@ -109,31 +116,14 @@ public class DependencyImplementation : IDependency
             {
                 if (d.RequisiteID == dependentID)
                     return true;
-                 res=checkCircularHelper(d,dependentID);
+                res = checkCircularHelper(d, dependentID);
                 if (res) return res;
             }
             return false;
         }
         return checkCircularHelper(item, item.DependentID);
-        
+
     }
 
 
-    /// <summary>
-    /// method that finds if a dependemcy exists given its id and returns a reference to it
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public Dependency finder(int id)
-    {
-        Dependency? cur = (DataSource.Dependencies.Find(i => i.ID == id && i.Active));
-
-        if (cur == null)
-        {
-            throw new Exception($"Dependency with ID={id} does not exist");
-        }
-
-        return cur;
-    }
 }

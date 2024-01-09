@@ -28,23 +28,31 @@ public class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        DO.Task? cur = finder(id);
+        DO.Task cur = Read(id);
 
         int index = DataSource.Tasks.IndexOf(cur);
 
         DataSource.Tasks[index] = cur with { Active = false };
     }
 
-  
+
 
     /// <summary>
     /// Returns a reference to a Task object
     /// </summary>
     /// <param name="id"></param>
     /// <returns>the task if it exists, null otherwise</returns>
-    public DO.Task? Read(int id)
+    ///  /// <exception cref="Exception"></exception>
+    public DO.Task Read(int id)
     {
-        return finder(id);
+        DO.Task? cur = (DataSource.Tasks.Find(i => i.ID == id && i.Active));
+
+        if (cur == null)
+        {
+            throw new Exception($"Task with ID={id} does not exist");
+        }
+
+        return cur;
     }
 
     /// <summary>
@@ -62,7 +70,7 @@ public class TaskImplementation : ITask
     /// <param name="item"></param>
     public void Update(DO.Task item)
     {
-        DO.Task cur = finder(item.ID); //find the original item
+        DO.Task cur = Read(item.ID); //find the original item
 
         int index = DataSource.Tasks.IndexOf(cur); //find its index
 
@@ -70,21 +78,6 @@ public class TaskImplementation : ITask
     }
 
 
-    /// <summary>
-    /// see if tasks exists by checking its id and returns its reference, throws if it doesn't exist
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns>a reference if it exists</returns>
-    /// <exception cref="Exception"></exception>
-    public DO.Task finder(int id)
-    {
-        DO.Task? cur = (DataSource.Tasks.Find(i => i.ID == id && i.Active));
-
-        if (cur == null)
-        {
-            throw new Exception($"Task with ID={id} does not exist");
-        }
-
-        return cur;
-    }
+  
+    
 }

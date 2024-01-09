@@ -6,7 +6,7 @@ namespace DO;
 /// task to be done
 /// </summary>
 /// <param name="ID"></param>
-/// <param name="NickName"></param>
+/// <param name="Nickname"></param>
 /// <param name="Description"></param>
 /// <param name="Milestone"></param>
 /// <param name="Created"></param>
@@ -23,7 +23,7 @@ namespace DO;
 public record Task
 (
      int ID,
-     String NickName, 
+     String Nickname, 
      String Description,
      Boolean Milestone, 
      DateTime Created,
@@ -41,4 +41,24 @@ public record Task
 )
 {
     public Task() : this(0, "", "", false, DateTime.Now) { }
+
+    public override string ToString()
+    {
+        return $"""
+            ID: {ID}
+            Nickname: {Nickname ?? "null"}
+            Description: {Description ?? "null"}
+            Milestone: {Milestone}
+            Date Created: {Created}
+            Projected Start: {(ProjectedStart.HasValue ? ProjectedStart : "null")}
+            Actual Start: {(ActualStart.HasValue ? ActualStart : "null")}
+            Deadline: {(Deadline.HasValue ? Deadline : "null")}
+            Duration: {(Duration.HasValue ? Duration : "null")}
+            Actual End: {ActualEnd.ToString() ?? "null"}
+            Deliverable: {Deliverable ?? "null"}
+            Notes: {Notes ?? "null"}
+            Assigned Engineer: {AssignedEngineer.ToString() ?? "null"}
+            Difficulty: {Difficulty.ToString() ?? "null"}
+            """;
+    }
 }

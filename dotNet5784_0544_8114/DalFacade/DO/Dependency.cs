@@ -33,4 +33,18 @@ public record Dependency
     /// </summary>
     public Dependency(): this(-1,-1,-2,"","", DateTime.Now) { }
 
+    public override string ToString()
+    {
+        return $"""
+            ID: {ID}
+            DependentID: {DependentID}
+            Requisite ID: {RequisiteID}
+            Customer Email: {CustomerEmail}
+            Address: {Address}
+            Order Date: {OrderDate}
+            Shipping Date: {(ShippingDate.HasValue ? ShippingDate : "null")}
+            Delivery Date: {(DeliveryDate.HasValue ? DeliveryDate : "null")}
+            """;
+    }
+
 }

@@ -20,4 +20,13 @@ public record Engineer
 )
 {
    public Engineer() : this(0,"",0,"",Experience.Beginner) { }
+    public override string ToString()
+    {
+        return $"""
+              Name: {Name}
+              Cost: {Cost}
+              Email: {Email}
+              Experience: {Exp}
+              """;
+    }
 }

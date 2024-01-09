@@ -32,7 +32,7 @@ internal static class DataSource
         internal static int NextDependencyID { get => dependencyID++; }
 
         internal static int taskID = 1;
-        internal static int NextTaskID { get => dependencyID++; }
+        internal static int NextTaskID { get => taskID++; }
 
         internal static DateTime? projectStart=new DateTime(2007, 1, 1);
 

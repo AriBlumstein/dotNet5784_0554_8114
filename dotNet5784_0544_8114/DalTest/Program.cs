@@ -71,7 +71,7 @@ internal class Program
                 case "e":
                     Console.WriteLine("Enter the ID of the task you want to update");
                     int id = int.Parse(Console.ReadLine());
-                    Console.WriteLine(s_dalTask!.Read(int.Parse(input))); // print the task
+                    Console.WriteLine(s_dalTask!.Read(id)); // print the task
                     DO.Task updatedTask = createTask() with { ID = id };
                     s_dalTask.Update(updatedTask);
                     break;

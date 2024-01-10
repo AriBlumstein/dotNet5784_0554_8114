@@ -23,6 +23,7 @@ internal class Program
                 1. Test out Task
                 2. Test out Engineer
                 3. Test out Dependency
+                4. Reset All
                 """);
             input = Console.ReadLine();
             
@@ -38,6 +39,9 @@ internal class Program
                     break;
                 case "3":
                     dependencyHandler();
+                    break;
+                case "4":
+                    reset();
                     break;
                 default:
                     break;
@@ -286,5 +290,13 @@ internal class Program
             return new DO.Dependency(-1, _dID, _rID, elements[2], elements[3], _date);
         throw new Exception("Error in input");
 
+    }
+
+
+    static void  reset()
+    {
+        s_dalDependency!.Reset();
+        s_dalEngineer!.Reset();
+        s_dalTask!.Reset();
     }
 }

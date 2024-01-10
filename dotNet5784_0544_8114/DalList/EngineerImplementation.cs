@@ -23,8 +23,8 @@ public class EngineerImplementation : IEngineer
         }
         catch (Exception ex)
         {
-            DO.Engineer _item = item; //we do not want our user to point to the same reference anymore
-            DataSource.Engineers.Add(_item);
+            
+            DataSource.Engineers.Add(item);
             return item.ID;
 
         }

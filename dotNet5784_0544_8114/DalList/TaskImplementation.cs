@@ -78,6 +78,17 @@ public class TaskImplementation : ITask
     }
 
 
-  
-    
+    /// <summary>
+    /// reset the database, set everything to inactive
+    /// </summary>
+    public void Reset()
+    {
+        for (int i = 0; i < DataSource.Tasks.Count; ++i)
+        {
+            DataSource.Tasks[i] = DataSource.Tasks[i] with { Active = false };
+        }
+    }
+
+
+
 }

@@ -86,6 +86,17 @@ public class EngineerImplementation : IEngineer
 
     }
 
+    /// <summary>
+    /// reset the database, set everything to inactive
+    /// </summary>
+    public void Reset()
+    {
+        for (int i = 0; i < DataSource.Engineers.Count; ++i)
+        {
+            DataSource.Engineers[i] = DataSource.Engineers[i] with { Active = false };
+        }
+    }
 
-    
+
+
 }

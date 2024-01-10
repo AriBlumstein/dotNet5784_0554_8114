@@ -7,13 +7,13 @@ namespace DalTest;
 
 internal class Program
 {
-
+    private static IConfig? projectConfig = new ConfigImplementation();
     private static ITask? s_dalTask = new TaskImplementation();
     private static IEngineer? s_dalEngineer = new EngineerImplementation();
     private static IDependency? s_dalDependency = new DependencyImplementation();
     static void Main(string[] args)
     {
-        Initialization.Do(s_dalTask, s_dalEngineer, s_dalDependency);
+        Initialization.Do(projectConfig, s_dalTask, s_dalEngineer, s_dalDependency);
         string input;
         do
         {
@@ -78,13 +78,16 @@ internal class Program
                     case "a":
                         return;
                     case "b":
-                        //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
-                        s_dalTask!.Create(createTask());
+                        
+                        id=s_dalTask!.Create(createTask());
+                        Console.WriteLine($"the id of the task created it {id}");
+                        Console.WriteLine();
                         break;
                     case "c":
                         Console.WriteLine("Enter the ID of the task");
                         input = Console.ReadLine();
                         Console.WriteLine(s_dalTask!.Read(int.Parse(input)));
+                        Console.WriteLine();
                         break;
                     case "d":
                         foreach (DO.Task t in s_dalTask!.ReadAll())
@@ -97,6 +100,7 @@ internal class Program
                         Console.WriteLine("Enter the ID of the task you want to update");
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dalTask!.Read(id)); // print the task
+                        Console.WriteLine();
                         DO.Task updatedTask = createTask() with { ID = id };
                         s_dalTask.Update(updatedTask);
                         break;
@@ -140,12 +144,14 @@ internal class Program
                         return;
                     case "b":
                         //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
-                        s_dalEngineer!.Create(createEngineer());
+                        id=s_dalEngineer!.Create(createEngineer());
+                        Console.WriteLine($"the ID number for the Engineer is {id}");
                         break;
                     case "c":
                         Console.WriteLine("Enter the ID of the task");
                         input = Console.ReadLine();
                         Console.WriteLine(s_dalEngineer!.Read(int.Parse(input)));
+                        Console.WriteLine();
                         break;
                     case "d":
                         foreach (DO.Engineer t in s_dalEngineer!.ReadAll())
@@ -159,6 +165,7 @@ internal class Program
                         Console.WriteLine("Enter the ID of the task you want to update");
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dalEngineer!.Read(id)); // print the task
+                        Console.WriteLine();
                         DO.Engineer updatedEngineer = createEngineer() with { ID = id };
                         s_dalEngineer.Update(updatedEngineer);
                         break;
@@ -203,12 +210,15 @@ internal class Program
                         return;
                     case "b":
                         //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
-                        s_dalDependency!.Create(createDependency());
+                        id = s_dalDependency!.Create(createDependency());
+                        Console.WriteLine($"the id number of the dependency created is {id}");
+                        Console.WriteLine();
                         break;
                     case "c":
                         Console.WriteLine("Enter the ID of the task");
                         input = Console.ReadLine();
                         Console.WriteLine(s_dalDependency!.Read(int.Parse(input)));
+                        Console.WriteLine();
                         break;
                     case "d":
                         foreach (DO.Dependency t in s_dalDependency!.ReadAll())
@@ -219,9 +229,11 @@ internal class Program
                         }
                         break;
                     case "e":
+                        Console.WriteLine();
                         Console.WriteLine("Enter the ID of the task you want to update");
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dalDependency!.Read(id)); // print the task
+                        Console.WriteLine();
                         DO.Dependency updatedDependency = createDependency() with { ID = id };
                         s_dalDependency.Update(updatedDependency);
                         break;
@@ -241,22 +253,41 @@ internal class Program
             }
         } while (input != "a");
 
-
-
-
-
     }
-
 
     private static DO.Task createTask()
     {
-        Console.WriteLine("Enter all of the relevant information seperated by a comma - Nickname, Description, Mile stone, created");
+        Console.WriteLine("""
+                          Enter all of the relevant information seperated by a comma and no space: 
+                          Nickname,Description,Milestone,created,projectedStart,actualStart,deadline,duration,actualEnd,deliverable,notes,assignedEngineer,difficulty
+                          if no engineer,write -1
+                          """);
         Boolean _milestone;
-        DateTime _date;
+        DateTime _created, _projectedStart,_actualStart,_deadline,_actualEnd;
+        int _duration;
+        int _assignedEngineer;
+        DO.Experience _e;
         string input = Console.ReadLine();
         List<string> elements = input.Split(',').ToList();
-        if (Boolean.TryParse(elements[2], out _milestone) && DateTime.TryParse(elements[3], out _date))
-            return new DO.Task(-1, elements[0], elements[1], _milestone, _date);
+        if (Boolean.TryParse(elements[2], out _milestone)
+            && DateTime.TryParse(elements[3], out _created)
+            && DateTime.TryParse(elements[4], out _projectedStart)
+            && DateTime.TryParse(elements[5], out _actualStart)
+            && DateTime.TryParse(elements[6], out _deadline)
+            && int.TryParse(elements[7], out _duration)
+            && DateTime.TryParse(elements[8], out _actualEnd)
+            && int.TryParse(elements[11], out _assignedEngineer)
+            && Enum.TryParse(elements[12], out _e)
+            )
+        {
+            int? _trueAssigned;
+            if (_assignedEngineer == -1)
+                _trueAssigned = null;
+            else
+                _trueAssigned= _assignedEngineer;
+
+            return new DO.Task(-1, elements[0], elements[1], _milestone, _created, _projectedStart, _actualStart, _deadline, _duration, _actualEnd, elements[9], elements[10], _trueAssigned, _e);
+        }
         throw new Exception("Error in input");
 
     }
@@ -279,24 +310,28 @@ internal class Program
 
     private static DO.Dependency createDependency()
     {
-        Console.WriteLine("Enter all of the relevant information seperated by a comma - Dependent ID, Requisite ID, customer email, shipping address, order date");
+        Console.WriteLine("Enter all of the relevant information seperated by a comma and no space- Dependent ID,Requisite ID");
         int _dID, _rID;
-        DateTime _date;
-
+  
         string input = Console.ReadLine();
         List<string> elements = input.Split(',').ToList();
 
-        if (int.TryParse(elements[0], out _dID) && int.TryParse(elements[1], out _rID) && DateTime.TryParse(elements[4], out _date ))
-            return new DO.Dependency(-1, _dID, _rID, elements[2], elements[3], _date);
+        if (int.TryParse(elements[0], out _dID) && int.TryParse(elements[1], out _rID))
+            return new DO.Dependency(-1, _dID, _rID);
         throw new Exception("Error in input");
 
     }
 
-
-    static void  reset()
+    /// <summary>
+    /// reset the databases
+    /// </summary>
+    static void reset()
     {
+
         s_dalDependency!.Reset();
         s_dalEngineer!.Reset();
         s_dalTask!.Reset();
+        projectConfig!.Reset();
+
     }
 }

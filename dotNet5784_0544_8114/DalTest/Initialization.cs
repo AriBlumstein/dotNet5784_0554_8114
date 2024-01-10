@@ -2,29 +2,32 @@
 namespace DalTest;
 using DO;
 using DalApi;
+using System.Collections.Generic;
 
 /// <summary>
 /// class to initialize the databases for the purpose of the test
 /// </summary>
 public static class Initialization
 {
+    private static IConfig? _config;
     private static ITask? s_dalTask;
     private static IEngineer? s_dalEngineer;
     private static IDependency? s_dalDependency;
+   
 
     private static readonly Random s_rand= new ();
     
 
     /// <summary>
-    /// get a random date
+    /// initiailize our project start and ends
     /// </summary>
-    /// <returns>DateTime</returns>
-    private static DateTime randomOldDay()
+    private static void initConfig()
     {
-        DateTime start = new DateTime(2007, 1, 1);
-        int range = (new DateTime(2017,1,1) - start).Days;
-        return start.AddDays(s_rand.Next(range));
+        _config!.setProjectStart(DateTime.Now.AddDays(s_rand.Next(1, 60)));
+
+        _config!.setProjectEnd(_config!.getProjectStart().AddMonths(s_rand.Next(18,37)));
     }
+   
 
 
     /// <summary>
@@ -42,6 +45,10 @@ public static class Initialization
     /// </summary>
 
     private static void createTasks() {
+
+
+        int numDays = (_config!.getProjectEnd() - _config!.getProjectStart()).Days;
+
 
         string[] names = new string[]
         {
@@ -98,18 +105,32 @@ public static class Initialization
             //get a random Experience
             Experience _e=randExpereince();
 
-            //get a random date
-            DateTime _start=randomOldDay();
+            //get a create random date
+            DateTime _create = DateTime.Now.AddDays(-(s_rand.Next(0, 100)));
 
-            //random duration
-            int _duration = s_rand.Next(5, 100);
+            //make random start and ends to this task
+            DateTime _projectedStart;
+            DateTime _deadline;
 
-            //random date
-            DateTime _end=_start.AddDays(_duration);
+
+            do
+            {                                                                     
+                _projectedStart = _config!.getProjectStart().AddDays(s_rand.Next(1, numDays));
+                _deadline = _config!.getProjectEnd().AddDays(-(s_rand.Next(1, numDays)));
+                                                          
+            }      //make sure the start is before the deadline
+            while (_projectedStart > _deadline);
+            // the logic here prevents projectedStarts before the projectStart and projectedEnds after the projectEnd
+
+
+            //get the duration
+            int _duration = (_deadline - _projectedStart).Days;
 
             //create the task, the id can be -1, because we are here coming from the "business layer simulation" and can update later
-            s_dalTask!.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, _start, null, null, _end, _duration, null, null, null, null, _e));
+            s_dalTask!.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, _create, _projectedStart, null, _deadline, _duration, null, null, null, null, _e));
         }
+
+       
     }
 
     /// <summary>
@@ -149,23 +170,73 @@ public static class Initialization
 
             s_dalEngineer!.Create(new Engineer(_id, _name, _rate, _name + "@company.com", _e));
         }
+
+      
     }
 
     /// <summary>
     /// initialize dependencies
     /// </summary>
     private static void createDependencies() {
-        List<Task> tasks = s_dalTask!.ReadAll();
 
-        // Create the required initial dependencies
-        s_dalDependency!.Create(new Dependency(-1, 2, 1, "a@gmail.com", "1600 Pennsylvania Ave.", randomOldDay()));
-        s_dalDependency!.Create(new Dependency(-1, 2, 5, "b@gmail.com", "1234 random rd.", randomOldDay()));
-        s_dalDependency!.Create(new Dependency(-1, 2, 6, "c@gmail.com", "123 sesame st", randomOldDay()));
-        s_dalDependency!.Create(new Dependency(-1, 20, 1, "d@gmail.com", "100 franklin ave.", randomOldDay()));
-        s_dalDependency!.Create(new Dependency(-1, 20, 5, "e@yahoo.com", "404 not found.", randomOldDay()));
-        s_dalDependency!.Create(new Dependency(-1, 20, 6, "f@hotmail.com", "200 Ok. apt 1", randomOldDay()));
+        // for the sake of making 2 tasks be dependent on the same things, we will pick the 2 tasks with the latest projected start
+        // as not to get stuck with picking one that cannot be a dependent on anything
+
+        int _latestTask=-1;
+        DateTime? _latestTime=_config!.getProjectStart();
+
+        List<DO.Task> tasks = s_dalTask!.ReadAll();
+
+        foreach(var cur in tasks)
+        {
+            if(cur.ProjectedStart>_latestTime)
+            {
+                _latestTask = cur.ID;
+                _latestTime = cur.ProjectedStart;
+            }
+        }
+
+        //now we will pick our second task
+
+        int _secondLatestTask=-1;
+        _latestTime = _config!.getProjectStart();
+
+
+        foreach (var cur in tasks)
+        {
+            if (cur.ProjectedStart > _latestTime && cur.ID!=_latestTask)
+            {
+                _secondLatestTask = cur.ID;
+                _latestTime = cur.ProjectedStart;
+            }
+        }
+
+        //now that we have both of these task, let us create dependencies, where both taks are dependent on the same things
+        for(int i=0; i<3; ++i)
+        {
+            //get a requisite id that is not the same as either of the dependent ids
+            int _reqId;
+            do
+            {
+                _reqId = s_rand.Next(1, tasks.Count() + 1);
+            } while (_reqId == _latestTask || _reqId == _secondLatestTask);
+
+
+            //make the dependencies and check there is no time conflict and put them in the database
+            Dependency _firstD = new Dependency(-1, _latestTask, _reqId);
+            Dependency _secondD = new Dependency(-1, _secondLatestTask,_reqId);
+
+            if(timeConflict(_firstD)||timeConflict(_secondD))
+            {
+                --i;
+                continue;
+            }
+
+            s_dalDependency!.Create(_firstD);
+            s_dalDependency.Create(_secondD);
+        } 
        
-        
+
         // create the remaining random dependencies 
         for (int i = 0; i < 34; i++)
         {
@@ -174,17 +245,18 @@ public static class Initialization
 
             int dependentID = tasks[rand1].ID, requisiteID = tasks[rand2].ID;          
            
-            //get a random day
-            DateTime dateTime = randomOldDay();
-            DO.Dependency newD = new Dependency(-1, dependentID, requisiteID, "", "", dateTime, null, null);
+       
+            DO.Dependency newD = new Dependency(-1, dependentID, requisiteID);
            
-            if (checkCircularDependency(newD)){
+            //if it creates a circular dependency or is a time conflict
+            if (timeConflict(newD)||checkCircularDependency(newD)){
                 i--; //must try to make a new dependency 
                 continue;
             }
-            s_dalDependency.Create(newD);
+            s_dalDependency!.Create(newD);
 
         }
+
 
     }
 
@@ -196,16 +268,22 @@ public static class Initialization
     /// <param name="dalDependency"></param>
     /// <exception cref="NullReferenceException"></exception>
 
-    public static void Do(ITask? dalTask, IEngineer? dalEngineer, IDependency? dalDependency)
+    public static void Do(IConfig? projectConfig, ITask? dalTask, IEngineer? dalEngineer, IDependency? dalDependency)
     {
         String _except = "DAL cannot be null";
+        _config = projectConfig ?? throw new Exception(_except);
         s_dalTask = dalTask ?? throw new NullReferenceException(_except);
         s_dalEngineer= dalEngineer ?? throw new NullReferenceException(_except);
         s_dalDependency=dalDependency?? throw new NullReferenceException(_except);
 
+        initConfig();
+        
         createEngineers();
+     
         createTasks();
+       
         createDependencies();
+        
 
     }
 
@@ -214,6 +292,7 @@ public static class Initialization
     /// 
     /// </summary>
     /// <param name="item">the new dependency to check if it creates a circular dependency</param>
+    /// <param name="curList">the list we want to insert it to</param>
     /// <returns>true if circular dependency, false otherwise</returns>
     static bool checkCircularDependency(DO.Dependency item)
     {
@@ -227,6 +306,7 @@ public static class Initialization
         {
             List<DO.Dependency> chain;
             bool res;
+            //get all the dependencies where the requisite id of item was a dependent id
             chain = s_dalDependency!.ReadAll().FindAll(i => i.DependentID == item.RequisiteID && i.Active);
             foreach (var d in chain)
             {
@@ -239,6 +319,19 @@ public static class Initialization
         }
         return checkCircularHelper(item, item.DependentID);
 
+    }
+
+
+    /// <summary>
+    /// method checks if the depend task is scheduled before the requisite task, ie, the depdendent task is supposed to start before the requisite ends
+    /// </summary>
+    /// <param name="cur"></param>
+    /// <returns>true if yes, flase if no</returns>
+    static bool timeConflict(Dependency cur)
+    {
+        DO.Task? _dependent = s_dalTask!.Read(cur.DependentID), _requisite = s_dalTask!.Read(cur.RequisiteID);
+        return _dependent!.ProjectedStart < _requisite!.Deadline;
+       
     }
 
 

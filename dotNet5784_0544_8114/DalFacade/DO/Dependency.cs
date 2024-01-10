@@ -20,10 +20,10 @@ public record Dependency
     int ID,
     int DependentID, //what depends on me
     int RequisiteID, //what I depend upon
-    String CustomerEmail,
-    String Address,
-    DateTime OrderDate,
-    DateTime? ShippingDate = null,
+    String? CustomerEmail=null,
+    String? Address=null,
+    DateTime? OrderDate=null,
+    DateTime? ShippingDate = null,       //not sure if these are needed looking for feedback
     DateTime? DeliveryDate = null,
     bool Active = true
 )
@@ -31,7 +31,7 @@ public record Dependency
     /// <summary>
     /// empty constuctor(
     /// </summary>
-    public Dependency(): this(-1,-1,-2,"","", DateTime.Now) { }
+    public Dependency(): this(-1,-1,-2) { }
 
     public override string ToString()
     {

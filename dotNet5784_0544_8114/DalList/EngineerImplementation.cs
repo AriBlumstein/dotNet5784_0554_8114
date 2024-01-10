@@ -91,10 +91,7 @@ public class EngineerImplementation : IEngineer
     /// </summary>
     public void Reset()
     {
-        for (int i = 0; i < DataSource.Engineers.Count; ++i)
-        {
-            DataSource.Engineers[i] = DataSource.Engineers[i] with { Active = false };
-        }
+        DataSource.Engineers.Clear();
     }
 
 

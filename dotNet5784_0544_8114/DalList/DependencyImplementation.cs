@@ -90,10 +90,7 @@ public class DependencyImplementation : IDependency
     /// </summary>
     public void Reset()
     {
-        for (int i = 0; i < DataSource.Dependencies.Count; ++i)
-        {
-            DataSource.Dependencies[i] = DataSource.Dependencies[i] with { Active = false };
-        }
+        DataSource.Dependencies.Clear();
     }
 
 

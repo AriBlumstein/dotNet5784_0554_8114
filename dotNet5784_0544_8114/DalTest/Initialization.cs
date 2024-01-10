@@ -225,7 +225,7 @@ public static class Initialization
 
         bool checkCircularHelper(DO.Dependency item, int dependentID)
         {
-            List<DO.Dependency> chain = new List<DO.Dependency>();
+            List<DO.Dependency> chain;
             bool res;
             chain = s_dalDependency!.ReadAll().FindAll(i => i.DependentID == item.RequisiteID && i.Active);
             foreach (var d in chain)

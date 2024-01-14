@@ -9,10 +9,9 @@ using System.Collections.Generic;
 /// </summary>
 public static class Initialization
 {
-    private static IConfig? _config;
-    private static ITask? s_dalTask;
-    private static IEngineer? s_dalEngineer;
-    private static IDependency? s_dalDependency;
+    
+
+    private static IDal? s_dal;
    
 
     private static readonly Random s_rand= new ();
@@ -23,9 +22,9 @@ public static class Initialization
     /// </summary>
     private static void initConfig()
     {
-        _config!.setProjectStart(DateTime.Now.AddDays(s_rand.Next(1, 60)));
+        s_dal!.Config.setProjectStart(DateTime.Now.AddDays(s_rand.Next(1, 60)));
 
-        _config!.setProjectEnd(_config!.getProjectStart().AddMonths(s_rand.Next(18,37)));
+        s_dal!.Config.setProjectEnd(s_dal!.Config.getProjectStart().AddMonths(s_rand.Next(18,37)));
     }
    
 
@@ -47,7 +46,7 @@ public static class Initialization
     private static void createTasks() {
 
 
-        int numDays = (_config!.getProjectEnd() - _config!.getProjectStart()).Days;
+        int numDays = (s_dal!.Config.getProjectEnd() - s_dal!.Config.getProjectStart()).Days;
 
 
         string[] names = new string[]
@@ -115,8 +114,8 @@ public static class Initialization
 
             do
             {                                                                     
-                _projectedStart = _config!.getProjectStart().AddDays(s_rand.Next(1, numDays));
-                _deadline = _config!.getProjectEnd().AddDays(-(s_rand.Next(1, numDays)));
+                _projectedStart = s_dal!.Config.getProjectStart().AddDays(s_rand.Next(1, numDays));
+                _deadline = s_dal!.Config.getProjectEnd().AddDays(-(s_rand.Next(1, numDays)));
                                                           
             }      //make sure the start is before the deadline
             while (_projectedStart > _deadline);
@@ -127,7 +126,7 @@ public static class Initialization
             int _duration = (_deadline - _projectedStart).Days;
 
             //create the task, the id can be -1, because we are here coming from the "business layer simulation" and can update later
-            s_dalTask!.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, _create, _projectedStart, null, _deadline, _duration, null, null, null, null, _e));
+            s_dal!.Task.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, _create, _projectedStart, null, _deadline, _duration, null, null, null, null, _e));
         }
 
        
@@ -151,7 +150,7 @@ public static class Initialization
                 try
                 {
                     //see if the the id does not already exist
-                    cur = s_dalEngineer!.Read(_id);
+                    cur = s_dal!.Engineer!.Read(_id);
                 }
                 catch(Exception ex)
                 {
@@ -168,7 +167,7 @@ public static class Initialization
             double _rate = (double)s_rand.Next(200, 10000);
 
 
-            s_dalEngineer!.Create(new Engineer(_id, _name, _rate, _name + "@company.com", _e));
+            s_dal!.Engineer.Create(new Engineer(_id, _name, _rate, _name + "@company.com", _e));
         }
 
       
@@ -183,9 +182,9 @@ public static class Initialization
         // as not to get stuck with picking one that cannot be a dependent on anything
 
         int _latestTask=-1;
-        DateTime? _latestTime=_config!.getProjectStart();
+        DateTime? _latestTime=s_dal!.Config.getProjectStart();
 
-        List<DO.Task> tasks = s_dalTask!.ReadAll();
+        List<DO.Task> tasks = s_dal!.Task!.ReadAll();
 
         foreach(var cur in tasks)
         {
@@ -199,7 +198,7 @@ public static class Initialization
         //now we will pick our second task
 
         int _secondLatestTask=-1;
-        _latestTime = _config!.getProjectStart();
+        _latestTime = s_dal!.Config.getProjectStart();
 
 
         foreach (var cur in tasks)
@@ -232,8 +231,8 @@ public static class Initialization
                 continue;
             }
 
-            s_dalDependency!.Create(_firstD);
-            s_dalDependency.Create(_secondD);
+            s_dal!.Dependency.Create(_firstD);
+            s_dal!.Dependency.Create(_secondD);
         } 
        
 
@@ -253,7 +252,7 @@ public static class Initialization
                 i--; //must try to make a new dependency 
                 continue;
             }
-            s_dalDependency!.Create(newD);
+            s_dal!.Dependency.Create(newD);
 
         }
 
@@ -268,13 +267,10 @@ public static class Initialization
     /// <param name="dalDependency"></param>
     /// <exception cref="NullReferenceException"></exception>
 
-    public static void Do(IConfig? projectConfig, ITask? dalTask, IEngineer? dalEngineer, IDependency? dalDependency)
+    public static void Do(IDal dal)
     {
-        String _except = "DAL cannot be null";
-        _config = projectConfig ?? throw new Exception(_except);
-        s_dalTask = dalTask ?? throw new NullReferenceException(_except);
-        s_dalEngineer= dalEngineer ?? throw new NullReferenceException(_except);
-        s_dalDependency=dalDependency?? throw new NullReferenceException(_except);
+        s_dal = dal ?? throw new Exception("S_DAL cannot be null");
+       
 
         initConfig();
         
@@ -307,7 +303,7 @@ public static class Initialization
             List<DO.Dependency> chain;
             bool res;
             //get all the dependencies where the requisite id of item was a dependent id
-            chain = s_dalDependency!.ReadAll().FindAll(i => i.DependentID == item.RequisiteID && i.Active);
+            chain = s_dal!.Dependency.ReadAll().FindAll(i => i.DependentID == item.RequisiteID && i.Active);
             foreach (var d in chain)
             {
                 if (d.RequisiteID == dependentID)
@@ -329,7 +325,7 @@ public static class Initialization
     /// <returns>true if yes, flase if no</returns>
     static bool timeConflict(Dependency cur)
     {
-        DO.Task? _dependent = s_dalTask!.Read(cur.DependentID), _requisite = s_dalTask!.Read(cur.RequisiteID);
+        DO.Task? _dependent = s_dal!.Task.Read(cur.DependentID), _requisite = s_dal!.Task.Read(cur.RequisiteID);
         return _dependent!.ProjectedStart < _requisite!.Deadline;
        
     }

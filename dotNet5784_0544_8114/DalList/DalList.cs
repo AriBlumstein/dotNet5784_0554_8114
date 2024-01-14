@@ -11,4 +11,6 @@ sealed public class DalList : IDal
     public IEngineer Engineer => new EngineerImplementation();
 
     public IDependency Dependency => new DependencyImplementation();
+
+    public IConfig Config => new ConfigImplementation();
 }

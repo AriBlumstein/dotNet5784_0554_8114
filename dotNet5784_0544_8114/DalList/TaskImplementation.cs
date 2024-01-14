@@ -1,10 +1,9 @@
 ﻿
-using DO;
 using DalApi;
 
 namespace Dal;
 
-public class TaskImplementation : ITask
+internal class TaskImplementation : ITask
 {
     /// <summary>
     /// Implementation of create function to add a task to the data source

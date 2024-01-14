@@ -13,4 +13,12 @@ sealed public class DalList : IDal
     public IDependency Dependency => new DependencyImplementation();
 
     public IConfig Config => new ConfigImplementation();
+
+    public void Reset()
+    {
+        Task.Reset();
+        Engineer.Reset();
+        Dependency.Reset();
+        Config.Reset();
+    }
 }

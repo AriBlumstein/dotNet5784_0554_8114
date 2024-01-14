@@ -14,6 +14,8 @@ public interface IDal
 
     IConfig Config { get; }
 
+    void Reset();
+
 
 
 }

@@ -267,7 +267,7 @@ public static class Initialization
     /// <param name="dalDependency"></param>
     /// <exception cref="NullReferenceException"></exception>
 
-    public static void Do(IDal dal)
+    public static void Do(IDal? dal)
     {
         s_dal = dal ?? throw new Exception("S_DAL cannot be null");
        

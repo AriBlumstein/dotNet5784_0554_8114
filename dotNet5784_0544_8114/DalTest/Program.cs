@@ -7,13 +7,12 @@ namespace DalTest;
 
 internal class Program
 {
-    private static IConfig? projectConfig = new ConfigImplementation();
-    private static ITask? s_dalTask = new TaskImplementation();
-    private static IEngineer? s_dalEngineer = new EngineerImplementation();
-    private static IDependency? s_dalDependency = new DependencyImplementation();
+
+    static private readonly IDal? s_dal = new DalList();
+
     static void Main(string[] args)
     {
-        Initialization.Do(projectConfig, s_dalTask, s_dalEngineer, s_dalDependency);
+        Initialization.Do(s_dal);
         string input;
         do
         {
@@ -79,18 +78,18 @@ internal class Program
                         return;
                     case "b":
                         
-                        id=s_dalTask!.Create(createTask());
+                        id=s_dal!.Task.Create(createTask());
                         Console.WriteLine($"the id of the task created it {id}");
                         Console.WriteLine();
                         break;
                     case "c":
                         Console.WriteLine("Enter the ID of the task");
                         input = Console.ReadLine();
-                        Console.WriteLine(s_dalTask!.Read(int.Parse(input)));
+                        Console.WriteLine(s_dal!.Task!.Read(int.Parse(input)));
                         Console.WriteLine();
                         break;
                     case "d":
-                        foreach (DO.Task t in s_dalTask!.ReadAll())
+                        foreach (DO.Task t in s_dal!.Task!.ReadAll())
                         {
                             Console.WriteLine(t);
                             Console.WriteLine();
@@ -99,15 +98,15 @@ internal class Program
                     case "e":
                         Console.WriteLine("Enter the ID of the task you want to update");
                         id = int.Parse(Console.ReadLine());
-                        Console.WriteLine(s_dalTask!.Read(id)); // print the task
+                        Console.WriteLine(s_dal!.Task.Read(id)); // print the task
                         Console.WriteLine();
                         DO.Task updatedTask = createTask() with { ID = id };
-                        s_dalTask.Update(updatedTask);
+                        s_dal!.Task.Update(updatedTask);
                         break;
                     case "f":
                         Console.WriteLine("Enter id of item you want to delete");
                         int del = int.Parse(Console.ReadLine());
-                        s_dalTask!.Delete(del);
+                        s_dal!.Task.Delete(del);
                         break;
                     default:
                         Console.WriteLine("Not one of the options");
@@ -144,17 +143,17 @@ internal class Program
                         return;
                     case "b":
                         //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
-                        id=s_dalEngineer!.Create(createEngineer());
+                        id=s_dal.Engineer!.Create(createEngineer());
                         Console.WriteLine($"the ID number for the Engineer is {id}");
                         break;
                     case "c":
                         Console.WriteLine("Enter the ID of the task");
                         input = Console.ReadLine();
-                        Console.WriteLine(s_dalEngineer!.Read(int.Parse(input)));
+                        Console.WriteLine(s_dal!.Engineer!.Read(int.Parse(input)));
                         Console.WriteLine();
                         break;
                     case "d":
-                        foreach (DO.Engineer t in s_dalEngineer!.ReadAll())
+                        foreach (DO.Engineer t in s_dal!.Engineer!.ReadAll())
                         {
                             Console.WriteLine(t);
                             Console.WriteLine();
@@ -164,15 +163,15 @@ internal class Program
                     case "e":
                         Console.WriteLine("Enter the ID of the task you want to update");
                         id = int.Parse(Console.ReadLine());
-                        Console.WriteLine(s_dalEngineer!.Read(id)); // print the task
+                        Console.WriteLine(s_dal!.Engineer!.Read(id)); // print the task
                         Console.WriteLine();
                         DO.Engineer updatedEngineer = createEngineer() with { ID = id };
-                        s_dalEngineer.Update(updatedEngineer);
+                        s_dal.Engineer.Update(updatedEngineer);
                         break;
                     case "f":
                         Console.WriteLine("Enter id of item you want to delete");
                         int del = int.Parse(Console.ReadLine());
-                        s_dalEngineer!.Delete(del);
+                        s_dal!.Engineer!.Delete(del);
                         break;
                     default:
                         Console.WriteLine("Not one of the options");
@@ -210,18 +209,18 @@ internal class Program
                         return;
                     case "b":
                         //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
-                        id = s_dalDependency!.Create(createDependency());
+                        id = s_dal.Dependency!.Create(createDependency());
                         Console.WriteLine($"the id number of the dependency created is {id}");
                         Console.WriteLine();
                         break;
                     case "c":
                         Console.WriteLine("Enter the ID of the task");
                         input = Console.ReadLine();
-                        Console.WriteLine(s_dalDependency!.Read(int.Parse(input)));
+                        Console.WriteLine(s_dal!.Dependency!.Read(int.Parse(input)));
                         Console.WriteLine();
                         break;
                     case "d":
-                        foreach (DO.Dependency t in s_dalDependency!.ReadAll())
+                        foreach (DO.Dependency t in s_dal!.Dependency!.ReadAll())
                         {
                             Console.WriteLine(t);
                             Console.WriteLine();
@@ -232,15 +231,15 @@ internal class Program
                         Console.WriteLine();
                         Console.WriteLine("Enter the ID of the task you want to update");
                         id = int.Parse(Console.ReadLine());
-                        Console.WriteLine(s_dalDependency!.Read(id)); // print the task
+                        Console.WriteLine(s_dal!.Dependency!.Read(id)); // print the task
                         Console.WriteLine();
                         DO.Dependency updatedDependency = createDependency() with { ID = id };
-                        s_dalDependency.Update(updatedDependency);
+                        s_dal.Dependency.Update(updatedDependency);
                         break;
                     case "f":
                         Console.WriteLine("Enter id of item you want to delete");
                         int del = int.Parse(Console.ReadLine());
-                        s_dalDependency!.Delete(del);
+                        s_dal!.Dependency!.Delete(del);
                         break;
                     default:
                         Console.WriteLine("Not one of the options");
@@ -327,11 +326,6 @@ internal class Program
     /// </summary>
     static void reset()
     {
-
-        s_dalDependency!.Reset();
-        s_dalEngineer!.Reset();
-        s_dalTask!.Reset();
-        projectConfig!.Reset();
-
+        s_dal!.Reset();
     }
 }

@@ -2,7 +2,6 @@
 using DO;
 using DalApi;
 
-
 namespace Dal;
 
 internal class DependencyImplementation : IDependency
@@ -51,7 +50,7 @@ internal class DependencyImplementation : IDependency
     /// /// <exception cref="Exception"></exception>
     public DO.Dependency Read(int id)
     {
-        Dependency? cur = (DataSource.Dependencies.Find(i => i.ID == id && i.Active));
+        Dependency? cur = (DataSource.Dependencies.FirstOrDefault(i => i.ID == id && i.Active));
 
         if (cur == null)
         {
@@ -61,14 +60,7 @@ internal class DependencyImplementation : IDependency
         return cur;
     }
 
-    /// <summary>
-    /// Return a copy of all the Dependencies
-    /// </summary>
-    /// <returns></returns>
-    public List<DO.Dependency> ReadAll()
-    {
-        return DataSource.Dependencies.FindAll(i => i.Active);
-    }
+
 
     /// <summary>
     /// Update a Dependency 
@@ -94,5 +86,26 @@ internal class DependencyImplementation : IDependency
     }
 
 
+    /// <summary>
+    /// Return a copy of all the Dependencies
+    /// </summary>
+    /// <returns></returns>
+ 
+    public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
+    {
+        bool isActive(Dependency d)
+        {
+            return d.Active;
+        }
+        if(filter != null)
+{
+            return from item in DataSource.Dependencies
+                   where filter(item) where isActive(item)
+                   select item;
+        }
+        return from item in DataSource.Dependencies
+               where isActive(item)
+               select item;
 
+    }
 }

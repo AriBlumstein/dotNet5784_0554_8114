@@ -1,7 +1,11 @@
 ﻿
-using DalApi;
+
 
 namespace Dal;
+
+using DalApi;
+using DO;
+using System.Linq;
 
 internal class TaskImplementation : ITask
 {
@@ -44,7 +48,7 @@ internal class TaskImplementation : ITask
     ///  /// <exception cref="Exception"></exception>
     public DO.Task Read(int id)
     {
-        DO.Task? cur = (DataSource.Tasks.Find(i => i.ID == id && i.Active));
+        DO.Task? cur = (DataSource.Tasks.FirstOrDefault(i => i.ID == id && i.Active));
 
         if (cur == null)
         {
@@ -58,11 +62,28 @@ internal class TaskImplementation : ITask
     /// Return a copy of all the Tasks
     /// </summary>
     /// <returns></returns>
-    public List<DO.Task> ReadAll()
+ 
+    public IEnumerable<DO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
     {
-        return DataSource.Tasks.FindAll(i => i.Active);
+        bool isActive(DO.Task d)
+        {
+            return d.Active;
+        }
+        if (filter != null)
+        {
+            return from item in DataSource.Tasks
+                   where filter(item)
+                   where isActive(item)
+                   select item;
+        }
+        return from item in DataSource.Tasks
+               where isActive(item)
+               select item;
+
     }
-    
+
+
+
     /// <summary>
     /// Update a task 
     /// </summary>
@@ -84,6 +105,7 @@ internal class TaskImplementation : ITask
     {
         DataSource.Tasks.Clear();
     }
+
 
 
 

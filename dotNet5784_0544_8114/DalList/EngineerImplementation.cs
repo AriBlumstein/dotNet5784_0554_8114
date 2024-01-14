@@ -1,7 +1,8 @@
-﻿using DO;
-using DalApi;
+﻿namespace Dal;
 
-namespace Dal;
+using DO;
+using DalApi;
+using System.Collections.Generic;
 
 internal class EngineerImplementation : IEngineer
 {
@@ -52,8 +53,8 @@ internal class EngineerImplementation : IEngineer
     /// /// <exception cref="Exception"></exception>
     public DO.Engineer Read(int id)
     {
-    
-        Engineer? cur = (DataSource.Engineers.Find(i => i.ID == id && i.Active));
+
+        Engineer? cur = DataSource.Engineers.FirstOrDefault(i => i.ID == id && i.Active);
 
         if (cur == null)
         {
@@ -63,14 +64,7 @@ internal class EngineerImplementation : IEngineer
             return cur;
     }
 
-    /// <summary>
-    /// Return a copy of all the Engineers
-    /// </summary>
-    /// <returns></returns>
-    public List<DO.Engineer> ReadAll()
-    {
-        return DataSource.Engineers.FindAll(i => i.Active == true);
-    }
+  
 
     /// <summary>
     /// Update a Engineer 
@@ -94,6 +88,28 @@ internal class EngineerImplementation : IEngineer
         DataSource.Engineers.Clear();
     }
 
+    /// <summary>
+    /// Return a copy of all the Engineers
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
+    {
+        bool isActive(Engineer d)
+        {
+            return d.Active;
+        }
+        if (filter != null)
+        {
+            return from item in DataSource.Engineers
+                   where filter(item)
+                   where isActive(item)
+                   select item;
+        }
+        return from item in DataSource.Engineers
+               where isActive(item)
+               select item;
+
+    }
 
 
 }

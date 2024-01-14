@@ -184,7 +184,8 @@ public static class Initialization
         int _latestTask=-1;
         DateTime? _latestTime=s_dal!.Config.getProjectStart();
 
-        List<DO.Task> tasks = s_dal!.Task!.ReadAll();
+        IEnumerable<DO.Task> tasks = s_dal!.Task!.ReadAll().ToList()!;
+        List<int> taskIDs = tasks.Select(tsk => tsk.ID).ToList();
 
         foreach(var cur in tasks)
         {
@@ -242,7 +243,7 @@ public static class Initialization
             //get random task numbers
             int rand1 = s_rand.Next(0, tasks.Count()), rand2 =s_rand.Next(0,tasks.Count());
 
-            int dependentID = tasks[rand1].ID, requisiteID = tasks[rand2].ID;          
+            int dependentID = taskIDs[rand1], requisiteID = taskIDs[rand2];          
            
        
             DO.Dependency newD = new Dependency(-1, dependentID, requisiteID);
@@ -303,7 +304,7 @@ public static class Initialization
             List<DO.Dependency> chain;
             bool res;
             //get all the dependencies where the requisite id of item was a dependent id
-            chain = s_dal!.Dependency.ReadAll().FindAll(i => i.DependentID == item.RequisiteID && i.Active);
+            chain = s_dal!.Dependency.ReadAll().ToList().FindAll(i => i.DependentID == item.RequisiteID && i.Active);
             foreach (var d in chain)
             {
                 if (d.RequisiteID == dependentID)

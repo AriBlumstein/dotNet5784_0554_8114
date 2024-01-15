@@ -214,7 +214,7 @@ internal class Program
                         Console.WriteLine();
                         break;
                     case "c":
-                        Console.WriteLine("Enter the ID of the task");
+                        Console.WriteLine("Enter the ID of the dependency");
                         input = Console.ReadLine();
                         Console.WriteLine(s_dal!.Dependency!.Read(int.Parse(input)));
                         Console.WriteLine();
@@ -229,7 +229,7 @@ internal class Program
                         break;
                     case "e":
                         Console.WriteLine();
-                        Console.WriteLine("Enter the ID of the task you want to update");
+                        Console.WriteLine("Enter the ID of the dependency you want to update");
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dal!.Dependency!.Read(id)); // print the task
                         Console.WriteLine();

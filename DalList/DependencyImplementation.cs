@@ -130,6 +130,6 @@ internal class DependencyImplementation : IDependency
     public Dependency? Read(Func<Dependency, bool> filter)
     {
         Func<Dependency, bool> combined = d => filter(d) && isActive(d); //make sure we only return a non-deleted dependency
-        return DataSource.Dependencies.FirstOrDefault(filter);
+        return DataSource.Dependencies.FirstOrDefault(combined);
     }
 }

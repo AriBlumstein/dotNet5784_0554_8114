@@ -147,7 +147,7 @@ internal class Program
                         Console.WriteLine($"the ID number for the Engineer is {id}");
                         break;
                     case "c":
-                        Console.WriteLine("Enter the ID of the task");
+                        Console.WriteLine("Enter the ID of the Engineer");
                         input = Console.ReadLine();
                         Console.WriteLine(s_dal!.Engineer!.Read(int.Parse(input)));
                         Console.WriteLine();
@@ -161,7 +161,7 @@ internal class Program
                         }
                         break;
                     case "e":
-                        Console.WriteLine("Enter the ID of the task you want to update");
+                        Console.WriteLine("Enter the ID of the Engineer you want to update");
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dal!.Engineer!.Read(id)); // print the task
                         Console.WriteLine();
@@ -293,7 +293,7 @@ internal class Program
 
     private static DO.Engineer createEngineer()
     {
-        Console.WriteLine("Enter all of the relevant information seperated by a comma - ID, name, cost, email, and level");
+        Console.WriteLine("Enter all of the relevant information seperated by a comma -name,cost,email,level");
         int _ID;
         double _cost;
         Experience _level;
@@ -301,8 +301,8 @@ internal class Program
         string input = Console.ReadLine();
         List<string> elements = input.Split(',').ToList();
 
-        if (int.TryParse(elements[0], out _ID) && double.TryParse(elements[2], out _cost) && Enum.TryParse(elements[4], out _level))
-            return new DO.Engineer(_ID, elements[1], _cost, elements[3], _level);
+        if (double.TryParse(elements[1], out _cost) && Enum.TryParse(elements[3], out _level))
+            return new DO.Engineer(-1, elements[0], _cost, elements[2], _level);
         throw new Exception("Error in input");
 
     }

@@ -94,21 +94,30 @@ internal class EngineerImplementation : IEngineer
     /// <returns></returns>
     public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
     {
-        bool isActive(Engineer d)
-        {
-            return d.Active;
-        }
+        
         if (filter != null)
         {
             return from item in DataSource.Engineers
                    where filter(item)
-                   where isActive(item)
+                   where isActive(item) //make sure to only return active items
                    select item;
         }
         return from item in DataSource.Engineers
-               where isActive(item)
+               where isActive(item) //make sure to only return active items
                select item;
 
+    }
+
+
+    /// <summary>
+    /// returns if the entity in question is active
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+
+    public bool isActive(Engineer e)
+    {
+        return e.Active;
     }
 
 

@@ -65,19 +65,16 @@ internal class TaskImplementation : ITask
  
     public IEnumerable<DO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
     {
-        bool isActive(DO.Task d)
-        {
-            return d.Active;
-        }
+        
         if (filter != null)
         {
             return from item in DataSource.Tasks
                    where filter(item)
-                   where isActive(item)
+                   where isActive(item) //make sure to only return active items
                    select item;
         }
         return from item in DataSource.Tasks
-               where isActive(item)
+               where isActive(item)  //make sure to only return active items
                select item;
 
     }
@@ -106,6 +103,16 @@ internal class TaskImplementation : ITask
         DataSource.Tasks.Clear();
     }
 
+
+    /// <summary>
+    /// returns if the entity in question is active
+    /// </summary>
+    /// <param name="t"></param>
+    /// <returns></returns>
+    public bool isActive(Task t)
+    {
+        return t.Active;
+    }
 
 
 

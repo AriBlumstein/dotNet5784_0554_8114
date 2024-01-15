@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.Design;
+
 namespace DalApi
 {
     public interface ICrud<T> where T : class
@@ -9,6 +11,8 @@ namespace DalApi
         IEnumerable<T?> ReadAll(Func<T, bool>? filter=null); // stage 1 only, Reads all entity objects
         void Update(T item); // Updates entity object
         void Delete(int id); // Deletes an object by its Id
+
+        bool isActive(T item);
 
         void Reset(); //reset the database
 

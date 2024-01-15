@@ -93,19 +93,28 @@ internal class DependencyImplementation : IDependency
  
     public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
     {
-        bool isActive(Dependency d)
-        {
-            return d.Active;
-        }
+        
         if(filter != null)
 {
             return from item in DataSource.Dependencies
-                   where filter(item) where isActive(item)
+                   where filter(item) where isActive(item) //make sure to only return active items
                    select item;
         }
         return from item in DataSource.Dependencies
-               where isActive(item)
+               where isActive(item) //make sure to only return active items
                select item;
 
+    }
+
+
+    /// <summary>
+    /// returns if the entity in question is active
+    /// </summary>
+    /// <param name="d"></param>
+    /// <returns></returns>
+
+    public bool isActive(Dependency d)
+    {
+        return d.Active;
     }
 }

@@ -11,7 +11,7 @@ internal class EngineerImplementation : IEngineer
     /// </summary>
     /// <param name="item"></param>
     /// <returns>The id of the new Engineer</returns>
-    public int Create(DO.Engineer item)
+    public int Create(Engineer item)
     {
         //if (DataSource.itemExists(item.ID, typeof(DO.Engineer))) throw new Exception($"Engineer with ID={item.ID} already exists");
         //DO.Engineer _item = item; //we do not want our user to point to the same reference anymore
@@ -51,7 +51,7 @@ internal class EngineerImplementation : IEngineer
     /// <param name="id"></param>
     /// <returns>the Engineer if it exists, null otherwise</returns>
     /// /// <exception cref="Exception"></exception>
-    public DO.Engineer Read(int id)
+    public Engineer Read(int id)
     {
 
         Engineer? cur = DataSource.Engineers.FirstOrDefault(i => i.ID == id && i.Active);
@@ -70,9 +70,9 @@ internal class EngineerImplementation : IEngineer
     /// Update a Engineer 
     /// </summary>
     /// <param name="item"></param>
-    public void Update(DO.Engineer item)
+    public void Update(Engineer item)
     {
-        DO.Engineer cur = Read(item.ID);  //find the original
+        Engineer cur = Read(item.ID);  //find the original
 
         int index = DataSource.Engineers.IndexOf(cur); //gets its index
 

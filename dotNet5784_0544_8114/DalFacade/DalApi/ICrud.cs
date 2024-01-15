@@ -1,7 +1,5 @@
 ﻿
 
-using System.ComponentModel.Design;
-
 namespace DalApi
 {
     public interface ICrud<T> where T : class

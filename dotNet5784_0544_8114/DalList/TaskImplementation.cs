@@ -14,11 +14,11 @@ internal class TaskImplementation : ITask
     /// </summary>
     /// <param name="item"></param>
     /// <returns>The id of the new task</returns>
-    public int Create(DO.Task item)
+    public int Create(Task item)
     {
         int id = DataSource.Config.NextTaskID;
         
-        DO.Task _item = item with { ID = id };
+        Task _item = item with { ID = id };
 
         DataSource.Tasks.Add(_item);
         return id;
@@ -31,7 +31,7 @@ internal class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-        DO.Task cur = Read(id);
+        Task cur = Read(id);
 
         int index = DataSource.Tasks.IndexOf(cur);
 
@@ -46,9 +46,9 @@ internal class TaskImplementation : ITask
     /// <param name="id"></param>
     /// <returns>the task if it exists, null otherwise</returns>
     ///  /// <exception cref="Exception"></exception>
-    public DO.Task Read(int id)
+    public Task Read(int id)
     {
-        DO.Task? cur = (DataSource.Tasks.FirstOrDefault(i => i.ID == id && i.Active));
+        Task? cur = (DataSource.Tasks.FirstOrDefault(i => i.ID == id && i.Active));
 
         if (cur == null)
         {
@@ -63,7 +63,7 @@ internal class TaskImplementation : ITask
     /// </summary>
     /// <returns></returns>
  
-    public IEnumerable<DO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
+    public IEnumerable<Task?> ReadAll(Func<Task, bool>? filter = null)
     {
         
         if (filter != null)
@@ -85,9 +85,9 @@ internal class TaskImplementation : ITask
     /// Update a task 
     /// </summary>
     /// <param name="item"></param>
-    public void Update(DO.Task item)
+    public void Update(Task item)
     {
-        DO.Task cur = Read(item.ID); //find the original item
+        Task cur = Read(item.ID); //find the original item
 
         int index = DataSource.Tasks.IndexOf(cur); //find its index
 

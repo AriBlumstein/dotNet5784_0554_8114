@@ -1,7 +1,9 @@
 ﻿
-using DO;
+
 
 namespace Dal;
+
+using DO;
 
 /// <summary>
 /// database for the ifferent entities
@@ -15,10 +17,10 @@ internal static class DataSource
     /// <summary>
     /// databases for the different attributes
     /// </summary>
-    internal static List<DO.Dependency> Dependencies { get; } = new();
-    internal static List<DO.Engineer> Engineers { get; } = new();
+    internal static List<Dependency> Dependencies { get; } = new();
+    internal static List<Engineer> Engineers { get; } = new();
 
-    internal static List<DO.Task> Tasks { get; } = new();
+    internal static List<Task> Tasks { get; } = new();
 
 
     internal class Config

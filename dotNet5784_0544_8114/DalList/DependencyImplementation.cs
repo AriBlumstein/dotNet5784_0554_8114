@@ -1,8 +1,10 @@
 ﻿
-using DO;
-using DalApi;
+
 
 namespace Dal;
+
+using DO;
+using DalApi;
 
 internal class DependencyImplementation : IDependency
 
@@ -13,12 +15,12 @@ internal class DependencyImplementation : IDependency
     /// </summary>
     /// <param name="item"></param>
     /// <returns>The id of the new Dependency</returns>
-    public int Create(DO.Dependency item)
+    public int Create(Dependency item)
     {
         //create it
         int id = DataSource.Config.NextDependencyID;
 
-        DO.Dependency _item = item with { ID = id };
+        Dependency _item = item with { ID = id };
 
         DataSource.Dependencies.Add(_item);
 
@@ -48,7 +50,7 @@ internal class DependencyImplementation : IDependency
     /// <param name="id"></param>
     /// <returns>the Dependency if it exists, null otherwise</returns>
     /// /// <exception cref="Exception"></exception>
-    public DO.Dependency Read(int id)
+    public Dependency Read(int id)
     {
         Dependency? cur = (DataSource.Dependencies.FirstOrDefault(i => i.ID == id && i.Active));
 
@@ -66,9 +68,9 @@ internal class DependencyImplementation : IDependency
     /// Update a Dependency 
     /// </summary>
     /// <param name="item"></param>
-    public void Update(DO.Dependency item)
+    public void Update(Dependency item)
     {
-        DO.Dependency cur = Read(item.ID);  //find the original
+        Dependency cur = Read(item.ID);  //find the original
 
         int index = DataSource.Dependencies.IndexOf(cur); //gets its index
 

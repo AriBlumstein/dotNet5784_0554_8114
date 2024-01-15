@@ -56,7 +56,7 @@ internal class DependencyImplementation : IDependency
 
         if (cur == null)
         {
-            throw new Exception($"Dependency with ID={id} does not exist");
+            throw new DalDoesNotExistException($"Dependency with ID={id} does not exist");
         }
 
         return cur;
@@ -125,7 +125,7 @@ internal class DependencyImplementation : IDependency
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
+
     public Dependency? Read(Func<Dependency, bool> filter)
     {
         return DataSource.Dependencies.First(filter);

@@ -20,7 +20,7 @@ internal class EngineerImplementation : IEngineer
         try
         {
             Read(item.ID);
-            throw new Exception($"Engineer with ID={item.ID} already exists");
+            throw new DalAlreadyExistsException($"Engineer with ID={item.ID} already exists");
         }
         catch (Exception ex)
         {
@@ -58,7 +58,7 @@ internal class EngineerImplementation : IEngineer
 
         if (cur == null)
         {
-            throw new Exception($"Engineer with ID={id} does not exist");
+            throw new DalDoesNotExistException($"Engineer with ID={id} does not exist");
         }
 
             return cur;
@@ -125,7 +125,7 @@ internal class EngineerImplementation : IEngineer
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
+    
     public Engineer? Read(Func<Engineer, bool> filter)
     {
         return DataSource.Engineers.First(filter);

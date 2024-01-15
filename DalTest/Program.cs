@@ -113,7 +113,7 @@ internal class Program
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) //catches any type of exception
             {
                 Console.WriteLine(ex.Message);
             }
@@ -178,7 +178,7 @@ internal class Program
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex)// catches any type of exception
             {
                 Console.WriteLine(ex.Message);
             }
@@ -246,7 +246,7 @@ internal class Program
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) //catches any type of exception
             {
                 Console.WriteLine(ex.Message);
             }

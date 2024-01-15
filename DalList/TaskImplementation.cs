@@ -52,7 +52,7 @@ internal class TaskImplementation : ITask
 
         if (cur == null)
         {
-            throw new Exception($"Task with ID={id} does not exist");
+            throw new DalDoesNotExistException($"Task with ID={id} does not exist");
         }
 
         return cur;
@@ -120,7 +120,7 @@ internal class TaskImplementation : ITask
     /// </summary>
     /// <param name="filter"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
+   
     public Task? Read(Func<Task, bool> filter)
     {
         return DataSource.Tasks.First(filter);

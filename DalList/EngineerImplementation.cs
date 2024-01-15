@@ -120,5 +120,16 @@ internal class EngineerImplementation : IEngineer
         return e.Active;
     }
 
-
+    /// <summary>
+    /// read based on a filter argument
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Engineer? Read(Func<Engineer, bool> filter)
+    {
+        return DataSource.Engineers.First(filter);
+    }
 }
+
+

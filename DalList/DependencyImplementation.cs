@@ -119,4 +119,15 @@ internal class DependencyImplementation : IDependency
     {
         return d.Active;
     }
+
+    /// <summary>
+    /// read based on a filter argument
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Dependency? Read(Func<Dependency, bool> filter)
+    {
+        return DataSource.Dependencies.First(filter);
+    }
 }

@@ -115,5 +115,17 @@ internal class TaskImplementation : ITask
     }
 
 
-
+    /// <summary>
+    /// read based on a filter argument
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Task? Read(Func<Task, bool> filter)
+    {
+        return DataSource.Tasks.First(filter);
+    }
 }
+
+
+

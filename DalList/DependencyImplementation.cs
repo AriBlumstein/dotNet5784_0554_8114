@@ -49,7 +49,7 @@ internal class DependencyImplementation : IDependency
     /// </summary>
     /// <param name="id"></param>
     /// <returns>the Dependency if it exists, null otherwise</returns>
-    /// /// <exception cref="Exception"></exception>
+    /// /// <exception cref="DalDoesNotExistException"></exception>
     public Dependency Read(int id)
     {
         Dependency? cur = (DataSource.Dependencies.FirstOrDefault(i => i.ID == id && i.Active));
@@ -91,7 +91,7 @@ internal class DependencyImplementation : IDependency
     /// <summary>
     /// Return a copy of all the Dependencies
     /// </summary>
-    /// <returns></returns>
+    /// <returns>an IEnumerable of dependencies</returns>
  
     public IEnumerable<Dependency?> ReadAll(Func<Dependency, bool>? filter = null)
     {
@@ -99,7 +99,8 @@ internal class DependencyImplementation : IDependency
         if(filter != null)
 {
             return from item in DataSource.Dependencies
-                   where filter(item) where isActive(item) //make sure to only return active items
+                   where filter(item) 
+                   where isActive(item) //make sure to only return active items
                    select item;
         }
         return from item in DataSource.Dependencies
@@ -113,7 +114,7 @@ internal class DependencyImplementation : IDependency
     /// returns if the entity in question is active
     /// </summary>
     /// <param name="d"></param>
-    /// <returns></returns>
+    /// <returns>true is the dependency was not set for deletion, ie, is active</returns>
 
     public bool isActive(Dependency d)
     {
@@ -124,10 +125,11 @@ internal class DependencyImplementation : IDependency
     /// read based on a filter argument
     /// </summary>
     /// <param name="filter"></param>
-    /// <returns></returns>
+    /// <returns>a dependency that matches the filter argument, default null</returns>
 
     public Dependency? Read(Func<Dependency, bool> filter)
     {
+        Func<Dependency, bool> combined = d => filter(d) && isActive(d); //make sure we only return a non-deleted dependency
         return DataSource.Dependencies.FirstOrDefault(filter);
     }
 }

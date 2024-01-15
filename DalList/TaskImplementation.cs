@@ -45,7 +45,7 @@ internal class TaskImplementation : ITask
     /// </summary>
     /// <param name="id"></param>
     /// <returns>the task if it exists, null otherwise</returns>
-    ///  /// <exception cref="Exception"></exception>
+    ///  /// <exception cref="DalDoesNotExistException"></exception>
     public Task Read(int id)
     {
         Task? cur = (DataSource.Tasks.FirstOrDefault(i => i.ID == id && i.Active));
@@ -61,7 +61,7 @@ internal class TaskImplementation : ITask
     /// <summary>
     /// Return a copy of all the Tasks
     /// </summary>
-    /// <returns></returns>
+    /// <returns>An IEnumerable of tasks</returns>
  
     public IEnumerable<Task?> ReadAll(Func<Task, bool>? filter = null)
     {
@@ -119,11 +119,13 @@ internal class TaskImplementation : ITask
     /// read based on a filter argument
     /// </summary>
     /// <param name="filter"></param>
-    /// <returns></returns>
-   
+    /// <returns>the first Task that is matched by filter, default null</returns>
+
     public Task? Read(Func<Task, bool> filter)
     {
-        return DataSource.Tasks.FirstOrDefault(filter);
+        Func<Task,bool> combined = t => filter(t) && isActive(t); //make sure we only return active Tasks
+
+        return DataSource.Tasks.FirstOrDefault(combined);
     }
 }
 

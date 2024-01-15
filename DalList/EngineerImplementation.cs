@@ -7,10 +7,11 @@ using System.Collections.Generic;
 internal class EngineerImplementation : IEngineer
 {
     /// <summary>
-    /// Implementation of create function to add a Engineer to the data source
+    /// create a new engineer
     /// </summary>
     /// <param name="item"></param>
-    /// <returns>The id of the new Engineer</returns>
+    /// <returns>the id of the created engineer</returns>
+    /// <exception cref="DalAlreadyExistsException"></exception>
     public int Create(Engineer item)
     {
         //if (DataSource.itemExists(item.ID, typeof(DO.Engineer))) throw new Exception($"Engineer with ID={item.ID} already exists");
@@ -50,7 +51,7 @@ internal class EngineerImplementation : IEngineer
     /// </summary>
     /// <param name="id"></param>
     /// <returns>the Engineer if it exists, null otherwise</returns>
-    /// /// <exception cref="Exception"></exception>
+    /// /// <exception cref="DalDoesNotExistException"></exception>
     public Engineer Read(int id)
     {
 
@@ -91,7 +92,7 @@ internal class EngineerImplementation : IEngineer
     /// <summary>
     /// Return a copy of all the Engineers
     /// </summary>
-    /// <returns></returns>
+    /// <returns>an IEnumerable of Engineers</returns>
     public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
     {
         
@@ -113,7 +114,7 @@ internal class EngineerImplementation : IEngineer
     /// returns if the entity in question is active
     /// </summary>
     /// <param name="e"></param>
-    /// <returns></returns>
+    /// <returns>true if the Engineer is active</returns>
 
     public bool isActive(Engineer e)
     {
@@ -124,11 +125,12 @@ internal class EngineerImplementation : IEngineer
     /// read based on a filter argument
     /// </summary>
     /// <param name="filter"></param>
-    /// <returns></returns>
+    /// <returns>the first engineer that is matched by the filter, null by default</returns>
     
     public Engineer? Read(Func<Engineer, bool> filter)
     {
-        return DataSource.Engineers.FirstOrDefault(filter);
+        Func<Engineer, bool> combined = e => filter(e) && isActive(e); //make sure we only return active Engineers
+        return DataSource.Engineers.FirstOrDefault(combined);
     }
 }
 

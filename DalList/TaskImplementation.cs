@@ -123,7 +123,7 @@ internal class TaskImplementation : ITask
    
     public Task? Read(Func<Task, bool> filter)
     {
-        return DataSource.Tasks.First(filter);
+        return DataSource.Tasks.FirstOrDefault(filter);
     }
 }
 

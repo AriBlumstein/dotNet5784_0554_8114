@@ -128,6 +128,6 @@ internal class DependencyImplementation : IDependency
 
     public Dependency? Read(Func<Dependency, bool> filter)
     {
-        return DataSource.Dependencies.First(filter);
+        return DataSource.Dependencies.FirstOrDefault(filter);
     }
 }

@@ -22,6 +22,7 @@ public class DalAlreadyExistsException : Exception
     public DalAlreadyExistsException(string? message) : base(message) { }
 }
 
+[Serializable]
 public class IllegalConfigAccessException: Exception
 {
     public IllegalConfigAccessException(string? message) : base(message) { }

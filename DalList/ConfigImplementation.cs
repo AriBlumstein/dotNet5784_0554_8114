@@ -1,15 +1,24 @@
 ﻿
 namespace Dal;
 using DalApi;
+using DO;
 
 internal class ConfigImplementation: IConfig
 {
     public void setProjectStart(DateTime start)
     {
+        if(DataSource.Config.projectStart!=null)// we dont't want to reset the date unless it was not set
+        {
+            throw new IllegalConfigAccessException("Can't set new date");
+        }
         DataSource.Config.projectStart = start;
     }
     public void setProjectEnd(DateTime end)
     {
+        if (DataSource.Config.projectEnd!=null)
+        {
+            throw new IllegalConfigAccessException("Can't set new date");
+        }
         DataSource.Config.projectEnd = end;
     }
 
@@ -24,6 +33,8 @@ internal class ConfigImplementation: IConfig
     {
         DataSource.Config.projectStart = null;
         DataSource.Config.projectEnd = null;
+
+        //we can now set new date
     }
 
 }

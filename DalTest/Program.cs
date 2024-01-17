@@ -114,7 +114,11 @@ internal class Program
                         break;
                 }
             }
-            catch (Exception ex) //catches any type of exception
+            catch (DalDoesNotExistException dNex)
+            {
+                Console.WriteLine(dNex.Message);
+            }
+            catch (Exception ex) //catches any type of exception 
             {
                 Console.WriteLine(ex.Message);
             }
@@ -178,6 +182,14 @@ internal class Program
                         Console.WriteLine("Not one of the options");
                         break;
                 }
+            }
+            catch (DalDoesNotExistException dNex)
+            {
+                Console.WriteLine(dNex.Message);
+            }
+            catch(DalAlreadyExistsException dAex)
+            {
+                Console.WriteLine(dAex.Message);
             }
             catch (Exception ex)// catches any type of exception
             {
@@ -246,6 +258,10 @@ internal class Program
                         Console.WriteLine("Not one of the options");
                         break;
                 }
+            }
+            catch (DalDoesNotExistException dNex)
+            {
+                Console.WriteLine(dNex.Message);
             }
             catch (Exception ex) //catches any type of exception
             {

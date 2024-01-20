@@ -8,11 +8,6 @@ namespace DO;
 /// <param name="ID"></param>
 /// <param name="DependentID"></param> // what is dependent
 /// <param name="RequisiteID"></param> //what needs to be done
-/// <param name="CustomerEmail"></param>
-/// <param name="Address"></param>
-/// <param name="OrderDate"></param>
-/// <param name="ShippingDate"></param>
-/// <param name="DeliveryDate"></param>
 public record Dependency
 (
 
@@ -20,11 +15,6 @@ public record Dependency
     int ID,
     int DependentID, //what depends on me
     int RequisiteID, //what I depend upon
-    String? CustomerEmail=null,
-    String? Address=null,
-    DateTime? OrderDate=null,
-    DateTime? ShippingDate = null,       //not sure if these are needed looking for feedback
-    DateTime? DeliveryDate = null,
     bool Active = true
 )
 {
@@ -39,11 +29,6 @@ public record Dependency
             ID: {ID}
             DependentID: {DependentID}
             Requisite ID: {RequisiteID}
-            Customer Email: {CustomerEmail}
-            Address: {Address}
-            Order Date: {OrderDate}
-            Shipping Date: {(ShippingDate.HasValue ? ShippingDate : "null")}
-            Delivery Date: {(DeliveryDate.HasValue ? DeliveryDate : "null")}
             """;
     }
 

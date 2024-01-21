@@ -32,6 +32,7 @@ internal class EngineerImplementation : IEngineer
         Engineer? e = engineers.Find(e=>e.ID==id && isActive(e)) ; //engineer to delete
         if (e==null) throw new DalDoesNotExistException($"Engineer with ID={e.ID} does not exist");
         int index = engineers.IndexOf(e);
+        engineers[index] = e with { Active = false };
         XMLTools.SaveListToXMLSerializer<Engineer>(engineers, s_engineers_xml);
     }
 
@@ -86,9 +87,13 @@ internal class EngineerImplementation : IEngineer
     {
         List<Engineer> engineers = ReadAll().ToList()!;
 
-        int index = engineers.IndexOf(cur); //gets its index
-        if (index == -1) throw new DalDoesNotExistException($"Engineer with ID={cur.ID} does not exist");
+        Engineer? toUpdate=engineers.FirstOrDefault(e=>e.ID==cur.ID&&isActive(e));
 
+        if (toUpdate == null)
+            throw new DalDoesNotExistException($"Engineer with ID={cur.ID} does not exist");
+
+        int index = engineers.IndexOf(toUpdate); //gets its index
+        
         engineers[index] = cur; //eliminate original add the new one
         XMLTools.SaveListToXMLSerializer<Engineer>(engineers, s_engineers_xml);
     }

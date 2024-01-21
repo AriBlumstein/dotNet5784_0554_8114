@@ -4,12 +4,13 @@ namespace DalTest;
 
 using Dal;
 using DalApi;
+using DalXml;
 using DO;
 
 internal class Program
 {
 
-    static private readonly IDal? s_dal = new DalList();
+    static private readonly IDal? s_dal = new DalXML(); //instead of DalList()
 
     static void Main(string[] args)
     {
@@ -310,7 +311,7 @@ internal class Program
 
     private static DO.Engineer createEngineer()
     {
-        Console.WriteLine("Enter all of the relevant information seperated by a comma -name,cost,email,level");
+        Console.WriteLine("Enter all of the relevant information seperated by a comma - id, name,cost,email,level");
         int _ID;
         double _cost;
         Experience _level;
@@ -318,8 +319,8 @@ internal class Program
         string input = Console.ReadLine();
         List<string> elements = input.Split(',').ToList();
 
-        if (double.TryParse(elements[1], out _cost) && Enum.TryParse(elements[3], out _level))
-            return new DO.Engineer(-1, elements[0], _cost, elements[2], _level);
+        if (int.TryParse(elements[0], out _ID) && double.TryParse(elements[2], out _cost) && Enum.TryParse(elements[4], out _level))
+            return new DO.Engineer(_ID, elements[1], _cost, elements[3], _level);
         throw new Exception("Error in input");
 
     }

@@ -138,7 +138,7 @@ public static class Initialization
     private static void createEngineers() {
 
         const int MIN_ID = 200000000, MAX_ID = 400000000;
-        return;
+        
         String[] names = new string[] { "Ariel", "Eliyahu", "Benji", "Binyamin", "David" };
         foreach (var _name in names)
         {

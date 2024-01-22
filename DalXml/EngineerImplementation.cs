@@ -13,7 +13,7 @@ internal class EngineerImplementation : IEngineer
     readonly string s_engineers_xml = "engineers";
     public int Create(Engineer item)
     {
-        List<Engineer> engineers = ReadAll().ToList()!;
+        List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
         if (engineers.Exists(e=>e.ID == item.ID && isActive(e)))
         {
             throw new DalAlreadyExistsException($"Engineer with ID={item.ID} already exists");
@@ -27,7 +27,7 @@ internal class EngineerImplementation : IEngineer
 
     public void Delete(int id)
     {
-        List<Engineer> engineers = ReadAll().ToList()!;
+        List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
 
         Engineer? e = engineers.Find(e=>e.ID==id && isActive(e)) ; //engineer to delete
         if (e==null) throw new DalDoesNotExistException($"Engineer with ID={e.ID} does not exist");
@@ -43,8 +43,9 @@ internal class EngineerImplementation : IEngineer
 
     public Engineer Read(int id)
     {
-        List<Engineer> engineers = ReadAll().ToList()!;
-        Engineer? cur = engineers.FirstOrDefault(i => i.ID == id && i.Active);
+        IEnumerable<Engineer> engineers = ReadAll()!;  //only returns the active members
+        
+        Engineer? cur = engineers.FirstOrDefault(i => i.ID == id); 
 
         if (cur == null)
         {
@@ -58,8 +59,7 @@ internal class EngineerImplementation : IEngineer
 
     public Engineer? Read(Func<Engineer, bool> filter)
     {
-        Func<Engineer, bool> combined = e => filter(e) && isActive(e); //make sure we only return active Engineers
-        return ReadAll().FirstOrDefault(combined!);
+        return ReadAll().FirstOrDefault(filter!);
     }
 
     public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
@@ -85,7 +85,7 @@ internal class EngineerImplementation : IEngineer
 
     public void Update(Engineer cur)
     {
-        List<Engineer> engineers = ReadAll().ToList()!;
+        List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
 
         Engineer? toUpdate=engineers.FirstOrDefault(e=>e.ID==cur.ID&&isActive(e));
 

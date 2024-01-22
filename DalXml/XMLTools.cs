@@ -4,6 +4,7 @@ using DO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 static class XMLTools
 {
@@ -34,6 +35,30 @@ static class XMLTools
         XMLTools.SaveListToXMLElement(root, data_config_xml);
         return nextId;
     }
+
+    public static DateTime? GetProjectDate(string data_config_xml,string elemName)
+    {
+        XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
+        DateTime? _projectDate = root.ToDateTimeNullable(elemName);
+        return _projectDate;
+    }
+
+    public static void SetProjectDate(string data_config_xml, string elemName, DateTime date)
+    {
+        XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
+        root.Element(elemName)?.SetValue(date.ToString());
+        XMLTools.SaveListToXMLElement(root, data_config_xml);
+    }
+
+    public static void ClearDates(string data_config_xml)
+    {
+        XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
+        root.Element("ProjectStart")?.RemoveNodes();
+        root.Element("ProjectEnd")?.RemoveNodes();
+        XMLTools.SaveListToXMLElement(root, data_config_xml);
+    }
+
+
     #endregion
 
     #region SaveLoadWithXElement

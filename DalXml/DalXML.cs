@@ -12,7 +12,7 @@ namespace DalXml
 
         public IDependency Dependency => throw new NotImplementedException();
 
-        public IConfig Config => throw new NotImplementedException();
+        public IConfig Config => new ConfigImplementation();
 
         public void Reset()
         {

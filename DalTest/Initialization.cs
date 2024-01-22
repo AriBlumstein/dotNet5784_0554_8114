@@ -273,7 +273,7 @@ public static class Initialization
         s_dal = dal ?? throw new Exception("S_DAL cannot be null");
        
 
-        //initConfig();
+        initConfig();
         
         createEngineers();
      

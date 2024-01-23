@@ -108,6 +108,12 @@ internal class DependencyImplementation : IDependency
 
     public void Update(Dependency item)
     {
-        throw new NotImplementedException();
+        XElement root = XMLTools.LoadListFromXMLElement(s_dependency_xml);
+        XElement? dependency = root.Elements().FirstOrDefault(d => d.Element("ID")!.Value == item.ID.ToString(), null);
+        if (dependency == null) throw new DalDoesNotExistException($"Dependency with ID={item.ID} does not exist");
+
+        dependency.Element("DependentID")!.Value = item.DependentID.ToString();
+        dependency.Element("RequisiteID")!.Value = item.RequisiteID.ToString();
+        XMLTools.SaveListToXMLElement(root, s_dependency_xml);
     }
 }

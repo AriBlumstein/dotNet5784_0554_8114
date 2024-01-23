@@ -11,6 +11,13 @@ internal class EngineerImplementation : IEngineer
 {
 
     readonly string s_engineers_xml = "engineers";
+
+    /// <summary>
+    /// create a new engineer
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>the id of the created engineer</returns>
+    /// <exception cref="DalAlreadyExistsException"></exception>
     public int Create(Engineer item)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
@@ -25,6 +32,10 @@ internal class EngineerImplementation : IEngineer
         return item.ID;
     }
 
+    /// <summary>
+    /// deletes an Engineer given its id
+    /// </summary>
+    /// <param name="id"></param>
     public void Delete(int id)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
@@ -36,11 +47,25 @@ internal class EngineerImplementation : IEngineer
         XMLTools.SaveListToXMLSerializer<Engineer>(engineers, s_engineers_xml);
     }
 
+
+
+    /// <summary>
+    /// returns if the entity in question is active
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns>true if the Engineer is active</returns>
     public bool isActive(Engineer e)
     {
         return e.Active;
     }
 
+
+    /// <summary>
+    /// Returns a reference to a Engineer object
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>the Engineer if it exists, null otherwise</returns>
+    /// /// <exception cref="DalDoesNotExistException"></exception>
     public Engineer Read(int id)
     {
         IEnumerable<Engineer> engineers = ReadAll()!;  //only returns the active members
@@ -57,11 +82,21 @@ internal class EngineerImplementation : IEngineer
 
     }
 
+    /// <summary>
+    /// read based on a filter argument
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns>the first engineer that is matched by the filter, null by default</returns>
     public Engineer? Read(Func<Engineer, bool> filter)
     {
         return ReadAll().FirstOrDefault(filter!);
     }
 
+
+    /// <summary>
+    /// Return a copy of all the Engineers
+    /// </summary>
+    /// <returns>an IEnumerable of Engineers</returns>
     public IEnumerable<Engineer?> ReadAll(Func<Engineer, bool>? filter = null)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
@@ -78,11 +113,19 @@ internal class EngineerImplementation : IEngineer
 
     }
 
+    /// <summary>
+    /// reset the engineers
+    /// </summary>
     public void Reset()
     {
         XMLTools.SaveListToXMLSerializer<Engineer>(new List<Engineer>(), s_engineers_xml);
     }
 
+
+    /// <summary>
+    /// Update a Engineer 
+    /// </summary>
+    /// <param name="item"></param>
     public void Update(Engineer cur)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);

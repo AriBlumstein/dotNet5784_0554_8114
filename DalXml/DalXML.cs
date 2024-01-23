@@ -6,17 +6,21 @@ namespace DalXml
 {
     sealed public class DalXML : IDal
     {
-        public ITask Task => throw new NotImplementedException();
+        public ITask Task => new TaskImplementation();
 
         public IEngineer Engineer => new EngineerImplementation();
 
-        public IDependency Dependency => throw new NotImplementedException();
+        public IDependency Dependency => new DependencyImplementation();
 
         public IConfig Config => new ConfigImplementation();
 
         public void Reset()
         {
-            throw new NotImplementedException();
+            Task.Reset();
+            Engineer.Reset();
+            Dependency.Reset();
+            Config.Reset();
+
         }
     }
 }

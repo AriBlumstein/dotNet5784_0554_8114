@@ -271,15 +271,16 @@ public static class Initialization
     public static void Do(IDal? dal)
     {
         s_dal = dal ?? throw new Exception("S_DAL cannot be null");
-       
+        dal.Reset(); //reset the entire database
 
         initConfig();
+         
         
         createEngineers();
      
-       // createTasks();
+        createTasks();
        
-        ///createDependencies();
+        createDependencies();
         
 
     }

@@ -13,8 +13,6 @@ internal class ConfigImplementation : IConfig
 {
     private readonly string configName = "data-config"; //the xml file name
 
-    private readonly DateTime baseReset = new DateTime(1998, 12, 31); //our base reset
-   
     
     /// <summary>
     /// get the ProjectEnd
@@ -23,7 +21,7 @@ internal class ConfigImplementation : IConfig
     /// <exception cref="DALConfigDateNotSet"></exception>
     public DateTime getProjectEnd()
     {
-        if (Config.ProjectEnd == baseReset||Config.ProjectStart==null)//for first time or subsequent times after it was reset
+        if (Config.ProjectStart==null)//for first time or subsequent times after it was reset
             throw new DALConfigDateNotSet("No date set for the project end date yet");
 
         return Config.ProjectEnd!.Value;
@@ -38,7 +36,7 @@ internal class ConfigImplementation : IConfig
     public DateTime getProjectStart()
     {
 
-        if (Config.ProjectStart == baseReset||Config.ProjectStart==null) //after first time or
+        if (Config.ProjectStart==null) //after first time or
             throw new DALConfigDateNotSet("No date set for the project start date yet");
 
         return Config.ProjectStart!.Value;

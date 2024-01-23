@@ -20,8 +20,9 @@ internal class DependencyImplementation : IDependency
     public int Create(Dependency item)
     {
         XElement root = XMLTools.LoadListFromXMLElement(s_dependency_xml);
+        int nextID = Config.NextDependencyId;
         XElement newDependency = new XElement("Dependency",
-                                                new XElement("ID", Config.NextDependencyId),
+                                                new XElement("ID", nextID),
                                                 new XElement("DependentID", item.DependentID),
                                                 new XElement("RequisiteID", item.RequisiteID),
                                                 new XElement("Active", item.Active));
@@ -29,7 +30,7 @@ internal class DependencyImplementation : IDependency
 
         root.Add(newDependency);
         XMLTools.SaveListToXMLElement(root, s_dependency_xml);
-        return item.ID;
+        return nextID ;
     }
 
     /// <summary>

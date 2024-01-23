@@ -36,6 +36,12 @@ static class XMLTools
         return nextId;
     }
 
+    /// <summary>
+    /// for config file, gets us our project date
+    /// </summary>
+    /// <param name="data_config_xml"></param>
+    /// <param name="elemName"></param>
+    /// <returns>the date element in the project</returns>
     public static DateTime? GetProjectDate(string data_config_xml,string elemName)
     {
         XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
@@ -43,6 +49,13 @@ static class XMLTools
         return _projectDate;
     }
 
+
+    /// <summary>
+    /// sets a project date for the config file
+    /// </summary>
+    /// <param name="data_config_xml"></param>
+    /// <param name="elemName"></param>
+    /// <param name="date"></param>
     public static void SetProjectDate(string data_config_xml, string elemName, DateTime date)
     {
         XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);
@@ -50,6 +63,10 @@ static class XMLTools
         XMLTools.SaveListToXMLElement(root, data_config_xml);
     }
 
+    /// <summary>
+    /// reset the config project dates
+    /// </summary>
+    /// <param name="data_config_xml"></param>
     public static void ClearDates(string data_config_xml)
     {
         XElement root = XMLTools.LoadListFromXMLElement(data_config_xml);

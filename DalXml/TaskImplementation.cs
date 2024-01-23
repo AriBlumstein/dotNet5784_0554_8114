@@ -23,7 +23,7 @@ internal class TaskImplementation : ITask
         DO.Task _task = item with { ID = Config.NextTaskId };
         tasks.Add(_task);
         XMLTools.SaveListToXMLSerializer<DO.Task>(tasks, s_tasks_xml);
-        return item.ID;
+        return _task.ID;
     }
 
     /// <summary>

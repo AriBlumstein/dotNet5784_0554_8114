@@ -50,6 +50,7 @@ internal class ConfigImplementation : IConfig
     public void Reset()
     {
         XMLTools.ClearDates(configName);
+
     }
 
     /// <summary>

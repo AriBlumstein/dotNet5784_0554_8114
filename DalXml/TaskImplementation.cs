@@ -3,7 +3,7 @@
 using Dal;
 using DalApi;
 using DO;
-using System.Runtime.ConstrainedExecution;
+using System.Xml.Linq;
 
 namespace DalXml;
 
@@ -15,7 +15,8 @@ internal class TaskImplementation : ITask
     public int Create(DO.Task item)
     { 
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml);
-        tasks.Add(item);
+        DO.Task _task = item with { ID = Config.NextTaskId };
+        tasks.Add(_task);
         XMLTools.SaveListToXMLSerializer<DO.Task>(tasks, s_tasks_xml);
         return item.ID;
     }
@@ -74,7 +75,11 @@ internal class TaskImplementation : ITask
     public void Reset()
     {
         XMLTools.SaveListToXMLSerializer<DO.Task>(new List<DO.Task>(), s_tasks_xml);
-        //reset the id count
+
+
+        XElement configRoot = XMLTools.LoadListFromXMLElement("data-config");
+        configRoot.Element("NextTaskID")!.Value = "1";
+        XMLTools.SaveListToXMLElement(configRoot, "data-config");
 
     }
 

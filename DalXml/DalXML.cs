@@ -16,7 +16,11 @@ namespace DalXml
 
         public void Reset()
         {
-            throw new NotImplementedException();
+            Task.Reset();
+            Engineer.Reset();
+            Dependency.Reset();
+            Config.Reset();
+
         }
     }
 }

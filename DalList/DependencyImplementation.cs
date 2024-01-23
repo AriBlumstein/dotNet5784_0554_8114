@@ -80,7 +80,7 @@ internal class DependencyImplementation : IDependency
 
 
     /// <summary>
-    /// reset the database, set everything to inactive
+    /// reset the dependencies, set everything to inactive
     /// </summary>
     public void Reset()
     {

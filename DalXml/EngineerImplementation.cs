@@ -81,6 +81,7 @@ internal class EngineerImplementation : IEngineer
     public void Reset()
     {
         XMLTools.SaveListToXMLSerializer<Engineer>(new List<Engineer>(), s_engineers_xml);
+        //reset the id count
     }
 
     public void Update(Engineer cur)

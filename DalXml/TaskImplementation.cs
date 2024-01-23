@@ -12,6 +12,11 @@ internal class TaskImplementation : ITask
 
     readonly string s_tasks_xml = "tasks";
 
+    /// <summary>
+    /// Implementation of create function to add a task to the data source
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>The id of the new task</returns>
     public int Create(DO.Task item)
     { 
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml);
@@ -21,6 +26,10 @@ internal class TaskImplementation : ITask
         return item.ID;
     }
 
+    /// <summary>
+    /// delete a task
+    /// </summary>
+    /// <param name="id"></param>
     public void Delete(int id)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml);
@@ -32,11 +41,22 @@ internal class TaskImplementation : ITask
         XMLTools.SaveListToXMLSerializer<DO.Task>(tasks, s_tasks_xml);
     }
 
+    /// <summary>
+    /// returns if the entity in question is active
+    /// </summary>
+    /// <param name="t"></param>
+    /// <returns></returns>
     public bool isActive(DO.Task item)
     {
         return item.Active;
     }
 
+    /// <summary>
+    /// Returns a reference to a Task object
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>the task if it exists, null otherwise</returns>
+    ///  /// <exception cref="DalDoesNotExistException"></exception>
     public DO.Task? Read(int id)
     {
         IEnumerable<DO.Task> tasks = ReadAll()!;  //only returns the active members
@@ -51,11 +71,20 @@ internal class TaskImplementation : ITask
         return cur;
     }
 
+    /// <summary>
+    /// read based on a filter argument
+    /// </summary>
+    /// <param name="filter"></param>
+    /// <returns>the first Task that is matched by filter, default null</returns>
     public DO.Task? Read(Func<DO.Task, bool> filter)
     {
         return ReadAll().FirstOrDefault(filter!);
     }
 
+    /// <summary>
+    /// Return a copy of all the Tasks
+    /// </summary>
+    /// <returns>An IEnumerable of tasks</returns>
     public IEnumerable<DO.Task?> ReadAll(Func<DO.Task, bool>? filter = null)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml);
@@ -72,6 +101,9 @@ internal class TaskImplementation : ITask
 
     }
 
+    /// <summary>
+    /// reset the tasks
+    /// </summary>
     public void Reset()
     {
         XMLTools.SaveListToXMLSerializer<DO.Task>(new List<DO.Task>(), s_tasks_xml);
@@ -83,6 +115,10 @@ internal class TaskImplementation : ITask
 
     }
 
+    /// <summary>
+    /// Update a task 
+    /// </summary>
+    /// <param name="item"></param>
     public void Update(DO.Task item)
     {
         List<DO.Task> tasks = XMLTools.LoadListFromXMLSerializer<DO.Task>(s_tasks_xml);

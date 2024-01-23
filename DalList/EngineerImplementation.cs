@@ -82,7 +82,7 @@ internal class EngineerImplementation : IEngineer
     }
 
     /// <summary>
-    /// reset the database, set everything to inactive
+    /// reset the engineers
     /// </summary>
     public void Reset()
     {

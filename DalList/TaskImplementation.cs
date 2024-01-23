@@ -96,7 +96,7 @@ internal class TaskImplementation : ITask
 
 
     /// <summary>
-    /// reset the database, set everything to inactive
+    /// reset the tasks
     /// </summary>
     public void Reset()
     {

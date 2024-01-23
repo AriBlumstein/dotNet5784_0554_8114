@@ -10,11 +10,12 @@ using DO;
 internal class Program
 {
 
-    static private readonly IDal? s_dal = new DalXML(); //instead of DalList()
+    static private readonly IDal s_dal = new DalXML(); //instead of DalList()
 
     static void Main(string[] args)
     {
-        Initialization.Do(s_dal);
+
+
         string input;
         do
         {
@@ -25,9 +26,10 @@ internal class Program
                 2. Test out Engineer
                 3. Test out Dependency
                 4. Reset All
+                5. Initialize Data
                 """);
             input = Console.ReadLine();
-            
+
             switch (input)
             {
                 case "0":
@@ -42,13 +44,19 @@ internal class Program
                     dependencyHandler();
                     break;
                 case "4":
-                    reset();
+                    s_dal.Reset();
+                    break;
+                case "5":
+                    Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
+                    string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
+                    if (ans == "Y")
+                        Initialization.Do(s_dal);
                     break;
                 default:
                     break;
             }
         } while (input != "0");
-        
+
     }
 
     private static string printOptions(string noun)
@@ -79,8 +87,8 @@ internal class Program
                     case "a":
                         return;
                     case "b":
-                        
-                        id=s_dal!.Task.Create(createTask());
+
+                        id = s_dal!.Task.Create(createTask());
                         Console.WriteLine($"the id of the task created it {id}");
                         Console.WriteLine();
                         break;
@@ -124,11 +132,11 @@ internal class Program
                 Console.WriteLine(ex.Message);
             }
         } while (input != "a");
-        
-       
 
 
-        
+
+
+
     }
 
     private static void engineerHandler()
@@ -149,7 +157,7 @@ internal class Program
                         return;
                     case "b":
                         //We expect an Nickname, Description, Milestone, Date Create YYYY-MM-DD
-                        id=s_dal.Engineer!.Create(createEngineer());
+                        id = s_dal.Engineer!.Create(createEngineer());
                         Console.WriteLine($"the ID number for the Engineer is {id}");
                         break;
                     case "c":
@@ -188,7 +196,7 @@ internal class Program
             {
                 Console.WriteLine(dNex.Message);
             }
-            catch(DalAlreadyExistsException dAex)
+            catch (DalAlreadyExistsException dAex)
             {
                 Console.WriteLine(dAex.Message);
             }
@@ -280,7 +288,7 @@ internal class Program
                           if no engineer,write -1
                           """);
         Boolean _milestone;
-        DateTime _created, _projectedStart,_actualStart,_deadline,_actualEnd;
+        DateTime _created, _projectedStart, _actualStart, _deadline, _actualEnd;
         int _duration;
         int _assignedEngineer;
         DO.Experience _e;
@@ -301,7 +309,7 @@ internal class Program
             if (_assignedEngineer == -1)
                 _trueAssigned = null;
             else
-                _trueAssigned= _assignedEngineer;
+                _trueAssigned = _assignedEngineer;
 
             return new DO.Task(-1, elements[0], elements[1], _milestone, _created, _projectedStart, _actualStart, _deadline, _duration, _actualEnd, elements[9], elements[10], _trueAssigned, _e);
         }
@@ -312,6 +320,7 @@ internal class Program
     private static DO.Engineer createEngineer()
     {
         Console.WriteLine("Enter all of the relevant information seperated by a comma - id, name,cost,email,level");
+        Console.WriteLine("We ignore the ID on update");
         int _ID;
         double _cost;
         Experience _level;
@@ -329,7 +338,7 @@ internal class Program
     {
         Console.WriteLine("Enter all of the relevant information seperated by a comma and no space- Dependent ID,Requisite ID");
         int _dID, _rID;
-  
+
         string input = Console.ReadLine();
         List<string> elements = input.Split(',').ToList();
 
@@ -338,12 +347,4 @@ internal class Program
         throw new Exception("Error in input");
 
     }
-
-    /// <summary>
-    /// reset the databases
-    /// </summary>
-    static void reset()
-    {
-        s_dal!.Reset();
-    }
-}
+};

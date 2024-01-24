@@ -106,7 +106,7 @@ internal class TaskImplementation : ITask
     /// </summary>
     public void Reset()
     {
-        XMLTools.SaveListToXMLSerializer<DO.Task>(new List<DO.Task>(), s_tasks_xml);
+        XMLTools.SaveListToXMLSerializer<DO.Task>(null, s_tasks_xml);
 
 
         XElement configRoot = XMLTools.LoadListFromXMLElement("data-config");

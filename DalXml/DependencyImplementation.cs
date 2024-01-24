@@ -41,7 +41,7 @@ internal class DependencyImplementation : IDependency
     {
 
         XElement root = XMLTools.LoadListFromXMLElement(s_dependency_xml);
-        XElement? dependency = root.Elements().FirstOrDefault(d => d.Element("ID")!.Value == id.ToString(), null);
+        XElement? dependency = root.Elements().FirstOrDefault(d => d.Element("ID")!.Value == id.ToString() && d.Element("Active")!.Value=="true", null);
         if (dependency == null) throw new DalDoesNotExistException($"Dependency with ID={id} does not exist");
 
         dependency.Element("Active")!.Value = "false";

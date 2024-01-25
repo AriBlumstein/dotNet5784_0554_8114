@@ -3,7 +3,6 @@
 using Dal;
 using DalApi;
 using DO;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace DalXml;
@@ -72,12 +71,9 @@ internal class DependencyImplementation : IDependency
 
         Dependency? cur = dependencies.FirstOrDefault(i => i.ID == id);
 
-        if (cur == null)
-        {
-            throw new DalDoesNotExistException($"Dependency with ID={id} does not exist");
-        }
+        return cur ?? throw new DalDoesNotExistException($"Dependency with ID={id} does not exist");
 
-        return cur;
+       
     }
 
 

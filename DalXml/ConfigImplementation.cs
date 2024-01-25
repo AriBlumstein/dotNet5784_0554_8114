@@ -21,10 +21,7 @@ internal class ConfigImplementation : IConfig
     /// <exception cref="DALConfigDateNotSet"></exception>
     public DateTime getProjectEnd()
     {
-        if (Config.ProjectStart==null)//for first time or subsequent times after it was reset
-            throw new DALConfigDateNotSet("No date set for the project end date yet");
-
-        return Config.ProjectEnd!.Value;
+        return Config.ProjectEnd ?? throw new DALConfigDateNotSet("project end was not set yes");
     }
 
 
@@ -36,10 +33,7 @@ internal class ConfigImplementation : IConfig
     public DateTime getProjectStart()
     {
 
-        if (Config.ProjectStart==null) //after first time or
-            throw new DALConfigDateNotSet("No date set for the project start date yet");
-
-        return Config.ProjectStart!.Value;
+        return Config.ProjectStart ?? throw new DALConfigDateNotSet("Project start date not yet set");
     }
 
     /// <summary>

@@ -72,12 +72,7 @@ internal class EngineerImplementation : IEngineer
         
         Engineer? cur = engineers.FirstOrDefault(i => i.ID == id); 
 
-        if (cur == null)
-        {
-            throw new DalDoesNotExistException($"Engineer with ID={id} does not exist");
-        }
-
-        return cur;
+        return cur ?? throw new DalDoesNotExistException($"Engineer with ID={id} does not exist");
 
 
     }

@@ -23,7 +23,7 @@ internal class EngineerImplementation : IEngineer
             Read(item.ID);
             throw new DalAlreadyExistsException($"Engineer with ID={item.ID} already exists");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             
             DataSource.Engineers.Add(item);
@@ -57,12 +57,9 @@ internal class EngineerImplementation : IEngineer
 
         Engineer? cur = DataSource.Engineers.FirstOrDefault(i => i.ID == id && i.Active);
 
-        if (cur == null)
-        {
-            throw new DalDoesNotExistException($"Engineer with ID={id} does not exist");
-        }
+        return cur ?? throw new DalDoesNotExistException($"Engineer with ID={id} does not exist");
 
-            return cur;
+   
     }
 
   

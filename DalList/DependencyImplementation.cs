@@ -54,12 +54,9 @@ internal class DependencyImplementation : IDependency
     {
         Dependency? cur = (DataSource.Dependencies.FirstOrDefault(i => i.ID == id && i.Active));
 
-        if (cur == null)
-        {
-            throw new DalDoesNotExistException($"Dependency with ID={id} does not exist");
-        }
+        return cur ?? throw new DalDoesNotExistException($"Dependency with ID={id} does not exist");
 
-        return cur;
+       
     }
 
 

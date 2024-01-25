@@ -50,12 +50,7 @@ internal class TaskImplementation : ITask
     {
         Task? cur = (DataSource.Tasks.FirstOrDefault(i => i.ID == id && i.Active));
 
-        if (cur == null)
-        {
-            throw new DalDoesNotExistException($"Task with ID={id} does not exist");
-        }
-
-        return cur;
+        return cur ?? throw new DalDoesNotExistException($"Task with ID={id} does not exist");
     }
 
     /// <summary>

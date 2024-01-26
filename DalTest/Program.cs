@@ -50,7 +50,14 @@ internal class Program
                     Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
                     string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
                     if (ans == "Y")
-                        Initialization.Do(s_dal);
+                        try
+                        {
+                            Initialization.Do(s_dal);
+                        }
+                        catch (DalXMLFileLoadCreateException ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
                     break;
                 default:
                     break;
@@ -123,6 +130,10 @@ internal class Program
                         break;
                 }
             }
+            catch (DalXMLFileLoadCreateException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             catch (DalDoesNotExistException dNex)
             {
                 Console.WriteLine(dNex.Message);
@@ -191,6 +202,10 @@ internal class Program
                         Console.WriteLine("Not one of the options");
                         break;
                 }
+            }
+            catch (DalXMLFileLoadCreateException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             catch (DalDoesNotExistException dNex)
             {
@@ -267,6 +282,10 @@ internal class Program
                         Console.WriteLine("Not one of the options");
                         break;
                 }
+            }
+            catch (DalXMLFileLoadCreateException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             catch (DalDoesNotExistException dNex)
             {

@@ -19,7 +19,7 @@ internal class ConfigImplementation : IConfig
     /// </summary>
     /// <returns>DateTime</returns>
     /// <exception cref="DALConfigDateNotSet"></exception>
-    public DateTime getProjectEnd()
+    public DateTime GetProjectEnd()
     {
         return Config.ProjectEnd ?? throw new DALConfigDateNotSet("project end was not set yes");
     }
@@ -30,7 +30,7 @@ internal class ConfigImplementation : IConfig
     /// </summary>
     /// <returns>DateTime</returns>
     /// <exception cref="DALConfigDateNotSet"></exception>
-    public DateTime getProjectStart()
+    public DateTime GetProjectStart()
     {
 
         return Config.ProjectStart ?? throw new DALConfigDateNotSet("Project start date not yet set");
@@ -50,11 +50,11 @@ internal class ConfigImplementation : IConfig
     /// </summary>
     /// <param name="end"></param>
     /// <exception cref="IllegalConfigAccessException"></exception>
-    public void setProjectEnd(DateTime end)
+    public void SetProjectEnd(DateTime end)
     {
         try
         {
-            getProjectStart();
+            GetProjectStart();
             throw new IllegalConfigAccessException("Cannot set start date after it was already set");
         }
         catch (Exception)
@@ -69,11 +69,11 @@ internal class ConfigImplementation : IConfig
     /// </summary>
     /// <param name="start"></param>
     /// <exception cref="IllegalConfigAccessException"></exception>
-    public void setProjectStart(DateTime start)
+    public void SetProjectStart(DateTime start)
     {
         try
         {
-            getProjectEnd();
+            GetProjectEnd();
             throw new IllegalConfigAccessException("Cannot set end date after it was already set");
         }
         catch(Exception) 

@@ -22,9 +22,9 @@ public static class Initialization
     /// </summary>
     private static void initConfig()
     {
-        s_dal!.Config.setProjectStart(DateTime.Now.AddDays(s_rand.Next(1, 60)));
+        s_dal!.Config.SetProjectStart(DateTime.Now.AddDays(s_rand.Next(1, 60)));
 
-        s_dal!.Config.setProjectEnd(s_dal!.Config.getProjectStart().AddMonths(s_rand.Next(18,37)));
+        s_dal!.Config.SetProjectEnd(s_dal!.Config.GetProjectStart().AddMonths(s_rand.Next(18,37)));
     }
    
 
@@ -46,7 +46,7 @@ public static class Initialization
     private static void createTasks() {
 
 
-        int numDays = (s_dal!.Config.getProjectEnd() - s_dal!.Config.getProjectStart()).Days;
+        int numDays = (s_dal!.Config.GetProjectEnd() - s_dal!.Config.GetProjectStart()).Days;
 
 
         string[] names = new string[]
@@ -102,31 +102,31 @@ public static class Initialization
         foreach (string name in names)
         {
             //get a random Experience
-            Experience _e=randExpereince();
+            Experience e=randExpereince();
 
             //get a create random date
-            DateTime _create = DateTime.Now.AddDays(-(s_rand.Next(0, 100)));
+            DateTime create = DateTime.Now.AddDays(-(s_rand.Next(0, 100)));
 
             //make random start and ends to this task
-            DateTime _projectedStart;
-            DateTime _deadline;
+            DateTime projectedStart;
+            DateTime deadline;
 
 
             do
             {                                                                     
-                _projectedStart = s_dal!.Config.getProjectStart().AddDays(s_rand.Next(1, numDays));
-                _deadline = s_dal!.Config.getProjectEnd().AddDays(-(s_rand.Next(1, numDays)));
+                projectedStart = s_dal!.Config.GetProjectStart().AddDays(s_rand.Next(1, numDays));
+                deadline = s_dal!.Config.GetProjectEnd().AddDays(-(s_rand.Next(1, numDays)));
                                                           
             }      //make sure the start is before the deadline
-            while (_projectedStart > _deadline);
+            while (projectedStart > deadline);
             // the logic here prevents projectedStarts before the projectStart and projectedEnds after the projectEnd
 
 
             //get the duration
-            int _duration = (_deadline - _projectedStart).Days;
+            int duration = (deadline - projectedStart).Days;
 
             //create the task, the id can be -1, because we are here coming from the "business layer simulation" and can update later
-            s_dal!.Task.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, _create, _projectedStart, null, _deadline, _duration, null, null, null, null, _e));
+            s_dal!.Task.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, create, projectedStart, null, deadline, duration, null, null, null, null, e));
         }
 
        
@@ -140,17 +140,17 @@ public static class Initialization
         const int MIN_ID = 200000000, MAX_ID = 400000000;
         
         String[] names = new string[] { "Ariel", "Eliyahu", "Benji", "Binyamin", "David" };
-        foreach (var _name in names)
+        foreach (var name in names)
         {
-            int _id;
+            int id;
             bool unique = false;
             DO.Engineer? cur;
             do {
-                _id = s_rand.Next(MIN_ID, MAX_ID);
+                id = s_rand.Next(MIN_ID, MAX_ID);
                 try
                 {
                     //see if the the id does not already exist
-                    cur = s_dal!.Engineer!.Read(_id);
+                    cur = s_dal!.Engineer!.Read(id);
                 }
                 catch(Exception ex)
                 {
@@ -161,13 +161,13 @@ public static class Initialization
             while (!unique);
 
             //get random experience
-            Experience _e = randExpereince();
+            Experience e = randExpereince();
 
             //get random salary
-            double _rate = (double)s_rand.Next(200, 10000);
+            double rate = (double)s_rand.Next(200, 10000);
 
 
-            s_dal!.Engineer.Create(new Engineer(_id, _name, _rate, _name + "@company.com", _e));
+            s_dal!.Engineer.Create(new Engineer(id, name, rate, name + "@company.com", e));
         }
 
       
@@ -181,33 +181,33 @@ public static class Initialization
         // for the sake of making 2 tasks be dependent on the same things, we will pick the 2 tasks with the latest projected start
         // as not to get stuck with picking one that cannot be a dependent on anything
 
-        int _latestTask=-1;
-        DateTime? _latestTime=s_dal!.Config.getProjectStart();
+        int latestTask=-1;
+        DateTime? latestTime=s_dal!.Config.GetProjectStart();
 
         IEnumerable<DO.Task> tasks = s_dal!.Task!.ReadAll().ToList()!;
         List<int> taskIDs = tasks.Select(tsk => tsk.ID).ToList();
 
         foreach(var cur in tasks)
         {
-            if(cur.ProjectedStart>_latestTime)
+            if(cur.ProjectedStart>latestTime)
             {
-                _latestTask = cur.ID;
-                _latestTime = cur.ProjectedStart;
+                latestTask = cur.ID;
+                latestTime = cur.ProjectedStart;
             }
         }
 
         //now we will pick our second task
 
-        int _secondLatestTask=-1;
-        _latestTime = s_dal!.Config.getProjectStart();
+        int secondLatestTask=-1;
+        latestTime = s_dal!.Config.GetProjectStart();
 
 
         foreach (var cur in tasks)
         {
-            if (cur.ProjectedStart > _latestTime && cur.ID!=_latestTask)
+            if (cur.ProjectedStart > latestTime && cur.ID!=latestTask)
             {
-                _secondLatestTask = cur.ID;
-                _latestTime = cur.ProjectedStart;
+                secondLatestTask = cur.ID;
+                latestTime = cur.ProjectedStart;
             }
         }
 
@@ -215,18 +215,18 @@ public static class Initialization
         for(int i=0; i<3; ++i)
         {
             //get a requisite id that is not the same as either of the dependent ids
-            int _reqId;
+            int reqId;
             do
             {
-                _reqId = s_rand.Next(1, tasks.Count() + 1);
-            } while (_reqId == _latestTask || _reqId == _secondLatestTask);
+                reqId = s_rand.Next(1, tasks.Count() + 1);
+            } while (reqId == latestTask || reqId == secondLatestTask);
 
 
             //make the dependencies and check there is no time conflict and put them in the database
-            Dependency _firstD = new Dependency(-1, _latestTask, _reqId);
-            Dependency _secondD = new Dependency(-1, _secondLatestTask,_reqId);
+            Dependency _firstD = new Dependency(-1, latestTask, reqId);
+            Dependency _secondD = new Dependency(-1, secondLatestTask,reqId);
 
-            if(timeConflict(_firstD)||timeConflict(_secondD))
+            if(TimeConflict(_firstD)||TimeConflict(_secondD))
             {
                 --i;
                 continue;
@@ -249,7 +249,7 @@ public static class Initialization
             DO.Dependency newD = new Dependency(-1, dependentID, requisiteID);
            
             //if it creates a circular dependency or is a time conflict
-            if (timeConflict(newD)||checkCircularDependency(newD)){
+            if (TimeConflict(newD)||CheckCircularDependency(newD)){
                 i--; //must try to make a new dependency 
                 continue;
             }
@@ -292,7 +292,7 @@ public static class Initialization
     /// <param name="item">the new dependency to check if it creates a circular dependency</param>
     /// <param name="curList">the list we want to insert it to</param>
     /// <returns>true if circular dependency, false otherwise</returns>
-    static bool checkCircularDependency(DO.Dependency item)
+    static bool CheckCircularDependency(DO.Dependency item)
     {
 
         if (item.RequisiteID == item.DependentID)
@@ -325,10 +325,10 @@ public static class Initialization
     /// </summary>
     /// <param name="cur"></param>
     /// <returns>true if yes, flase if no</returns>
-    static bool timeConflict(Dependency cur)
+    static bool TimeConflict(Dependency cur)
     {
-        DO.Task? _dependent = s_dal!.Task.Read(cur.DependentID), _requisite = s_dal!.Task.Read(cur.RequisiteID);
-        return _dependent!.ProjectedStart < _requisite!.Deadline;
+        DO.Task? dependent = s_dal!.Task.Read(cur.DependentID), _requisite = s_dal!.Task.Read(cur.RequisiteID);
+        return dependent!.ProjectedStart < _requisite!.Deadline;
        
     }
 

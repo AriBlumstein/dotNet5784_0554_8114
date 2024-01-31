@@ -6,7 +6,7 @@ using Dal;
 using DalApi;
 using DalXml;
 using DO;
-using System.Data;
+
 
 internal class Program
 {

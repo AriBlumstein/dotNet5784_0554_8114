@@ -5,7 +5,7 @@ using DO;
 
 internal class ConfigImplementation: IConfig
 {
-    public void setProjectStart(DateTime start)
+    public void SetProjectStart(DateTime start)
     {
         if(DataSource.Config.projectStart!=null)// we dont't want to reset the date unless it was not set
         {
@@ -13,7 +13,7 @@ internal class ConfigImplementation: IConfig
         }
         DataSource.Config.projectStart = start;
     }
-    public void setProjectEnd(DateTime end)
+    public void SetProjectEnd(DateTime end)
     {
         if (DataSource.Config.projectEnd!=null)
         {
@@ -23,9 +23,9 @@ internal class ConfigImplementation: IConfig
     }
 
 
-    public DateTime getProjectStart()
+    public DateTime GetProjectStart()
     { return DataSource.Config.projectStart ?? throw new Exception("no start time"); }
-    public DateTime getProjectEnd()
+    public DateTime GetProjectEnd()
     { return DataSource.Config.projectEnd ?? throw new Exception("no end time"); }
 
     //reset the project

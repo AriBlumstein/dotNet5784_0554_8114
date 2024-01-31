@@ -6,10 +6,10 @@ namespace DalApi;
 /// </summary>
 public interface IConfig
 {
-    void setProjectStart(DateTime start);
-    void setProjectEnd(DateTime end);
-    DateTime getProjectStart();    
-    DateTime getProjectEnd();
+    void SetProjectStart(DateTime start);
+    void SetProjectEnd(DateTime end);
+    DateTime GetProjectStart();    
+    DateTime GetProjectEnd();
 
     void Reset();
 

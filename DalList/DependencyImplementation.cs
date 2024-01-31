@@ -20,9 +20,9 @@ internal class DependencyImplementation : IDependency
         //create it
         int id = DataSource.Config.NextDependencyID;
 
-        Dependency _item = item with { ID = id };
+        Dependency localItem = item with { ID = id };
 
-        DataSource.Dependencies.Add(_item);
+        DataSource.Dependencies.Add(localItem);
 
         return id;
     }
@@ -97,11 +97,11 @@ internal class DependencyImplementation : IDependency
 {
             return from item in DataSource.Dependencies
                    where filter(item) 
-                   where isActive(item) //make sure to only return active items
+                   where IsActive(item) //make sure to only return active items
                    select item;
         }
         return from item in DataSource.Dependencies
-               where isActive(item) //make sure to only return active items
+               where IsActive(item) //make sure to only return active items
                select item;
 
     }
@@ -113,7 +113,7 @@ internal class DependencyImplementation : IDependency
     /// <param name="d"></param>
     /// <returns>true is the dependency was not set for deletion, ie, is active</returns>
 
-    public bool isActive(Dependency d)
+    public bool IsActive(Dependency d)
     {
         return d.Active;
     }
@@ -126,7 +126,7 @@ internal class DependencyImplementation : IDependency
 
     public Dependency? Read(Func<Dependency, bool> filter)
     {
-        Func<Dependency, bool> combined = d => filter(d) && isActive(d); //make sure we only return a non-deleted dependency
+        Func<Dependency, bool> combined = d => filter(d) && IsActive(d); //make sure we only return a non-deleted dependency
         return DataSource.Dependencies.FirstOrDefault(combined);
     }
 }

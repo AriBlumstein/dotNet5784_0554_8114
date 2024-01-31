@@ -97,11 +97,11 @@ internal class EngineerImplementation : IEngineer
         {
             return from item in DataSource.Engineers
                    where filter(item)
-                   where isActive(item) //make sure to only return active items
+                   where IsActive(item) //make sure to only return active items
                    select item;
         }
         return from item in DataSource.Engineers
-               where isActive(item) //make sure to only return active items
+               where IsActive(item) //make sure to only return active items
                select item;
 
     }
@@ -113,7 +113,7 @@ internal class EngineerImplementation : IEngineer
     /// <param name="e"></param>
     /// <returns>true if the Engineer is active</returns>
 
-    public bool isActive(Engineer e)
+    public bool IsActive(Engineer e)
     {
         return e.Active;
     }
@@ -126,7 +126,7 @@ internal class EngineerImplementation : IEngineer
     
     public Engineer? Read(Func<Engineer, bool> filter)
     {
-        Func<Engineer, bool> combined = e => filter(e) && isActive(e); //make sure we only return active Engineers
+        Func<Engineer, bool> combined = e => filter(e) && IsActive(e); //make sure we only return active Engineers
         return DataSource.Engineers.FirstOrDefault(combined);
     }
 }

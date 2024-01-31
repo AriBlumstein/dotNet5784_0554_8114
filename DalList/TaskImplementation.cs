@@ -18,9 +18,9 @@ internal class TaskImplementation : ITask
     {
         int id = DataSource.Config.NextTaskID;
         
-        Task _item = item with { ID = id };
+        Task localItem = item with { ID = id };
 
-        DataSource.Tasks.Add(_item);
+        DataSource.Tasks.Add(localItem);
         return id;
     }
 
@@ -65,11 +65,11 @@ internal class TaskImplementation : ITask
         {
             return from item in DataSource.Tasks
                    where filter(item)
-                   where isActive(item) //make sure to only return active items
+                   where IsActive(item) //make sure to only return active items
                    select item;
         }
         return from item in DataSource.Tasks
-               where isActive(item)  //make sure to only return active items
+               where IsActive(item)  //make sure to only return active items
                select item;
 
     }
@@ -104,7 +104,7 @@ internal class TaskImplementation : ITask
     /// </summary>
     /// <param name="t"></param>
     /// <returns></returns>
-    public bool isActive(Task t)
+    public bool IsActive(Task t)
     {
         return t.Active;
     }
@@ -118,7 +118,7 @@ internal class TaskImplementation : ITask
 
     public Task? Read(Func<Task, bool> filter)
     {
-        Func<Task,bool> combined = t => filter(t) && isActive(t); //make sure we only return active Tasks
+        Func<Task,bool> combined = t => filter(t) && IsActive(t); //make sure we only return active Tasks
 
         return DataSource.Tasks.FirstOrDefault(combined);
     }

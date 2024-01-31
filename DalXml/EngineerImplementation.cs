@@ -21,7 +21,7 @@ internal class EngineerImplementation : IEngineer
     public int Create(Engineer item)
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
-        if (engineers.Exists(e=>e.ID == item.ID && isActive(e)))
+        if (engineers.Exists(e=>e.ID == item.ID && IsActive(e)))
         {
             throw new DalAlreadyExistsException($"Engineer with ID={item.ID} already exists");
         }
@@ -40,7 +40,7 @@ internal class EngineerImplementation : IEngineer
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
 
-        Engineer? e = engineers.Find(e=>e.ID==id && isActive(e)) ; //engineer to delete
+        Engineer? e = engineers.Find(e=>e.ID==id && IsActive(e)) ; //engineer to delete
         if (e==null) throw new DalDoesNotExistException($"Engineer with ID={e.ID} does not exist");
         int index = engineers.IndexOf(e);
         engineers[index] = e with { Active = false };
@@ -54,7 +54,7 @@ internal class EngineerImplementation : IEngineer
     /// </summary>
     /// <param name="e"></param>
     /// <returns>true if the Engineer is active</returns>
-    public bool isActive(Engineer e)
+    public bool IsActive(Engineer e)
     {
         return e.Active;
     }
@@ -99,11 +99,11 @@ internal class EngineerImplementation : IEngineer
         {
             return from e in engineers
                    where filter(e)
-                   where isActive(e) //make sure to only return active items
+                   where IsActive(e) //make sure to only return active items
                    select e;
         }
         return from e in engineers
-               where isActive(e) //make sure to only return active items
+               where IsActive(e) //make sure to only return active items
                select e;
 
     }
@@ -125,7 +125,7 @@ internal class EngineerImplementation : IEngineer
     {
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
 
-        Engineer? toUpdate=engineers.FirstOrDefault(e=>e.ID==cur.ID&&isActive(e));
+        Engineer? toUpdate=engineers.FirstOrDefault(e=>e.ID==cur.ID&&IsActive(e));
 
         if (toUpdate == null)
             throw new DalDoesNotExistException($"Engineer with ID={cur.ID} does not exist");

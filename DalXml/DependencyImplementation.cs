@@ -54,7 +54,7 @@ internal class DependencyImplementation : IDependency
     /// <param name="item"></param>
     /// <returns>true is the dependency was not set for deletion, ie, is active</returns>
 
-    public bool isActive(Dependency item)
+    public bool IsActive(Dependency item)
     {
         return item.Active;
     }
@@ -109,11 +109,11 @@ internal class DependencyImplementation : IDependency
 
             return from d in dependencies
                    where filter(d)
-                   where isActive(d) //make sure to only return active items
+                   where IsActive(d) //make sure to only return active items
                    select d;
         }
         return from d in dependencies
-               where isActive(d) //make sure to only return active items
+               where IsActive(d) //make sure to only return active items
                select d;
     }
 

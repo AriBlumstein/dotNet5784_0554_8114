@@ -5,9 +5,19 @@ using DalApi;
 namespace DalXml;
 
 using DalApi;
+using System.Diagnostics;
 
-sealed public class DalXML : IDal
+sealed internal class DalXML : IDal
 {
+    static DalXML Instance { get => LazyInit.Instance; }
+
+    class LazyInit
+    {
+        internal static readonly DalXML Instance = new DalXML();
+        static LazyInit() { }
+    }
+    private DalXML() { }
+    static DalXML() { }
     public ITask Task => new TaskImplementation();
 
     public IEngineer Engineer => new EngineerImplementation();

@@ -6,6 +6,7 @@ using Dal;
 using DalApi;
 using DalXml;
 using DO;
+using System.Data;
 
 internal class Program
 {
@@ -190,7 +191,7 @@ internal class Program
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dal!.Engineer!.Read(id)); // print the task
                         Console.WriteLine();
-                        DO.Engineer updatedEngineer = createEngineer() with { ID = id };
+                        DO.Engineer updatedEngineer = createEngineer(true) with { ID = id };
                         s_dal.Engineer.Update(updatedEngineer);
                         break;
                     case "f":
@@ -301,69 +302,243 @@ internal class Program
 
     private static DO.Task createTask()
     {
-        Console.WriteLine("""
-                          Enter all of the relevant information seperated by a comma and no space: 
-                          Nickname,Description,Milestone,created,projectedStart,actualStart,deadline,duration,actualEnd,deliverable,notes,assignedEngineer,difficulty
-                          if no engineer,write -1
-                          """);
-        Boolean _milestone;
-        DateTime _created, _projectedStart, _actualStart, _deadline, _actualEnd;
-        int _duration;
-        int _assignedEngineer;
-        DO.Experience _e;
-        string input = Console.ReadLine();
-        List<string> elements = input.Split(',').ToList();
-        if (Boolean.TryParse(elements[2], out _milestone)
-            && DateTime.TryParse(elements[3], out _created)
-            && DateTime.TryParse(elements[4], out _projectedStart)
-            && DateTime.TryParse(elements[5], out _actualStart)
-            && DateTime.TryParse(elements[6], out _deadline)
-            && int.TryParse(elements[7], out _duration)
-            && DateTime.TryParse(elements[8], out _actualEnd)
-            && int.TryParse(elements[11], out _assignedEngineer)
-            && Enum.TryParse(elements[12], out _e)
-            )
-        {
-            int? _trueAssigned;
-            if (_assignedEngineer == -1)
-                _trueAssigned = null;
-            else
-                _trueAssigned = _assignedEngineer;
+        Console.WriteLine("Enter all of the relevant information:");
+  
+                    
+        string nickName;
+        string description;
+        bool milestone;
+        DateTime created;
+        DateTime projectedStart;
+        DateTime actualStart;
+        DateTime deadline;
+        int duration;
+        DateTime actualEnd;
+        string deliverable;
+        string notes;
+        int assignedEngineer;
+        Experience level;
+        bool error = false;
 
-            return new DO.Task(-1, elements[0], elements[1], _milestone, _created, _projectedStart, _actualStart, _deadline, _duration, _actualEnd, elements[9], elements[10], _trueAssigned, _e);
-        }
-        throw new Exception("Error in input");
+        Console.WriteLine("Enter task nickname");
+        nickName = Console.ReadLine();
+
+        Console.WriteLine("Enter description");
+        description = Console.ReadLine();
+
+        do
+        {
+            Console.WriteLine("Enter milestone");
+            error = !bool.TryParse(Console.ReadLine(), out milestone);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+        do
+        {
+            Console.WriteLine("Enter date create");
+            error = !DateTime.TryParse(Console.ReadLine(), out created);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+        do
+        {
+            Console.WriteLine("Enter projected start");
+            error = !DateTime.TryParse(Console.ReadLine(), out projectedStart);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+        do
+        {
+            Console.WriteLine("Enter date actual start");
+            error = !DateTime.TryParse(Console.ReadLine(), out actualStart);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+        do
+        {
+            Console.WriteLine("Enter deadline");
+            error = !DateTime.TryParse(Console.ReadLine(), out deadline);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+
+        do
+        {
+            Console.WriteLine("Enter duration");
+            error = !int.TryParse(Console.ReadLine(), out duration);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+        do
+        {
+            Console.WriteLine("Enter actual end");
+            error = !DateTime.TryParse(Console.ReadLine(), out actualEnd);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+        Console.WriteLine("enter deliverable");
+        deliverable=Console.ReadLine();
+
+        Console.WriteLine("enter notes");
+        notes = Console.ReadLine();
+
+        do
+        {
+            Console.WriteLine("Enter assigned engineer");
+            error = !int.TryParse(Console.ReadLine(), out assignedEngineer);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+        do
+        {
+            Console.WriteLine("Enter difficulty");
+            error = !Enum.TryParse(Console.ReadLine(), out level);
+            if (error)
+            {
+                Console.WriteLine("Error, try again");
+            }
+        } while (error);
+
+        return new Task(-1, nickName, description, milestone, created, projectedStart, actualStart, deadline, duration, actualEnd, deliverable, notes, assignedEngineer, level);
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
-    private static DO.Engineer createEngineer()
+    private static DO.Engineer createEngineer(bool update=false)
     {
-        Console.WriteLine("Enter all of the relevant information seperated by a comma - id, name,cost,email,level");
-        Console.WriteLine("We ignore the ID on update");
-        int _ID;
-        double _cost;
-        Experience _level;
+        Console.WriteLine("Enter all of the relevant information");
+        int ID=0;
+        string name;
+        double cost;
+        string email;
+        Experience level;
+        bool error = false;
 
-        string input = Console.ReadLine();
-        List<string> elements = input.Split(',').ToList();
+        if (!update)
+        {
+            do
+            {
+                Console.WriteLine("Enter Engineer id");
+                error=!int.TryParse(Console.ReadLine(), out ID);
 
-        if (int.TryParse(elements[0], out _ID) && double.TryParse(elements[2], out _cost) && Enum.TryParse(elements[4], out _level))
-            return new DO.Engineer(_ID, elements[1], _cost, elements[3], _level);
-        throw new Exception("Error in input");
+                if(error)
+                {
+                    Console.WriteLine("bad input, try again");
+                }
+
+            } while (error);
+
+        }
+
+        Console.WriteLine("Enter Engineer name");
+        name= Console.ReadLine();
+
+
+        do
+        {
+            Console.WriteLine("Enter Engineer salary");
+            error = !Double.TryParse(Console.ReadLine(), out cost);
+
+            if (error)
+            {
+                Console.WriteLine("bad input, try again");
+            }
+
+        } while (error);
+
+        Console.WriteLine("Enter Engineer email");
+        email= Console.ReadLine();
+
+        do
+        {
+            Console.WriteLine("Enter Engineer skill level");
+            error = !Enum.TryParse(Console.ReadLine(), out level);
+
+            if (error)
+            {
+                Console.WriteLine("bad input, try again");
+            }
+
+        } while (error);
+
+
+        if (!update)
+        {
+            return new Engineer(ID, name, cost, email, level);
+        }
+        else
+        {
+            return new Engineer(-1, name, cost, email, level);
+        }
+
+
 
     }
 
     private static DO.Dependency createDependency()
     {
-        Console.WriteLine("Enter all of the relevant information seperated by a comma and no space- Dependent ID,Requisite ID");
-        int _dID, _rID;
+        Console.WriteLine("Enter all of the relevant information");
+        int dID, rID;
+   
+        bool error = false;
 
-        string input = Console.ReadLine();
-        List<string> elements = input.Split(',').ToList();
+        do
+        {
+            Console.WriteLine("Enter dependent id");
 
-        if (int.TryParse(elements[0], out _dID) && int.TryParse(elements[1], out _rID))
-            return new DO.Dependency(-1, _dID, _rID);
-        throw new Exception("Error in input");
+            error = !int.TryParse(Console.ReadLine(), out dID);
+            if (error)
+            {
+                Console.WriteLine("bad input, try again");
+            }
+        } while (error);
 
+        do
+        {
+            Console.WriteLine("Enter requisite id");
+
+            error = !int.TryParse(Console.ReadLine(), out rID);
+            if (error)
+            {
+                Console.WriteLine("bad input, try again");
+            }
+        } while (error);
+
+
+        return new Dependency(-1,dID,rID);
     }
 };

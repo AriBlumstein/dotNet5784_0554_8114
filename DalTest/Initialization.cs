@@ -268,10 +268,12 @@ public static class Initialization
     /// <param name="dalDependency"></param>
     /// <exception cref="NullReferenceException"></exception>
 
-    public static void Do(IDal? dal)
+    public static void Do()
     {
-        s_dal = dal ?? throw new Exception("S_DAL cannot be null");
-        dal.Reset(); //reset the entire database
+        
+       s_dal = Factory.Get;
+        
+        s_dal.Reset(); //reset the entire database
 
         initConfig();
          

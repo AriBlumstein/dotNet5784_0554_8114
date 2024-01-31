@@ -1,8 +1,8 @@
 ﻿
 
-namespace DalXml;
+namespace Dal;
 
-using Dal;
+
 
 internal static class Config
 {

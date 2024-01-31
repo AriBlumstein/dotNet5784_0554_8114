@@ -2,16 +2,14 @@
 
 namespace DalTest;
 
-using Dal;
 using DalApi;
-using DalXml;
 using DO;
 
 
 internal class Program
 {
 
-    static private readonly IDal s_dal = new DalXML(); //instead of DalList()
+    static private readonly IDal s_dal = Factory.Get;
 
     static void Main(string[] args)
     {
@@ -50,15 +48,16 @@ internal class Program
                 case "5":
                     Console.Write("Would you like to create Initial data? (Y/N)"); //stage 3
                     string? ans = Console.ReadLine() ?? throw new FormatException("Wrong input"); //stage 3
-                    if (ans == "Y")
+                    if (ans == "Y") //stage 3
                         try
                         {
-                            Initialization.Do(s_dal);
+                            Initialization.Do();
                         }
                         catch (DalXMLFileLoadCreateException ex)
                         {
                             Console.WriteLine(ex.Message);
                         }
+
                     break;
                 default:
                     break;
@@ -107,7 +106,7 @@ internal class Program
                         Console.WriteLine();
                         break;
                     case "d":
-                        foreach (DO.Task t in s_dal!.Task!.ReadAll())
+                        foreach (Task t in s_dal!.Task!.ReadAll())
                         {
                             Console.WriteLine(t);
                             Console.WriteLine();
@@ -118,7 +117,7 @@ internal class Program
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dal!.Task.Read(id)); // print the task
                         Console.WriteLine();
-                        DO.Task updatedTask = createTask() with { ID = id };
+                        Task updatedTask = createTask() with { ID = id };
                         s_dal!.Task.Update(updatedTask);
                         break;
                     case "f":
@@ -179,7 +178,7 @@ internal class Program
                         Console.WriteLine();
                         break;
                     case "d":
-                        foreach (DO.Engineer t in s_dal!.Engineer!.ReadAll())
+                        foreach (Engineer t in s_dal!.Engineer!.ReadAll())
                         {
                             Console.WriteLine(t);
                             Console.WriteLine();
@@ -191,7 +190,7 @@ internal class Program
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dal!.Engineer!.Read(id)); // print the task
                         Console.WriteLine();
-                        DO.Engineer updatedEngineer = createEngineer(true) with { ID = id };
+                        Engineer updatedEngineer = createEngineer(true) with { ID = id };
                         s_dal.Engineer.Update(updatedEngineer);
                         break;
                     case "f":
@@ -258,7 +257,7 @@ internal class Program
                         Console.WriteLine();
                         break;
                     case "d":
-                        foreach (DO.Dependency t in s_dal!.Dependency!.ReadAll())
+                        foreach (Dependency t in s_dal!.Dependency!.ReadAll())
                         {
                             Console.WriteLine(t);
                             Console.WriteLine();
@@ -271,7 +270,7 @@ internal class Program
                         id = int.Parse(Console.ReadLine());
                         Console.WriteLine(s_dal!.Dependency!.Read(id)); // print the task
                         Console.WriteLine();
-                        DO.Dependency updatedDependency = createDependency() with { ID = id };
+                        Dependency updatedDependency = createDependency() with { ID = id };
                         s_dal.Dependency.Update(updatedDependency);
                         break;
                     case "f":
@@ -300,7 +299,7 @@ internal class Program
 
     }
 
-    private static DO.Task createTask()
+    private static Task createTask()
     {
         Console.WriteLine("Enter all of the relevant information:");
   
@@ -438,7 +437,7 @@ internal class Program
 
     }
 
-    private static DO.Engineer createEngineer(bool update=false)
+    private static Engineer createEngineer(bool update=false)
     {
         Console.WriteLine("Enter all of the relevant information");
         int ID=0;
@@ -509,7 +508,7 @@ internal class Program
 
     }
 
-    private static DO.Dependency createDependency()
+    private static Dependency createDependency()
     {
         Console.WriteLine("Enter all of the relevant information");
         int dID, rID;

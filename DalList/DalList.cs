@@ -4,19 +4,17 @@
 
 namespace Dal;
 using DalApi;
-using System.ComponentModel;
 
-sealed internal class DalList : IDal
+sealed public class DalList : IDal
 {
-    static DalList Instance { get => LazyInit.Instance;  }
+    private static readonly Lazy<DalList> lazyInstance = new Lazy<DalList>(() => new DalList()); //for lazy initialization and thread safety, part of system
 
-    class LazyInit
-    {
-        internal static readonly DalList Instance = new DalList();
-        static LazyInit() {}
-    }
+    public static DalList Instance {get {return lazyInstance.Value;}}
+
     private DalList() { }
     static DalList() { }
+   
+    
 
 
     public ITask Task => new TaskImplementation();

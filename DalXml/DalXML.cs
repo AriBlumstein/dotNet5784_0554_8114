@@ -1,24 +1,21 @@
 ﻿
 
+
+namespace Dal;
+
 using DalApi;
 
-namespace DalXml;
 
-using DalApi;
-using System.Diagnostics;
-
-sealed internal class DalXML : IDal
+sealed internal class DalXml : IDal
 {
-    static DalXML Instance { get => LazyInit.Instance; }
+   private static readonly Lazy<DalXml> lazyInstance = new Lazy<DalXml>(() => new DalXml()); //for lazy initialization and thread safety, part of system
 
-    class LazyInit
-    {
-        internal static readonly DalXML Instance = new DalXML();
-        static LazyInit() { }
-    }
-    private DalXML() { }
-    static DalXML() { }
-    public ITask Task => new TaskImplementation();
+    public static DalXml Instance {get {return lazyInstance.Value;}}
+
+
+    private DalXml() { }
+    static DalXml() { }
+    public ITask Task => new Dal.TaskImplementation();
 
     public IEngineer Engineer => new EngineerImplementation();
 

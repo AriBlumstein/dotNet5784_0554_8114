@@ -1,11 +1,11 @@
 ﻿
 
-using Dal;
+
+namespace Dal;
 using DalApi;
 using DO;
 using System.Xml.Linq;
 
-namespace DalXml;
 
 internal class DependencyImplementation : IDependency
 {

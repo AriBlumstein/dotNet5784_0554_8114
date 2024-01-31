@@ -1,8 +1,8 @@
 ﻿
 
-namespace DalXml;
+namespace Dal;
 
-using Dal;
+
 using DalApi;
 using DO;
 

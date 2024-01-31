@@ -1,10 +1,11 @@
 ﻿
 
-using Dal;
+
+
+namespace Dal;
+
 using DalApi;
 using DO;
-
-namespace DalXml;
 
 /// <summary>
 /// access to the internal Config class, specifically for the datetime attributes to give access to the outside

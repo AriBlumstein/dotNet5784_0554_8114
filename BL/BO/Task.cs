@@ -1,42 +1,27 @@
 ﻿
 
-using System.ComponentModel.DataAnnotations;
-
-
 namespace BO;
 using System;
 
 
-internal class Task
+public class Task
 {
-    int ID { get; }
-    String Descripiton { get; init; }
+    int ID { get; init; }
+    String Descripiton { get; set; }
     DateTime Created { get; init; }
-    Status Status { get; init }
-
-    TaskList Dependencies { get; init; }
-
-    //MilestoneInClass Milestone {get;}=new MilestoneInClass()
-
-
+    Status? Status { get; set; }
+    List<TaskinList> Dependencies { get; init; }
+    MilestoneInTask? Milestone {get; set;}
     DateTime? ProjectedStart { get; set; }
 
     DateTime? ActualStart { get; set; }
-
-    private DateTime? _projetcedEnd=null;
-    DateTime? ProjectedEnd { get; }
-
+    DateTime? ProjectedEnd { get; set; }
     DateTime? ActualEnd { get; set; }
     DateTime? Deadline { get; set; }
     String? Deliverable { get; set; }
     String? Notes { get; set; }
-
-    //EngineerInTask Engineer 
-
-    EngineerExperience Complexity { get; set; }
-
-
-
+    EngineerInTask? Engineer {  get; set; }
+    EngineerExperience? Complexity { get; set; }
 
 }
 

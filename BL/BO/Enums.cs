@@ -9,5 +9,5 @@ public enum EngineerExperience
 
 public enum Status
 {
-    Unstarted, InProgress, Completed
+    Unscheduled, Scheduled, OnTrack, InJeopardy
 }

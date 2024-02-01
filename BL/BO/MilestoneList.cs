@@ -4,13 +4,13 @@ namespace BO;
 
 public class MilestoneList
 {
-    String Description { get; set; }
-    String Name { get; set; }
+    String Description { get; init; }
+    String Name { get; init; }
 
-    DateTime Created { get; set; }
+    DateTime Created { get; init; }
 
-    Status? Status { get; set; }
+    Status? Status { get; init; }
 
-    Double? Progress { get; set; }
+    Double? Progress { get; init; }
 
 }

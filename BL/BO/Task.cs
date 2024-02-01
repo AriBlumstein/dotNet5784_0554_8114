@@ -10,11 +10,11 @@ using System;
 internal class Task
 {
     int ID { get; }
-    String Descripiton { get; set; }
-    DateTime Created { get; }
-    Status Status { get; set; }
+    String Descripiton { get; init; }
+    DateTime Created { get; init; }
+    Status Status { get; init }
 
-    //TaskList Dependencies {get;}= new TaskList()
+    TaskList Dependencies { get; init; }
 
     //MilestoneInClass Milestone {get;}=new MilestoneInClass()
 

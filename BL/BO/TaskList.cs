@@ -4,11 +4,11 @@ namespace BO;
 
 public class TaskList
 {
-    int ID { get;}
-    String Description { get; set; }
-    String Name {  get; set; }
+    int ID { get; init; }
+    String Description { get; init; }
+    String Name { get; init; }
 
-    Status Status { get; set; }
+    Status Status { get; init; }
 
 
 }

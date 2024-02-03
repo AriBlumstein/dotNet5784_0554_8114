@@ -6,22 +6,22 @@ using System;
 
 public class Task
 {
-    int ID { get; init; }
-    String Descripiton { get; set; }
-    DateTime Created { get; init; }
-    Status? Status { get; set; }
-    List<TaskinList> Dependencies { get; init; }
-    MilestoneInTask? Milestone {get; set;}
-    DateTime? ProjectedStart { get; set; }
+    public int ID { get; init; }
+    public String Descripiton { get; set; }
+    public DateTime Created { get; init; }
+    public Status? Status { get; set; }
+    public List<TaskinList> Dependencies { get; set; }
+    public MilestoneInTask? Milestone {get; set;}
+    public DateTime? ProjectedStart { get; set; }
 
-    DateTime? ActualStart { get; set; }
-    DateTime? ProjectedEnd { get; set; }
-    DateTime? ActualEnd { get; set; }
-    DateTime? Deadline { get; set; }
-    String? Deliverable { get; set; }
-    String? Notes { get; set; }
-    EngineerInTask? Engineer {  get; set; }
-    EngineerExperience? Complexity { get; set; }
+    public DateTime? ActualStart { get; set; }
+    public DateTime? ProjectedEnd { get; set; }
+    public DateTime? ActualEnd { get; set; }
+    public DateTime? Deadline { get; set; }
+    public String? Deliverable { get; set; }
+    public String? Notes { get; set; }
+    public EngineerInTask? Engineer {  get; set; }
+    public EngineerExperience? Complexity { get; set; }
 
 }
 

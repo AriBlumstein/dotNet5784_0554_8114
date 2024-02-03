@@ -4,11 +4,11 @@ namespace BO;
 
 public class TaskinList
 {
-    int ID { get; init; }
-    String Description { get; set; }
-    String Name { get; set; }
+    public int ID { get; init; }
+    public String Description { get; init; }
+    public String Name { get; init; }
 
-    Status? Status { get; set; }
+    public Status? Status { get; init; }
 
 
 }

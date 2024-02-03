@@ -4,17 +4,17 @@ namespace BO;
 
 public class Milestone
 {
-    int ID { get; init; }
-    String Name { get; set; }
-    String Description { get; set; }
-    DateTime Created { get; set; }
-    Status? Status { get; set; }
-    DateTime? ActualStart { get; set; }
-    DateTime? ActualEnd { get; set; }
-    Double? Progress { get; set; }
-    String? Notes { get; set; }
+    public int ID { get; init; }
+    public String Name { get; set; }
+    public String Description { get; set; }
+    public DateTime Created { get; set; }
+    public Status? Status { get; set; }
+    public DateTime? ActualStart { get; set; }
+    public DateTime? ActualEnd { get; set; }
+    public Double? Progress { get; set; }
+    public String? Notes { get; set; }
 
-    List<TaskinList> Dependencies{ get; init; } 
+    public List<TaskinList> Dependencies{ get; set; } 
 
 
 

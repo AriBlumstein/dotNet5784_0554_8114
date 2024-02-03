@@ -3,6 +3,6 @@ namespace BO;
 
 public class TaskInEngineer
 {
-    int ID { get; init; }
-    String Alias { get; init; }
+    public int ID { get; init; }
+    public String Alias { get; init; }
 }

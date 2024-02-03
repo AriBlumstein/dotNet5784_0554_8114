@@ -3,8 +3,8 @@ namespace BO
 {
     public class EngineerInTask
     { 
-        int ID { get; init; }
-        String Name { get; init; }
+        public int ID { get; init; }
+        public String Name { get; init; }
 
     }
 }

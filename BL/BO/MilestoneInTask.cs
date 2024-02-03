@@ -5,7 +5,7 @@ namespace BO;
 
 public class MilestoneInTask
 {
-    int ID { get; init; }
-    String Alias { get; init; }
+    public int ID { get; init; }
+    public String Alias { get; init; }
 
 }

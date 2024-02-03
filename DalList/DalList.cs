@@ -5,7 +5,7 @@
 namespace Dal;
 using DalApi;
 
-sealed public class DalList : IDal
+sealed internal class DalList : IDal
 {
     private static readonly Lazy<DalList> lazyInstance = new Lazy<DalList>(() => new DalList()); //for lazy initialization and thread safety, part of system
 

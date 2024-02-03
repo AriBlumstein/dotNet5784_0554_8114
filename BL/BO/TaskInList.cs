@@ -2,7 +2,7 @@
 
 namespace BO;
 
-public class TaskinList
+public class TaskInList
 {
     public int ID { get; init; }
     public String Description { get; init; }

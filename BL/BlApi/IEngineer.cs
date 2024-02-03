@@ -28,7 +28,7 @@ public interface IEngineer
     /// </summary>
     /// <param name="engineer"></param>
     /// <returns>the id of the engineer created</returns>
-    int Create(BO.Engineer engineer);
+    BO.Engineer Create(BO.Engineer engineer);
 
 
     /// <summary>
@@ -41,7 +41,29 @@ public interface IEngineer
     /// update an Engineer, admin view
     /// </summary>
     /// <param name="engineer"></param>
-    void update(BO.Engineer engineer);
+    BO.Engineer Update(BO.Engineer engineer);
+
+    /// <summary>
+    /// method that returns the task the engineer is working on at the moment
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    BO.TaskInEngineer TaskSearcher(int id);
+
+
+    /// <summary>
+    /// return true if the email address is a valid one
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
+    public bool IsValidEmail(string email);
+
+
+    /// <summary>
+    /// method that checks the validity of an engineer, throw appropriate exception if not valid
+    /// </summary>
+    /// <param name="engineer"></param>
+    public void ValidEngineer(BO.Engineer engineer);
 
 
 }

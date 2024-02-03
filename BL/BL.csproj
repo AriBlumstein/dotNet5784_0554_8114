@@ -14,13 +14,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DalFacade\DalFacade.csproj" />
-    <ProjectReference Include="..\DalList\DalList.csproj" />
-    <ProjectReference Include="..\DalXml\DalXml.csproj" />
+    <Compile Remove="BlImplementatio\**" />
+    <EmbeddedResource Remove="BlImplementatio\**" />
+    <None Remove="BlImplementatio\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BlImplementation\" />
+    <ProjectReference Include="..\DalFacade\DalFacade.csproj" />
+    <ProjectReference Include="..\DalList\DalList.csproj" />
+    <ProjectReference Include="..\DalXml\DalXml.csproj" />
   </ItemGroup>
 
 </Project>

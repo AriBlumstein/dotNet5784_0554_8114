@@ -72,7 +72,7 @@ public class EngineerImplementation : IEngineer
         return new BO.Engineer {ID=engineer.ID, Cost=engineer.Cost, Level=(EngineerExperience)engineer.Exp, Name=engineer.Name, Task=TaskSearcher(engineer.ID), Email=engineer.Email};
     }
 
-    public IEnumerable<BO.Engineer> ReadAll(Func<DO.Engineer, bool> filter = null)
+    public IEnumerable<BO.Engineer> ReadAll(Func<DO.Engineer, bool>? filter = null)
     {
         IEnumerable<DO.Engineer?> engineers = _dal.Engineer.ReadAll(filter); //find the engineers that meet the condition
 
@@ -109,7 +109,7 @@ public class EngineerImplementation : IEngineer
 
 
     
-    public BO.TaskInEngineer TaskSearcher(int engineerId) 
+    public BO.TaskInEngineer? TaskSearcher(int engineerId) 
     {
         //find the task that this engineer is assigned to 
         DO.Task? task=_dal.Task.Read(t => t.AssignedEngineer == engineerId && (t.ActualEnd==null||t.ActualEnd<=DateTime.Now)); //only find the tasks that have not yet been completed

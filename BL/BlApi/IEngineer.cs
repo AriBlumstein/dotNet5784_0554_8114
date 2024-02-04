@@ -14,7 +14,7 @@ public interface IEngineer
     /// </summary>
     /// <param name="filter"></param>
     /// <returns><IEnumerable<BO.Engineer></returns>
-    IEnumerable<BO.Engineer> ReadAll(Func<DO.Engineer, bool> filter=null);
+    IEnumerable<BO.Engineer> ReadAll(Func<DO.Engineer, bool>? filter=null);
 
     /// <summary>
     /// return an engineer given the id for engineer view
@@ -48,7 +48,7 @@ public interface IEngineer
     /// </summary>
     /// <param name="id"></param>
     /// <returns>BO.TaskInEngineer</returns>
-    BO.TaskInEngineer TaskSearcher(int id);
+    BO.TaskInEngineer? TaskSearcher(int id);
 
 
    

@@ -23,7 +23,7 @@ public interface ITask
     /// </summary>
     /// <param name="task"></param>
     /// <returns>the id of the created task</returns>
-    int Create(BO.Task task);
+    BO.Task Create(BO.Task task);
 
     /// <summary>
     /// update a task 

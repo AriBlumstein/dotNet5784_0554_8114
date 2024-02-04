@@ -2,28 +2,53 @@
 namespace BlImplementation;
 using BlApi;
 using BO;
+using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
 
-public class TaskImplementation : ITask
+public class TaskImplementation : BlApi.ITask
 {
     private DalApi.IDal _dal = DalApi.Factory.Get;
 
-    public int Create(BO.Task task)
+    public BO.Task Create(BO.Task task)
     {
-        throw new NotImplementedException();
-    }
+        validateTask(task);
 
+        //try adding it to the database
+        try
+        {
+
+            _dal.Task.Create(new DO.Task {
+                ID = task.ID,
+                Nickname = task.Name,
+                Description = task.Descripiton,
+                Milestone = task.Milestone != null,
+                Created = task.Created,
+                ProjectedStart = task.ProjectedStart,
+                ActualStart = task.ActualStart,
+                Deadline = task.Deadline,
+                Duration = getDurationDays(task),
+                ActualEnd = task.ActualEnd,
+                Deliverable = task.Deliverable,
+                Notes = task.Notes,
+                AssignedEngineer = task.Engineer != null ? task.Engineer.ID : null,
+                Difficulty = (Experience?) task.Complexity,
+            }) ;
+        }
+        catch (DalAlreadyExistsException e)
+        {
+            throw new BlAlreadyExistsException(e.Message, e);
+        }
+        return task;
+    }
     public void Delete(int id)
     {
         throw new NotImplementedException();
     }
-
     public BO.Task Read(int id)
     {
         DO.Task dTask;
-
         try
         {
             dTask = _dal.Task.Read(id)!;
@@ -159,4 +184,25 @@ public class TaskImplementation : ITask
         }
         return task.ActualStart!.Value.AddDays(task.Duration!.Value);
     }
+
+    private int? getDurationDays(BO.Task task)
+    {
+        bool actualStartNull = !task.ActualStart.HasValue;
+        bool projectedStartNull = !task.ProjectedStart.HasValue;
+        bool projectedEndNull = !task.ProjectedEnd.HasValue;
+        if ((actualStartNull && projectedStartNull) || projectedEndNull) return null;
+        if (!projectedStartNull && actualStartNull) return (task.ProjectedEnd!.Value - task.ProjectedStart!.Value).Days;
+        if (projectedStartNull && !actualStartNull) return (task.ProjectedEnd!.Value - task.ActualStart!.Value).Days;
+        if ((task.ProjectedEnd!.Value - task.ActualStart!.Value).Days >= (task.ProjectedEnd!.Value - task.ProjectedStart!.Value).Days)
+        {
+            return (task.ProjectedEnd!.Value - task.ActualStart!.Value).Days;
+        }
+        return (task.ProjectedEnd!.Value - task.ProjectedStart!.Value).Days;
+    }
+
+    private void validateTask(BO.Task task)
+    {
+        Console.WriteLine("Not implemented");
+    }
 }
+

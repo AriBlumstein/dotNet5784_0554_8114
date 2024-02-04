@@ -127,7 +127,8 @@ public class EngineerImplementation : IEngineer
     /// <param name="email"></param>
     /// <returns>true if it is a valid email</returns>
     private bool isValidEmail(string email)
-    {
+    { 
+
         // Regular expression for a simple email validation
         string pattern = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$";
 
@@ -150,6 +151,10 @@ public class EngineerImplementation : IEngineer
         {
             throw new BlIllegalPropertyException($"{engineer.ID} is not a valid id");
         }
+        if(engineer.Name==null)
+        {
+            throw new BlNullPropertyException("Name of engineer cannot be null");
+        }
         if (engineer.Name.Length == 0)
         {
             throw new BlIllegalPropertyException("An Engineer must have a non-empty name");
@@ -157,6 +162,10 @@ public class EngineerImplementation : IEngineer
         if (engineer.Cost <= 0)
         {
             throw new BlIllegalPropertyException($"{engineer.Cost} is an illegal salary");
+        }
+        if (engineer.Email == null)
+        {
+            throw new BlNullPropertyException("Email cannot be null");
         }
         if (!isValidEmail(engineer.Email))
         {

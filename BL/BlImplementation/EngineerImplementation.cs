@@ -12,7 +12,7 @@ public class EngineerImplementation : IEngineer
     private DalApi.IDal _dal = DalApi.Factory.Get;
     public BO.Engineer Create(BO.Engineer engineer)
     {
-        ValidEngineer(engineer);
+        validEngineer(engineer);
 
         //try adding it to the database
         try
@@ -69,7 +69,7 @@ public class EngineerImplementation : IEngineer
             throw new BlDoesNotExistException(e.Message, e);
         }
 
-        return new BO.Engineer {ID=engineer.ID, Cost=engineer.Cost, Level=(EngineerExperience)engineer.Exp, Name=engineer.Name, Task=taskSearcher(engineer), Email=engineer.Email};
+        return new BO.Engineer {ID=engineer.ID, Cost=engineer.Cost, Level=(EngineerExperience)engineer.Exp, Name=engineer.Name, Task=TaskSearcher(engineer.ID), Email=engineer.Email};
     }
 
     public IEnumerable<BO.Engineer> ReadAll(Func<DO.Engineer, bool> filter = null)
@@ -93,7 +93,7 @@ public class EngineerImplementation : IEngineer
 
     public BO.Engineer Update(BO.Engineer engineer)
     {
-        ValidEngineer(engineer);
+        validEngineer(engineer); 
 
         try
         {
@@ -120,7 +120,13 @@ public class EngineerImplementation : IEngineer
         return null;
     }
 
-    public bool IsValidEmail(string email)
+
+    /// <summary>
+    /// return true if the email address is a valid one
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns>true if it is a valid email</returns>
+    private bool isValidEmail(string email)
     {
         // Regular expression for a simple email validation
         string pattern = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$";
@@ -132,7 +138,12 @@ public class EngineerImplementation : IEngineer
         return regex.IsMatch(email);
     }
 
-    public void ValidEngineer(BO.Engineer engineer)
+
+    /// <summary>
+    /// method that checks the validity of an engineer, throw appropriate exception if not valid
+    /// </summary>
+    /// <param name="engineer"></param>
+    private void validEngineer(BO.Engineer engineer)
     {
         //check validity of fields
         if (engineer.ID <= 0)
@@ -147,7 +158,7 @@ public class EngineerImplementation : IEngineer
         {
             throw new BlIllegalPropertyException($"{engineer.Cost} is an illegal salary");
         }
-        if (!IsValidEmail(engineer.Email))
+        if (!isValidEmail(engineer.Email))
         {
             throw new BlIllegalPropertyException($"{engineer.Email} is not a valid email");
         }

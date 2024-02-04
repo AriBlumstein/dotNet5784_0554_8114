@@ -47,23 +47,10 @@ public interface IEngineer
     /// method that returns the task the engineer is working on at the moment
     /// </summary>
     /// <param name="id"></param>
-    /// <returns></returns>
+    /// <returns>BO.TaskInEngineer</returns>
     BO.TaskInEngineer TaskSearcher(int id);
 
 
-    /// <summary>
-    /// return true if the email address is a valid one
-    /// </summary>
-    /// <param name="email"></param>
-    /// <returns></returns>
-    public bool IsValidEmail(string email);
-
-
-    /// <summary>
-    /// method that checks the validity of an engineer, throw appropriate exception if not valid
-    /// </summary>
-    /// <param name="engineer"></param>
-    public void ValidEngineer(BO.Engineer engineer);
-
+   
 
 }

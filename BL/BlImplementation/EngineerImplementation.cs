@@ -31,9 +31,9 @@ public class EngineerImplementation : IEngineer
 
     public void Delete(BO.Engineer engineer)
     {
-        IEnumerable<DO.Task?> tasks = _dal.Task.ReadAll(t => t.AssignedEngineer == engineer.ID && t.ActualEnd <= DateTime.Now); //here we have the tasks the engineer worked on previously
+        IEnumerable<DO.Task?> completedTasks = _dal.Task.ReadAll(t => t.AssignedEngineer == engineer.ID && t.ActualEnd <= DateTime.Now); //here we have the tasks the engineer worked on previously
 
-        if (tasks.Count() != 0) //there exists a task
+        if (completedTasks.Count() != 0) //there exists a task
         {
             throw new BlIllegalOperationException($"Engineer with ID {engineer.ID} cannot be deleted as he worked on tasks in the past");
         }
@@ -112,7 +112,7 @@ public class EngineerImplementation : IEngineer
     public BO.TaskInEngineer? TaskSearcher(int engineerId) 
     {
         //find the task that this engineer is assigned to 
-        DO.Task? task=_dal.Task.Read(t => t.AssignedEngineer == engineerId && (t.ActualEnd==null||t.ActualEnd<=DateTime.Now)); //only find the tasks that have not yet been completed
+        DO.Task? task=_dal.Task.Read(t => t.AssignedEngineer == engineerId && (t.ActualEnd==null||t.ActualEnd>=DateTime.Now)); //only find the tasks that have not yet been completed
 
         if (task != null)
             return new TaskInEngineer { ID = task.ID, Alias = task.Nickname };

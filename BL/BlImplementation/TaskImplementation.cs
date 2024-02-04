@@ -22,7 +22,39 @@ public class TaskImplementation : ITask
 
     public BO.Task Read(int id)
     {
-        throw new NotImplementedException();
+        DO.Task dTask;
+
+        try
+        {
+            dTask = _dal.Task.Read(id)!;
+        }
+        catch (DalDoesNotExistException e)
+        {
+            throw new BlDoesNotExistException(e.Message, e);
+        }
+
+        return new BO.Task
+        {
+            ID = dTask.ID,
+            Name = dTask.Nickname,
+            Descripiton = dTask.Description,
+            Created = dTask.Created,
+            Status = getStatus(dTask),
+            Dependencies = getDependencies(dTask.ID),
+            Milestone = null,
+            ProjectedStart = dTask.ProjectedStart,
+            ProjectedEnd = getProjectedEnd(dTask),
+            ActualStart = dTask.ActualStart,
+            ActualEnd = dTask.ActualEnd,
+            Deadline = dTask.Deadline,
+            Deliverable = dTask.Deliverable,
+            Notes = dTask.Notes,
+            Engineer = getEngineer(dTask.AssignedEngineer),
+            Complexity = (EngineerExperience?)dTask.Difficulty
+
+
+        };
+
     }
 
     public IEnumerable<BO.Task> ReadAll(Func<DO.Task, bool> filter = null)
@@ -31,21 +63,21 @@ public class TaskImplementation : ITask
         return dTasks.Select(t => new BO.Task
         {
             ID = t.ID,
-            Name=t.Nickname,
+            Name = t.Nickname,
             Descripiton = t.Description,
             Created = t.Created,
             Status = getStatus(t),
-            Dependencies=getDependencies(t.ID),
-            Milestone=null,
-            ProjectedStart=t.ProjectedStart,
-            ProjectedEnd=getProjectedEnd(t),
-            ActualStart=t.ActualStart,
-            ActualEnd=t.ActualEnd,
-            Deadline=t.Deadline,
-            Deliverable=t.Deliverable,
-            Notes=t.Notes,
-            Engineer=getEngineer(t.AssignedEngineer),
-            Complexity=(EngineerExperience)t.Difficulty
+            Dependencies = getDependencies(t.ID),
+            Milestone = null,
+            ProjectedStart = t.ProjectedStart,
+            ProjectedEnd = getProjectedEnd(t),
+            ActualStart = t.ActualStart,
+            ActualEnd = t.ActualEnd,
+            Deadline = t.Deadline,
+            Deliverable = t.Deliverable,
+            Notes = t.Notes,
+            Engineer = getEngineer(t.AssignedEngineer),
+            Complexity =  (EngineerExperience?)t.Difficulty
 
 
         }) ;
@@ -71,7 +103,7 @@ public class TaskImplementation : ITask
         return null;
     }
 
-    private List<TaskInList?> getDependencies(int taskID)
+    private List<TaskInList> getDependencies(int taskID)
     {
         IEnumerable<int> taskIDs = _dal.Dependency.ReadAll(i=>i.DependentID==taskID).Select(i=>i.RequisiteID);
 
@@ -94,7 +126,7 @@ public class TaskImplementation : ITask
         catch (DalDoesNotExistException e) { throw new BlDoesNotExistException(e.Message, e); }
     }
 
-    private BO.TaskInList? getTaskInList(int taskID)
+    private BO.TaskInList getTaskInList(int taskID)
     {
         try { 
         DO.Task task = _dal.Task.Read(taskID)!;

@@ -7,6 +7,8 @@ using System;
 public class Task
 {
     public int ID { get; init; }
+
+    public string Name { get; init; }
     public String Descripiton { get; set; }
     public DateTime Created { get; init; }
     public Status? Status { get; set; }

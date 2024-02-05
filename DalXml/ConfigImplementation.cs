@@ -22,7 +22,7 @@ internal class ConfigImplementation : IConfig
     /// <exception cref="DALConfigDateNotSet"></exception>
     public DateTime GetProjectEnd()
     {
-        return Config.ProjectEnd ?? throw new DALConfigDateNotSet("project end was not set yes");
+        return Config.ProjectEnd ?? throw new DALConfigDateNotSet("project end was not set yet");
     }
 
 

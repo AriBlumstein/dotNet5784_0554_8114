@@ -97,7 +97,7 @@ public class TaskImplementation : BlApi.ITask
 
     }
 
-    public IEnumerable<BO.Task> ReadAll(Func<DO.Task, bool> filter = null)
+    public IEnumerable<BO.Task> ReadAll(Func<DO.Task, bool>? filter = null)
     {
         IEnumerable<DO.Task?> dTasks = _dal.Task.ReadAll(filter);
         

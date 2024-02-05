@@ -9,7 +9,7 @@ public interface ITask
     /// </summary>
     /// <param name="filter"></param>
     /// <returns><IEnumerable<BO.Task></BO.Task></returns>
-    IEnumerable<BO.Task> ReadAll(Func<DO.Task, bool> filter=null);
+    IEnumerable<BO.Task> ReadAll(Func<DO.Task, bool>? filter=null);
 
     /// <summary>
     /// Returns a task based on the id

@@ -55,7 +55,7 @@ internal class ConfigImplementation : IConfig
     {
         try
         {
-            GetProjectStart();
+            GetProjectEnd();
             throw new IllegalConfigAccessException("Cannot set start date after it was already set");
         }
         catch (Exception)
@@ -74,7 +74,7 @@ internal class ConfigImplementation : IConfig
     {
         try
         {
-            GetProjectEnd();
+            GetProjectStart();
             throw new IllegalConfigAccessException("Cannot set end date after it was already set");
         }
         catch(Exception) 

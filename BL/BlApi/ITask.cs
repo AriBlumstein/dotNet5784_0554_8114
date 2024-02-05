@@ -45,5 +45,5 @@ public interface ITask
     /// </summary>
     /// <param name="id"></param>
     /// <param name="startDate"></param>
-    void UpdateProjectedStartDate(int id, DateTime startDate);
+    BO.Task UpdateProjectedStartDate(int id, DateTime startDate);
 }

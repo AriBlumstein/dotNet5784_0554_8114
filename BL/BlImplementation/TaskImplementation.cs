@@ -1,15 +1,25 @@
 ﻿
 namespace BlImplementation;
+
+using BL;
 using BlApi;
 using BO;
 using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class TaskImplementation : BlApi.ITask
 {
     private DalApi.IDal _dal = DalApi.Factory.Get;
+
+    //helper private class
+    private class twoDate
+    {
+        public DateTime? Start { get; init; }
+        public DateTime? End { get; init; }
+    }
 
     public BO.Task Create(BO.Task task)
     {
@@ -19,32 +29,57 @@ public class TaskImplementation : BlApi.ITask
         try
         {
 
-            _dal.Task.Create(new DO.Task {
-                ID = task.ID,
-                Nickname = task.Name,
-                Description = task.Descripiton,
-                Milestone = task.Milestone != null,
-                Created = task.Created,
-                ProjectedStart = task.ProjectedStart,
-                ActualStart = task.ActualStart,
-                Deadline = task.Deadline,
-                Duration = getDurationDays(task),
-                ActualEnd = task.ActualEnd,
-                Deliverable = task.Deliverable,
-                Notes = task.Notes,
-                AssignedEngineer = task.Engineer != null ? task.Engineer.ID : null,
-                Difficulty = (Experience?) task.Complexity,
-            }) ;
+            _dal.Task.Create(getDOTask(task)) ;
         }
         catch (DalAlreadyExistsException e)
         {
             throw new BlAlreadyExistsException(e.Message, e);
         }
+
+
+        //add all the dependencies
+        IEnumerable<DO.Dependency> dependencies=task.Dependencies.Select(t=>new DO.Dependency { DependentID = task.ID, RequisiteID = t.ID });
+
+        foreach (DO.Dependency dep in dependencies)
+        {
+            _dal.Dependency.Create(dep);
+        }
+
         return task;
     }
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        DateTime projectStart;
+        try
+        {
+            projectStart = _dal.Config.GetProjectStart();
+            if(DateTime.Now >= projectStart)
+            {
+                throw new BlIllegalOperationException("cannot delete task during production");
+            }
+        }
+        catch (Exception) { }
+
+        //check that it isn't a requisite for other tasks
+        IEnumerable<DO.Dependency?> depdencies= _dal.Dependency.ReadAll(d=>d.RequisiteID == id);
+
+        if(depdencies.Count()!=0) 
+        {
+            throw new BlIllegalOperationException($"Cannot delete task {id} as other tasks are dependent on it ");
+
+        }
+
+        //try to delete
+
+        try
+        {
+            _dal.Task.Delete(id);
+        }
+        catch (DalDoesNotExistException e)
+        {
+            throw new BlDoesNotExistException(e.Message, e);
+        }
+
     }
     public BO.Task Read(int id)
     {
@@ -58,65 +93,97 @@ public class TaskImplementation : BlApi.ITask
             throw new BlDoesNotExistException(e.Message, e);
         }
 
-        return new BO.Task
-        {
-            ID = dTask.ID,
-            Name = dTask.Nickname,
-            Descripiton = dTask.Description,
-            Created = dTask.Created,
-            Status = getStatus(dTask),
-            Dependencies = getDependencies(dTask.ID),
-            Milestone = null,
-            ProjectedStart = dTask.ProjectedStart,
-            ProjectedEnd = getProjectedEnd(dTask),
-            ActualStart = dTask.ActualStart,
-            ActualEnd = dTask.ActualEnd,
-            Deadline = dTask.Deadline,
-            Deliverable = dTask.Deliverable,
-            Notes = dTask.Notes,
-            Engineer = getEngineer(dTask.AssignedEngineer),
-            Complexity = (EngineerExperience?)dTask.Difficulty
-
-
-        };
+        return getBOTask(dTask);
 
     }
 
     public IEnumerable<BO.Task> ReadAll(Func<DO.Task, bool> filter = null)
     {
         IEnumerable<DO.Task?> dTasks = _dal.Task.ReadAll(filter);
-        return dTasks.Select(t => new BO.Task
-        {
-            ID = t.ID,
-            Name = t.Nickname,
-            Descripiton = t.Description,
-            Created = t.Created,
-            Status = getStatus(t),
-            Dependencies = getDependencies(t.ID),
-            Milestone = null,
-            ProjectedStart = t.ProjectedStart,
-            ProjectedEnd = getProjectedEnd(t),
-            ActualStart = t.ActualStart,
-            ActualEnd = t.ActualEnd,
-            Deadline = t.Deadline,
-            Deliverable = t.Deliverable,
-            Notes = t.Notes,
-            Engineer = getEngineer(t.AssignedEngineer),
-            Complexity =  (EngineerExperience?)t.Difficulty
+        
+        return dTasks.Select(t => getBOTask(t));
 
-
-        }) ;
     }
 
 
     public BO.Task Update(BO.Task task)
     {
-        throw new NotImplementedException();
+        DateTime projectStart;
+        bool production = false;
+        try
+        {
+            projectStart = _dal.Config.GetProjectStart();
+            production = DateTime.Now >= projectStart;
+        }
+        catch (Exception) { }
+
+        if (!production)
+        {
+            validateTask(task);
+        }
+        else
+        {
+            validateTask(task); validateTaskProduction(task);
+        }
+        
+        DO.Task dTask = getDOTask(task);
+
+        try
+        {
+            _dal.Task.Update(dTask);
+        }
+        catch (DalDoesNotExistException e)
+        {
+            throw new BlDoesNotExistException(e.Message, e);
+        }
+
+        return task;
+
     }
 
-    public void UpdateProjectedStartDate(int id, DateTime startDate)
+   
+    public BO.Task UpdateProjectedStartDate(int id, DateTime startDate)
     {
-        throw new NotImplementedException();
+        DO.Task dTask;
+        try
+        {
+            dTask = _dal.Task.Read(id);
+        }
+        catch (DalDoesNotExistException e)
+        {
+            throw new BlDoesNotExistException(e.Message, e);
+        }
+
+        //get the dependencies
+        IEnumerable<DO.Dependency?> dependencies = _dal.Dependency.ReadAll(d=>d.DependentID == id);
+
+        IEnumerable<twoDate> dependenciesTimes;
+
+        try
+        {
+            //get the requisite tasks
+            dependenciesTimes = from dep in dependencies
+                            select new twoDate { Start = _dal.Task.Read(dep.RequisiteID).ProjectedStart, End = _dal.Task.Read(dep.RequisiteID).ActualEnd };
+        }
+        catch (DalDoesNotExistException e)
+        {
+            throw new BlDoesNotExistException(e.Message, e);
+        }
+
+        foreach (var dep in dependenciesTimes)
+        {
+            if (!dep.Start.HasValue || !dep.End.HasValue || startDate < dep.End)
+            {
+                throw new BlIllegalOperationException($"Cannot update task {id}'s start date");
+            }
+        }
+
+
+        //now we can do the update
+        BO.Task bTask = getBOTask(dTask);
+
+
+        return this.Update(bTask); // does the production checks, and returns the object itself
     }
 
     private Status? getStatus(DO.Task task)
@@ -200,9 +267,163 @@ public class TaskImplementation : BlApi.ITask
         return (task.ProjectedEnd!.Value - task.ProjectedStart!.Value).Days;
     }
 
+    /// <summary>
+    /// valdidate the properties of a task
+    /// </summary>
+    /// <param name="task"></param>
+    /// <exception cref="BlIllegalPropertyException"></exception>
+    /// <exception cref="BlNullPropertyException"></exception>
+
     private void validateTask(BO.Task task)
     {
-        Console.WriteLine("Not implemented");
+        if(task.ID<=0)
+        {
+            throw new BlIllegalPropertyException("ID must be positive");
+        }
+        if(task.Name==null)
+        {
+            throw new BlNullPropertyException("Must not be a null name");
+        }
+        if(task.Name.Length==0)
+        {
+            throw new BlIllegalPropertyException("Name must be none empty");
+        }
+
+        //we will now check for a circular dependency
+        IEnumerable<DO.Dependency> dependencies=task.Dependencies.Select(t=>new DO.Dependency {DependentID=task.ID, RequisiteID=t.ID});
+        foreach(DO.Dependency dep in dependencies)
+        {
+            if(checkCircularDependency(dep))
+            {
+                throw new BlIllegalPropertyException("Cannot creat a circular dependency");
+            }
+        }
+
+
     }
+
+    private bool checkCircularDependency(DO.Dependency item)
+    {
+
+        if (item.RequisiteID == item.DependentID)
+        {
+            return true;
+        }
+
+        bool checkCircularHelper(DO.Dependency item, int dependentID)
+        {
+            IEnumerable<DO.Dependency?> chain;
+            bool res;
+
+            //get all the dependencies where the requisite id of item was a dependent id
+            chain = _dal.Dependency.ReadAll().Where(i => i!.DependentID == item.RequisiteID);
+            foreach (var d in chain)
+            {
+                if (d.RequisiteID == dependentID)
+                    return true;
+                res = checkCircularHelper(d, dependentID);
+                if (res) return res;
+            }
+            return false;
+        }
+        return checkCircularHelper(item, item.DependentID);
+
+    }
+
+    /// <summary>
+    /// check the post start production does not update cor values of task
+    /// </summary>
+    /// <param name="task"></param>
+    /// <exception cref="BlDoesNotExistException"></exception>
+    /// <exception cref="BlIllegalOperationException"></exception>
+    private void validateTaskProduction(BO.Task task)
+    {
+        DO.Task dTask;
+        try
+        {
+            dTask = _dal.Task.Read(task.ID);
+        }
+        catch(DalDoesNotExistException e)
+        {
+            throw new BlDoesNotExistException(e.Message, e);
+        }
+
+        //if any of the non-textual items changed, throw an error
+
+        if (
+            dTask.Created!=task.Created ||
+            dTask.Deadline!=task.Deadline ||
+            dTask.ProjectedStart!=task.ProjectedStart ||
+            dTask.ActualStart!=task.ActualStart ||
+            dTask.ActualEnd!=task.ActualEnd ||
+            dTask.AssignedEngineer!=task.Engineer.ID ||
+            dTask.Difficulty != (Experience?)task.Complexity 
+            )
+        {
+            throw new BlIllegalOperationException("Cannot manipulate core data of task after production started");
+        }
+
+    }
+
+
+    /// <summary>
+    /// helper method to creat the DO.Task from the BO.Task
+    /// </summary>
+    /// <param name="task"></param>
+    /// <returns>a DO.Task</returns>
+
+    private DO.Task getDOTask(BO.Task task)
+    {
+        return new DO.Task
+        {
+            ID = task.ID,
+            Nickname = task.Name,
+            Description = task.Descripiton,
+            Milestone = task.Milestone != null,
+            Created = task.Created,
+            ProjectedStart = task.ProjectedStart,
+            ActualStart = task.ActualStart,
+            Deadline = task.Deadline,
+            Duration = getDurationDays(task),
+            ActualEnd = task.ActualEnd,
+            Deliverable = task.Deliverable,
+            Notes = task.Notes,
+            AssignedEngineer = task.Engineer != null ? task.Engineer.ID : null,
+            Difficulty = (Experience?)task.Complexity,
+        };
+    }
+
+
+
+    /// <summary>
+    /// helper method that gets the BO.Task from the DO.Taks
+    /// </summary>
+    /// <param name="task"></param>
+    /// <returns></returns>
+    private BO.Task getBOTask(DO.Task task)
+    {
+        return new BO.Task
+        {
+            ID = task.ID,
+            Name = task.Nickname,
+            Descripiton = task.Description,
+            Created = task.Created,
+            Status = getStatus(task),
+            Dependencies = getDependencies(task.ID),
+            Milestone = null,
+            ProjectedStart = task.ProjectedStart,
+            ProjectedEnd = getProjectedEnd(task),
+            ActualStart = task.ActualStart,
+            ActualEnd = task.ActualEnd,
+            Deadline = task.Deadline,
+            Deliverable = task.Deliverable,
+            Notes = task.Notes,
+            Engineer = getEngineer(task.AssignedEngineer),
+            Complexity = (EngineerExperience?)task.Difficulty
+        };
+
+    }
+
+
 }
 

@@ -388,7 +388,7 @@ public class TaskImplementation : BlApi.ITask
             ID = task.ID,
             Nickname = task.Name,
             Description = task.Descripiton,
-            Milestone = task.Milestone != null,
+            Milestone = false,
             Created = task.Created,
             ProjectedStart = task.ProjectedStart,
             ActualStart = task.ActualStart,

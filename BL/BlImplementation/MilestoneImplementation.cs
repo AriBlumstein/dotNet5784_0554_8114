@@ -2,12 +2,18 @@
 
 using BlApi;
 using BO;
+using DalApi;
 
 namespace BlImplementation;
 
 public class MilestoneImplementation : IMilestone
 {
-    private DalApi.IDal _dal = DalApi.Factory.Get;
+
+
+    private static DalApi.IDal _dal = DalApi.Factory.Get;
+
+    Lazy<int> _numTasks = new Lazy<int>(() => _dal.Task.ReadAll().Count()); /// the milestone tasks will be the last tasks in the database, but we want them to be numbered from 0 when we deal with them
+
     public void CreateProjectSchedule()
     {
         throw new NotImplementedException();

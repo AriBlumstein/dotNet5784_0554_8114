@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-public class EngineerImplementation : IEngineer
+internal class EngineerImplementation : IEngineer
 {
     private DalApi.IDal _dal = DalApi.Factory.Get;
     public BO.Engineer Create(BO.Engineer engineer)

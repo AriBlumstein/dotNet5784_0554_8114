@@ -1,12 +1,13 @@
 ﻿
 
+
+
+namespace BlImplementation;
 using BlApi;
 using BO;
 using DalApi;
 
-namespace BlImplementation;
-
-public class MilestoneImplementation : IMilestone
+internal class MilestoneImplementation : IMilestone
 {
 
 

@@ -13,4 +13,6 @@ public class Engineer
     public double Cost { get; set; }
     public TaskInEngineer? Task { get; set; }
 
+    public override string ToString() => this.ToStringProperty();
+   
 }

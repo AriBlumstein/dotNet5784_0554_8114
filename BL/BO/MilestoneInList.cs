@@ -14,4 +14,6 @@ public class MilestoneInList
 
     public Double? Progress { get; init; }
 
+    public override string ToString() => this.ToStringProperty();
+
 }

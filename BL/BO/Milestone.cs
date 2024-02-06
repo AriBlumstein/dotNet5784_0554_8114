@@ -14,8 +14,8 @@ public class Milestone
     public Double? Progress { get; set; }
     public String? Notes { get; set; }
 
-    public List<TaskInList> Dependencies{ get; set; } 
+    public List<TaskInList> Dependencies{ get; set; }
 
-
+    public override string ToString() => this.ToStringProperty();
 
 }

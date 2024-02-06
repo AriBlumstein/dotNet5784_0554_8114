@@ -10,5 +10,7 @@ public class TaskInList
 
     public Status? Status { get; init; }
 
+    public override string ToString() => this.ToStringProperty();
+
 
 }

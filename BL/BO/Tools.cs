@@ -11,7 +11,7 @@ public static class Tools
     public static String ToStringProperty<T>(this T t, int indentationLevel=0)
     {
         String indentString = string.Concat(Enumerable.Repeat("\t", indentationLevel));
-        String str = indentString;
+        String str = "";
 
         str+=t.GetType().Name+":";
 
@@ -27,7 +27,8 @@ public static class Tools
                 {
                     continue;
                 }
-                str += "\n" + indentString + "Dependent Tasks:";
+
+                str += "\n" + item.Name +":";
 
                 foreach (var listItem in list)
                 {
@@ -36,7 +37,7 @@ public static class Tools
             }
             else if ((item.PropertyType == typeof(BO.MilestoneInTask) || item.PropertyType == typeof(BO.EngineerInTask) || item.PropertyType == typeof(BO.EngineerInTask)) && item.GetValue(t) != null)
             {
-                str += "\n" + item.GetValue(t).ToStringProperty(indentationLevel + 1);
+                str += "\n" + item.Name + "\n\t" + item.GetValue(t).ToStringProperty(indentationLevel + 1);
             }
             else
             {

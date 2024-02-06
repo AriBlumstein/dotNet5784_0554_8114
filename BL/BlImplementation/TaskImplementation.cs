@@ -23,6 +23,18 @@ public class TaskImplementation : BlApi.ITask
 
     public BO.Task Create(BO.Task task)
     {
+        //see if we are in production
+        try
+        {
+            _dal.Config.GetProjectStart();
+            throw new BlIllegalOperationException("Cannot add a task during production");
+        }
+        catch(Exception)
+        {
+
+        }
+
+        //we can now add a task
         validateTask(task);
 
         //try adding it to the database
@@ -49,14 +61,13 @@ public class TaskImplementation : BlApi.ITask
     }
     public void Delete(int id)
     {
-        DateTime projectStart;
+       //see if we are in production
         try
         {
-            projectStart = _dal.Config.GetProjectStart();
-            if(DateTime.Now >= projectStart)
-            {
-                throw new BlIllegalOperationException("cannot delete task during production");
-            }
+           _dal.Config.GetProjectStart();
+            
+           throw new BlIllegalOperationException("cannot delete task during production");
+            
         }
         catch (Exception) { }
 
@@ -108,12 +119,12 @@ public class TaskImplementation : BlApi.ITask
 
     public BO.Task Update(BO.Task task)
     {
-        DateTime projectStart;
+        //see if we are in production
         bool production = false;
         try
         {
-            projectStart = _dal.Config.GetProjectStart();
-            production = DateTime.Now >= projectStart;
+            _dal.Config.GetProjectStart();
+            production = true;
         }
         catch (Exception) { }
 
@@ -355,9 +366,7 @@ public class TaskImplementation : BlApi.ITask
             dTask.Deadline!=task.Deadline ||
             dTask.ProjectedStart!=task.ProjectedStart ||
             dTask.ActualStart!=task.ActualStart ||
-            dTask.ActualEnd!=task.ActualEnd ||
-            dTask.AssignedEngineer!=task.Engineer.ID ||
-            dTask.Difficulty != (Experience?)task.Complexity 
+            dTask.ActualEnd!=task.ActualEnd 
             )
         {
             throw new BlIllegalOperationException("Cannot manipulate core data of task after production started");

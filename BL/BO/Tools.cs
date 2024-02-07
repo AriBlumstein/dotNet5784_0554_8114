@@ -37,7 +37,7 @@ public static class Tools
             }
             else if ((item.PropertyType == typeof(BO.MilestoneInTask) || item.PropertyType == typeof(BO.EngineerInTask) || item.PropertyType == typeof(BO.EngineerInTask)) && item.GetValue(t) != null)
             {
-                str += "\n" + item.Name + "\n\t" + item.GetValue(t).ToStringProperty(indentationLevel + 1);
+                str += "\n" + item.Name + ":" + "\n\t" + item.GetValue(t).ToStringProperty(indentationLevel + 1);
             }
             else
             {

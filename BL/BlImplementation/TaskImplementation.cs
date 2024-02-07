@@ -345,7 +345,7 @@ internal class TaskImplementation : BlApi.ITask
             }
             catch (DalDoesNotExistException ex) 
             {
-                throw new BlDoesNotExistException(ex.Message,ex)
+                throw new BlDoesNotExistException(ex.Message, ex);
             }
         }
 

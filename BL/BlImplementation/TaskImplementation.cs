@@ -105,6 +105,7 @@ internal class TaskImplementation : BlApi.ITask
         }
 
         return getBOTask(dTask);
+        
 
     }
 
@@ -148,6 +149,22 @@ internal class TaskImplementation : BlApi.ITask
             throw new BlDoesNotExistException(e.Message, e);
         }
 
+        //we will now add the added dependencies if we are not in production
+        if (!production)
+        {
+            IEnumerable<DO.Dependency> dependencies = task.Dependencies.Select(d=>new DO.Dependency { DependentID=task.ID, RequisiteID=d.ID})
+                                                                                .Where
+                                                                                    (d=> (_dal.Dependency.Read(cur=> cur.DependentID==d.DependentID
+                                                                                     && cur.RequisiteID==d.RequisiteID))==null); //the dependencies that did not yet exist
+
+            foreach (DO.Dependency dep in dependencies)
+                _dal.Dependency.Create(dep);
+        }
+
+
+      
+
+
         return task;
 
     }
@@ -174,8 +191,8 @@ internal class TaskImplementation : BlApi.ITask
         {
             //get the requisite tasks dates
             dependenciesTimes = from dep in dependencies
-                                let rTask=_dal.Task.Read(dep.RequisiteID) //read the task that we are dependent on
-                                select new twoDate { Start = rTask.ProjectedStart, End = rTask.ActualEnd }; //get the dates we need to check
+                                let rTask=this.Read(dep.RequisiteID) //read the task that we are dependent on
+                                select new twoDate { Start = rTask.ProjectedStart, End = rTask.ProjectedEnd }; //get the dates we need to check
         }
         catch (DalDoesNotExistException e)
         {
@@ -194,6 +211,7 @@ internal class TaskImplementation : BlApi.ITask
 
         //now we can do the update
         BO.Task bTask = getBOTask(dTask);
+        bTask.ProjectedStart=startDate;
 
 
         return this.Update(bTask); // does the production checks, and returns the object itself
@@ -281,7 +299,7 @@ internal class TaskImplementation : BlApi.ITask
         bool projectedStartNull = !task.ProjectedStart.HasValue;
         bool actualStartDateNull = !task.ActualStart.HasValue;
         bool durationNull = !task.Duration.HasValue;
-        if (projectedStartNull && actualStartDateNull && durationNull) return null;
+        if (projectedStartNull && actualStartDateNull) return null;
         if (!projectedStartNull && !durationNull && actualStartDateNull) return task.ProjectedStart!.Value.AddDays(task.Duration!.Value);
         if (!actualStartDateNull && !durationNull && projectedStartNull) return task.ActualStart!.Value.AddDays(task.Duration!.Value);
         //Both exist and we have to take the max
@@ -293,25 +311,7 @@ internal class TaskImplementation : BlApi.ITask
     }
 
 
-    /// <summary>
-    /// helper method that calculates duration
-    /// </summary>
-    /// <param name="task"></param>
-    /// <returns>duration?</returns>
-    private int? getDurationDays(BO.Task task)
-    {
-        bool actualStartNull = !task.ActualStart.HasValue;
-        bool projectedStartNull = !task.ProjectedStart.HasValue;
-        bool projectedEndNull = !task.ProjectedEnd.HasValue;
-        if ((actualStartNull && projectedStartNull) || projectedEndNull) return null;
-        if (!projectedStartNull && actualStartNull) return (task.ProjectedEnd!.Value - task.ProjectedStart!.Value).Days;
-        if (projectedStartNull && !actualStartNull) return (task.ProjectedEnd!.Value - task.ActualStart!.Value).Days;
-        if ((task.ProjectedEnd!.Value - task.ActualStart!.Value).Days >= (task.ProjectedEnd!.Value - task.ProjectedStart!.Value).Days)
-        {
-            return (task.ProjectedEnd!.Value - task.ActualStart!.Value).Days;
-        }
-        return (task.ProjectedEnd!.Value - task.ProjectedStart!.Value).Days;
-    }
+  
 
     /// <summary>
     /// valdidate the properties of a task
@@ -445,10 +445,24 @@ internal class TaskImplementation : BlApi.ITask
             dTask.Deadline!=task.Deadline ||
             dTask.ProjectedStart!=task.ProjectedStart ||
             dTask.ActualStart!=task.ActualStart ||
-            dTask.ActualEnd!=task.ActualEnd 
+            dTask.ActualEnd!=task.ActualEnd ||
+            dTask.Duration!=task.Duration
+       
             )
         {
             throw new BlIllegalOperationException("Cannot manipulate core data of task after production started");
+        }
+
+        //check that all the dependencies exist already
+        if(task.Dependencies!=null)
+        {
+            foreach(var dep in task.Dependencies)
+            {
+                if (_dal.Dependency.Read(d=> d.RequisiteID==dep.ID && d.DependentID==task.ID)==null) // this dependency did not exist yet, we dont want to add another dependency
+                {
+                    throw new BlIllegalOperationException("Cannot create new dependencies during production");
+                }
+            }
         }
 
     }
@@ -472,12 +486,15 @@ internal class TaskImplementation : BlApi.ITask
             ProjectedStart = task.ProjectedStart,
             ActualStart = task.ActualStart,
             Deadline = task.Deadline,
-            Duration = getDurationDays(task),
+            Duration = task.Duration,
             ActualEnd = task.ActualEnd,
             Deliverable = task.Deliverable,
             Notes = task.Notes,
             AssignedEngineer = task.Engineer != null ? task.Engineer.ID : null,
             Difficulty = (Experience?)task.Complexity,
+
+            
+           
         };
     }
 
@@ -507,7 +524,9 @@ internal class TaskImplementation : BlApi.ITask
             Deliverable = task.Deliverable,
             Notes = task.Notes,
             Engineer = getEngineer(task.AssignedEngineer),
-            Complexity = (EngineerExperience?)task.Difficulty
+            Complexity = (EngineerExperience?)task.Difficulty,
+            Duration= task.Duration
+           
         };
 
     }

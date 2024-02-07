@@ -17,16 +17,16 @@ internal class MilestoneImplementation : IMilestone
 
     public void CreateProjectSchedule()
     {
-        throw new NotImplementedException();
+       
     }
 
     public Milestone Read(int id)
     {
-        throw new NotImplementedException();
+        return null;
     }
 
     public Milestone Update(int id)
     {
-        throw new NotImplementedException();
+        return null;
     }
 }

@@ -15,7 +15,7 @@ public class Task
     public List<TaskInList> Dependencies { get; set; }
     public MilestoneInTask? Milestone {get; set;}
     public DateTime? ProjectedStart { get; set; }
-
+    public int? Duration { get; set; }
     public DateTime? ActualStart { get; set; }
     public DateTime? ProjectedEnd { get; set; }
     public DateTime? ActualEnd { get; set; }

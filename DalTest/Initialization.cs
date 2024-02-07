@@ -17,17 +17,6 @@ public static class Initialization
     private static readonly Random s_rand= new ();
     
 
-    /// <summary>
-    /// initiailize our project start and ends
-    /// </summary>
-    private static void initConfig()
-    {
-        s_dal!.Config.SetProjectStart(DateTime.Now.AddDays(s_rand.Next(1, 60)));
-
-        s_dal!.Config.SetProjectEnd(s_dal!.Config.GetProjectStart().AddMonths(s_rand.Next(18,37)));
-    }
-   
-
 
     /// <summary>
     /// get a random experience level
@@ -46,7 +35,7 @@ public static class Initialization
     private static void createTasks() {
 
 
-        int numDays = (s_dal!.Config.GetProjectEnd() - s_dal!.Config.GetProjectStart()).Days;
+        
 
 
         string[] names = new string[]
@@ -107,26 +96,13 @@ public static class Initialization
             //get a create random date
             DateTime create = DateTime.Now.AddDays(-(s_rand.Next(0, 100)));
 
-            //make random start and ends to this task
-            DateTime projectedStart;
-            DateTime deadline;
-
-
-            do
-            {                                                                     
-                projectedStart = s_dal!.Config.GetProjectStart().AddDays(s_rand.Next(1, numDays));
-                deadline = s_dal!.Config.GetProjectEnd().AddDays(-(s_rand.Next(1, numDays)));
-                                                          
-            }      //make sure the start is before the deadline
-            while (projectedStart > deadline);
-            // the logic here prevents projectedStarts before the projectStart and projectedEnds after the projectEnd
-
+         
 
             //get the duration
-            int duration = (deadline - projectedStart).Days;
+            int duration = s_rand.Next(1, 100);
 
             //create the task, the id can be -1, because we are here coming from the "business layer simulation" and can update later
-            s_dal!.Task.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, create, projectedStart, null, deadline, duration, null, null, null, null, e));
+            s_dal!.Task.Create(new Task(-1, name, descriptions[Array.IndexOf(names, name)], false, create, null, null, null, duration, null, null, null, null, e));
         }
 
        
@@ -178,14 +154,18 @@ public static class Initialization
     /// </summary>
     private static void createDependencies() {
 
+        
         // for the sake of making 2 tasks be dependent on the same things, we will pick the 2 tasks with the latest projected start
         // as not to get stuck with picking one that cannot be a dependent on anything
 
         int latestTask=-1;
-        DateTime? latestTime=s_dal!.Config.GetProjectStart();
+        //DateTime? latestTime=s_dal!.Config.GetProjectStart();
 
+        
         IEnumerable<DO.Task> tasks = s_dal!.Task!.ReadAll().ToList()!;
         List<int> taskIDs = tasks.Select(tsk => tsk.ID).ToList();
+
+        /*
 
         foreach(var cur in tasks)
         {
@@ -235,10 +215,12 @@ public static class Initialization
             s_dal!.Dependency.Create(_firstD);
             s_dal!.Dependency.Create(_secondD);
         } 
+
+        */
        
 
         // create the remaining random dependencies 
-        for (int i = 0; i < 34; i++)
+        for (int i = 0; i < 40; i++)
         {
             //get random task numbers
             int rand1 = s_rand.Next(0, tasks.Count()), rand2 =s_rand.Next(0,tasks.Count());
@@ -274,9 +256,6 @@ public static class Initialization
        s_dal = Factory.Get;
         
         s_dal.Reset(); //reset the entire database
-
-        initConfig();
-         
         
         createEngineers();
      

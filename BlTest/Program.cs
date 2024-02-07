@@ -1,18 +1,22 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-BO.Task task = new BO.Task { ID = 2, Name="Eliyahu", Descripiton="Eliyahu", Created=DateTime.Now };
+using BlApi;
+using DalApi;
 
-List<BO.TaskInList> deps= new List<BO.TaskInList>();
+DalTest.Initialization.Do();
 
-deps.Add(new BO.TaskInList { Name = "Ariel", Description = "Ariel", ID = 2 });
+IBl _bl = BlApi.Factory.Get();
 
-deps.Add(new BO.TaskInList { Name = "kkk" });
-
-task.Dependencies = deps;
+IDal _dal = DalApi.Factory.Get;
 
 
-BO.EngineerInTask en=new BO.EngineerInTask { ID = 2, Name = "grape" };
 
-task.Engineer = en;
 
-Console.WriteLine(task);
+_bl.Schedular.createSchecule(DateTime.Now);
+
+
+foreach (var task in _dal.Task.ReadAll())
+{
+    Console.WriteLine(task);
+    Console.WriteLine();
+}

@@ -47,6 +47,6 @@ public static class Tools
 
 
         }
-        return str;
+        return str+"\n";
     }
 }

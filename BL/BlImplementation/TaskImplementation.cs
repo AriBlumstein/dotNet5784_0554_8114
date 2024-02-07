@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-public class TaskImplementation : BlApi.ITask
+internal class TaskImplementation : BlApi.ITask
 {
     private DalApi.IDal _dal = DalApi.Factory.Get;
 

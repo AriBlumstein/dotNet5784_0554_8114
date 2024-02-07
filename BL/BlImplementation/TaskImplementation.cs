@@ -35,7 +35,7 @@ public class TaskImplementation : BlApi.ITask
         }
 
         //we can now add a task
-        validateTask(task);
+        validateTask(task); //check the the task is valid
 
         //try adding it to the database
         try
@@ -49,7 +49,7 @@ public class TaskImplementation : BlApi.ITask
         }
 
 
-        //add all the dependencies
+        //add all the dependencies, we can as validTask checks for the cicular dependency problem
         IEnumerable<DO.Dependency> dependencies=task.Dependencies.Select(t=>new DO.Dependency { DependentID = task.ID, RequisiteID = t.ID });
 
         foreach (DO.Dependency dep in dependencies)
@@ -76,7 +76,7 @@ public class TaskImplementation : BlApi.ITask
 
         if(depdencies.Count()!=0) 
         {
-            throw new BlIllegalOperationException($"Cannot delete task {id} as other tasks are dependent on it ");
+            throw new BlIllegalOperationException($"Cannot delete task {id} as {depdencies.Count()} tasks are dependent on it ");
 
         }
 
@@ -110,10 +110,7 @@ public class TaskImplementation : BlApi.ITask
 
     public IEnumerable<BO.Task> ReadAll(Func<DO.Task, bool>? filter = null)
     {
-        IEnumerable<DO.Task?> dTasks = _dal.Task.ReadAll(filter);
-        
-        return dTasks.Select(t => getBOTask(t));
-
+       return _dal.Task.ReadAll(filter).Select(t=>getBOTask(t));
     }
 
 
@@ -128,17 +125,20 @@ public class TaskImplementation : BlApi.ITask
         }
         catch (Exception) { }
 
+        //if we are not in production we can update the dates
         if (!production)
         {
             validateTask(task);
         }
-        else
+        else  //we cannot update the dates
         {
             validateTask(task); validateTaskProduction(task);
         }
         
         DO.Task dTask = getDOTask(task);
 
+
+        //try to update
         try
         {
             _dal.Task.Update(dTask);
@@ -172,15 +172,17 @@ public class TaskImplementation : BlApi.ITask
 
         try
         {
-            //get the requisite tasks
+            //get the requisite tasks dates
             dependenciesTimes = from dep in dependencies
-                            select new twoDate { Start = _dal.Task.Read(dep.RequisiteID).ProjectedStart, End = _dal.Task.Read(dep.RequisiteID).ActualEnd };
+                                let rTask=_dal.Task.Read(dep.RequisiteID) //read the task that we are dependent on
+                                select new twoDate { Start = rTask.ProjectedStart, End = rTask.ActualEnd }; //get the dates we need to check
         }
         catch (DalDoesNotExistException e)
         {
             throw new BlDoesNotExistException(e.Message, e);
         }
 
+        //check that the times for any requisite task are well defined
         foreach (var dep in dependenciesTimes)
         {
             if (!dep.Start.HasValue || !dep.End.HasValue || startDate < dep.End)
@@ -197,6 +199,12 @@ public class TaskImplementation : BlApi.ITask
         return this.Update(bTask); // does the production checks, and returns the object itself
     }
 
+
+    /// <summary>
+    /// private method that helps us get the status of a task
+    /// </summary>
+    /// <param name="task"></param>
+    /// <returns>Status?</returns>
     private Status? getStatus(DO.Task task)
     {
         if (task.ProjectedStart == null) return Status.Unscheduled;
@@ -206,14 +214,22 @@ public class TaskImplementation : BlApi.ITask
         return null;
     }
 
+
+    /// <summary>
+    /// helper method to get the dependencies of a task
+    /// </summary>
+    /// <param name="taskID"></param>
+    /// <returns></returns>
     private List<TaskInList> getDependencies(int taskID)
     {
-        IEnumerable<int> taskIDs = _dal.Dependency.ReadAll(i=>i.DependentID==taskID).Select(i=>i.RequisiteID);
+        IEnumerable<TaskInList> dependecies = _dal.Dependency.ReadAll(i=>i.DependentID==taskID).Select(i=>i.RequisiteID).Select(id=>getTaskInList(id));
 
+        return dependecies.ToList();
 
-        return taskIDs.Select(i=>getTaskInList(i)).ToList();
+      
     }
 
+    //helper method to get the assigned engineer
     private BO.EngineerInTask? getEngineer(int? engineerID)
     {
         if (engineerID == null) return null;
@@ -229,11 +245,18 @@ public class TaskImplementation : BlApi.ITask
         catch (DalDoesNotExistException e) { throw new BlDoesNotExistException(e.Message, e); }
     }
 
+    /// <summary>
+    /// helper method to create a TaskInList
+    /// </summary>
+    /// <param name="taskID"></param>
+    /// <returns>TaskInList</returns>
+    /// <exception cref="BlDoesNotExistException"></exception>
+
     private BO.TaskInList getTaskInList(int taskID)
     {
         try { 
         DO.Task task = _dal.Task.Read(taskID)!;
-        return new BO.TaskInList
+            return new BO.TaskInList
             {
                 ID = task.ID,
                 Description = task.Description,
@@ -247,6 +270,12 @@ public class TaskImplementation : BlApi.ITask
         
     }
 
+
+  /// <summary>
+  /// helper method that calculates projectedEnd
+  /// </summary>
+  /// <param name="task"></param>
+  /// <returns>DateTime?</returns>
     private DateTime? getProjectedEnd(DO.Task task)
     {
         bool projectedStartNull = !task.ProjectedStart.HasValue;
@@ -263,6 +292,12 @@ public class TaskImplementation : BlApi.ITask
         return task.ActualStart!.Value.AddDays(task.Duration!.Value);
     }
 
+
+    /// <summary>
+    /// helper method that calculates duration
+    /// </summary>
+    /// <param name="task"></param>
+    /// <returns>duration?</returns>
     private int? getDurationDays(BO.Task task)
     {
         bool actualStartNull = !task.ActualStart.HasValue;
@@ -313,31 +348,39 @@ public class TaskImplementation : BlApi.ITask
 
     }
 
+    /// <summary>
+    /// method checks if we insert a dependecy will we have a circular dependency because of it
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>true if there would be a circular dependency</returns>
     private bool checkCircularDependency(DO.Dependency item)
     {
 
         if (item.RequisiteID == item.DependentID)
         {
-            return true;
+            return true;            // simplest circular dependency
         }
 
-        bool checkCircularHelper(DO.Dependency item, int dependentID)
+        bool checkCircularHelper(DO.Dependency item, int dependentID)  //helper inner fucntion
         {
             IEnumerable<DO.Dependency?> chain;
             bool res;
 
             //get all the dependencies where the requisite id of item was a dependent id
-            chain = _dal.Dependency.ReadAll().Where(i => i!.DependentID == item.RequisiteID);
+            chain = from cur in _dal.Dependency.ReadAll(d=>d.DependentID==item.RequisiteID) //finding where our current requisite id is a dependent id
+                    select cur; //find all the 
+            
             foreach (var d in chain)
             {
-                if (d.RequisiteID == dependentID)
+                if (d.RequisiteID == dependentID) //if the requisite in it is the dependent id then we have a circular depdency
                     return true;
-                res = checkCircularHelper(d, dependentID);
-                if (res) return res;
+                res = checkCircularHelper(d, dependentID);  //check the requisite ids for for the requisite id in this dependency
+                if (res) return res; // if we returned true here, return true, it was circular
             }
-            return false;
+            return false; //we have checked all possibilities, it won't create a circular dependency
         }
-        return checkCircularHelper(item, item.DependentID);
+
+        return checkCircularHelper(item, item.DependentID); // start the recursive calls
 
     }
 

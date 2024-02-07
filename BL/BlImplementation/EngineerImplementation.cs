@@ -31,8 +31,13 @@ internal class EngineerImplementation : IEngineer
 
     public void Delete(BO.Engineer engineer)
     {
-        IEnumerable<DO.Task?> completedTasks = _dal.Task.ReadAll(t => t.AssignedEngineer == engineer.ID && t.ActualEnd <= DateTime.Now); //here we have the tasks the engineer worked on previously
+        //check if there are no completed tasks
+        IEnumerable<DO.Task?> completedTasks = from task in _dal.Task.ReadAll(t => t.AssignedEngineer == engineer.ID)
+                                               where task.ActualEnd<=DateTime.Now
+                                               select task;  // return the completed tasks
 
+       
+        
         if (completedTasks.Count() != 0) //there exists a task
         {
             throw new BlIllegalOperationException($"Engineer with ID {engineer.ID} cannot be deleted as he worked on tasks in the past");
@@ -77,6 +82,7 @@ internal class EngineerImplementation : IEngineer
         IEnumerable<DO.Engineer?> engineers = _dal.Engineer.ReadAll(filter); //find the engineers that meet the condition
 
         IEnumerable<BO.Engineer> bEngineers = from engineer in engineers
+                                              let assignedTask = TaskSearcher(engineer.ID)
                                               select new BO.Engineer
                                               {
                                                   ID = engineer.ID,
@@ -84,7 +90,7 @@ internal class EngineerImplementation : IEngineer
                                                   Email=engineer.Email,
                                                   Level = (EngineerExperience)engineer.Exp, //this cast is lossless as the enums contain the same values
                                                   Cost = engineer.Cost,
-                                                  Task = TaskSearcher(engineer.ID) //find the task the engineer is assigned, create TaskInEngineer instance
+                                                  Task = assignedTask 
                                               };
         return bEngineers;
                                             
@@ -112,7 +118,7 @@ internal class EngineerImplementation : IEngineer
     public BO.TaskInEngineer? TaskSearcher(int engineerId) 
     {
         //find the task that this engineer is assigned to 
-        DO.Task? task=_dal.Task.Read(t => t.AssignedEngineer == engineerId && (t.ActualEnd==null||t.ActualEnd>=DateTime.Now)); //only find the tasks that have not yet been completed
+        DO.Task? task=_dal.Task.Read(t => t.AssignedEngineer == engineerId && (t.ActualEnd==null||t.ActualEnd>=DateTime.Now)); //only find the tasks that have not yet been completed, if completed, I do not want it to show up as the task the engineer is assigned to
 
         if (task != null)
             return new TaskInEngineer { ID = task.ID, Alias = task.Nickname };

@@ -335,10 +335,21 @@ internal class TaskImplementation : BlApi.ITask
             throw new BlIllegalPropertyException("Name must be none empty");
         }
 
-        //we will now check for a circular dependency
+        
+
+        //we will now check for a circular dependency and that the tasks we want to make as a dependency exist
         IEnumerable<DO.Dependency> dependencies=task.Dependencies.Select(t=>new DO.Dependency {DependentID=task.ID, RequisiteID=t.ID});
         foreach(DO.Dependency dep in dependencies)
         {
+            try
+            {
+                _dal.Task.Read(dep.RequisiteID);
+            }
+            catch (DalDoesNotExistException e)
+            {
+                throw new BlDoesNotExistException(e.Message, e); //the task we tried to to make as a dependency did not exist
+            }
+            
             if(checkCircularDependency(dep))
             {
                 throw new BlIllegalPropertyException("Cannot creat a circular dependency");

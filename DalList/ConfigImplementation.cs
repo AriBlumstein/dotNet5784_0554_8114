@@ -24,9 +24,9 @@ internal class ConfigImplementation: IConfig
 
 
     public DateTime GetProjectStart()
-    { return DataSource.Config.projectStart ?? throw new Exception("no start time"); }
+    { return DataSource.Config.projectStart ?? throw new DALConfigDateNotSet("no start time"); }
     public DateTime GetProjectEnd()
-    { return DataSource.Config.projectEnd ?? throw new Exception("no end time"); }
+    { return DataSource.Config.projectEnd ?? throw new DALConfigDateNotSet("no end time"); }
 
     //reset the project
     public void Reset()

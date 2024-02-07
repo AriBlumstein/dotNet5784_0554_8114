@@ -335,15 +335,28 @@ internal class TaskImplementation : BlApi.ITask
             throw new BlIllegalPropertyException("Name must be none empty");
         }
 
-        //check that the engineer exists
+        //check that the engineer exists and that he has the proper skill level
 
         if(task.Engineer!=null)
         {
             try
             {
-                _dal.Engineer.Read(task.Engineer.ID);
+                DO.Engineer dEngineer = _dal.Engineer.Read(task.Engineer.ID)!;
+
+                //see that we have a complexity
+                if(task.Complexity==null)
+                {
+                    throw new BlIllegalOperationException($"Assign a complexity to task {task.ID} before assigning an engineer");
+                }
+
+                //the task is too complex for the engineer
+                if(task.Complexity>(EngineerExperience)dEngineer!.Exp) 
+                {
+                    throw new BlIllegalOperationException($"task {task.ID} is too complex for engineer {dEngineer.ID}");
+                }
+
             }
-            catch (DalDoesNotExistException ex) 
+            catch (DalDoesNotExistException ex) //the engineer didn't exist
             {
                 throw new BlDoesNotExistException(ex.Message, ex);
             }

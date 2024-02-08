@@ -35,7 +35,7 @@ public static class Tools
                     str += "\n" + listItem.ToStringProperty(indentationLevel + 1);
                 }
             }
-            else if ((item.PropertyType == typeof(BO.MilestoneInTask) || item.PropertyType == typeof(BO.EngineerInTask) || item.PropertyType == typeof(BO.EngineerInTask)) && item.GetValue(t) != null)
+            else if ((item.PropertyType == typeof(BO.MilestoneInTask) || item.PropertyType == typeof(BO.EngineerInTask) || item.PropertyType == typeof(BO.TaskInEngineer)) && item.GetValue(t) != null)
             {
                 str += "\n" + item.Name + ":" + "\n\t" + item.GetValue(t).ToStringProperty(indentationLevel + 1);
             }

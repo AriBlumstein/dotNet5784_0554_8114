@@ -12,7 +12,7 @@ IDal _dal = DalApi.Factory.Get;
 
 
 
-_bl.Schedular.createSchecule(DateTime.Now);
+_bl.Schedular.createSchedule(DateTime.Now.AddDays(100));
 
 
 foreach (var task in _dal.Task.ReadAll())

@@ -35,7 +35,7 @@ public interface IEngineer
     /// delete an engineer, admin view
     /// </summary>
     /// <param name="engineer"></param>
-    void Delete(BO.Engineer engineer);
+    void Delete(int id);
 
     /// <summary>
     /// update an Engineer, admin view

@@ -6,7 +6,7 @@ using BlApi;
 using BO;
 using System.Reflection;
 
-public static class Progarm
+public static class Program
 {
     static readonly IBl s_bl = BlApi.Factory.Get();
 

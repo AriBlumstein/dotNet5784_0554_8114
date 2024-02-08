@@ -104,7 +104,7 @@ internal class SimpleSchedularImplementation : ISchedular
     /// <returns>a sorted list of ids for our automatic schedular</returns>
     private IEnumerable<int> topologicalSort(IEnumerable<DO.Dependency?> dependencies)
     {
-        //we will
+      
         Dictionary<int, List<int>> adjacencyList = new Dictionary<int, List<int>>();
 
         //helper method to add the edges

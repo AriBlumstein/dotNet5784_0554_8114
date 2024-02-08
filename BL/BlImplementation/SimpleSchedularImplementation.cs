@@ -24,6 +24,21 @@ internal class SimpleSchedularImplementation : ISchedular
             throw new BlIllegalOperationException("cannot enter production with an date in the past");
         }
 
+        //we will check that each task has a duration, if it doesn't than we cannot make the schedule, also make sure difficulties are well defined, otherwise we can't assign an engineer to it and production can't continue
+        IEnumerable<DO.Task> allDTasks = _dal.Task.ReadAll()!;
+
+        foreach (DO.Task task in allDTasks)
+        {
+            if (task.Duration == null)
+            {
+                throw new BlIllegalOperationException($"Cannot make a schedule as task {task.ID} does not have a duration");
+            }
+            if (task.Difficulty == null)
+            {
+                throw new BlIllegalOperationException($"Cannot make a schedule as task {task.ID} does not have complexity well defined");
+            }
+        }
+
         TaskImplementation taskImplementation = new TaskImplementation(); //we need to read the tasks from the business layer
 
         DateTime projectedEnd = projectedStart; // to be used later when updating config
@@ -54,23 +69,9 @@ internal class SimpleSchedularImplementation : ISchedular
 
 
 
-        //we will check that each task has a duration, if it doesn't than we cannot make the schedule, also make sure difficulties are well defined, otherwise we can't assign an engineer to it and production can't continue
-        IEnumerable<DO.Task?> allDTasks = _dal.Task.ReadAll();
-
-        foreach (DO.Task task in allDTasks)
-        {
-            if (task.Duration == null)
-            {
-                throw new BlIllegalOperationException($"Cannot make a schedule as task {task.ID} does not have a duration");
-            }
-            if (task.Difficulty == null)
-            {
-                throw new BlIllegalOperationException($"Cannot make a schedule as task {task.ID} does not have complexity well defined");
-            }
-        }
 
         //we have now passed this test, so now we need to topologically sort the dependencies to give each Task a projected startdate
-        IEnumerable<int> ids = topologicalSort(_dal.Dependency.ReadAll());
+        IEnumerable<int> ids = topologicalSort(_dal.Dependency.ReadAll()!);
 
         
         //we will now iterate through this list assigning the dates properly
@@ -102,7 +103,7 @@ internal class SimpleSchedularImplementation : ISchedular
     /// </summary>
     /// <param name="dependencies"></param>
     /// <returns>a sorted list of ids for our automatic schedular</returns>
-    private IEnumerable<int> topologicalSort(IEnumerable<DO.Dependency?> dependencies)
+    private IEnumerable<int> topologicalSort(IEnumerable<DO.Dependency> dependencies)
     {
       
         Dictionary<int, List<int>> adjacencyList = new Dictionary<int, List<int>>();
@@ -125,7 +126,7 @@ internal class SimpleSchedularImplementation : ISchedular
 
 
         //helper method to actually sort the edges
-        void TopologicalSortUtil(int taskId, HashSet<int> visited, Stack<int> stack)
+        void topologicalSortUtil(int taskId, HashSet<int> visited, Stack<int> stack)
         {
             visited.Add(taskId);
 
@@ -135,7 +136,7 @@ internal class SimpleSchedularImplementation : ISchedular
                 {
                     if (!visited.Contains(dependentId))
                     {
-                        TopologicalSortUtil(dependentId, visited, stack);
+                        topologicalSortUtil(dependentId, visited, stack);
                     }
                 }
             }
@@ -148,11 +149,11 @@ internal class SimpleSchedularImplementation : ISchedular
         var visited = new HashSet<int>();
         var stack = new Stack<int>();
 
-        foreach (var taskId in _dal.Task.ReadAll().Select(i => i.ID))
+        foreach (var taskId in _dal.Task.ReadAll().Select(i => i!.ID))
         {
             if (!visited.Contains(taskId))
             {
-                TopologicalSortUtil(taskId, visited, stack);
+                topologicalSortUtil(taskId, visited, stack);
             }
         }
 

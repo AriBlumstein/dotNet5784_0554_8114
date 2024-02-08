@@ -9,6 +9,7 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 internal class TaskImplementation : BlApi.ITask
 {
@@ -37,27 +38,32 @@ internal class TaskImplementation : BlApi.ITask
         //we can now add a task
         validateTask(task); //check the the task is valid
 
+        int taskId;
+
         //try adding it to the database
         try
         {
-
-            _dal.Task.Create(getDOTask(task));
+            taskId=_dal.Task.Create(getDOTask(task));
         }
         catch (DalAlreadyExistsException e)
         {
             throw new BlAlreadyExistsException(e.Message, e);
         }
 
+   
 
-        //add all the dependencies, we can as validTask checks for the cicular dependency problem
-        IEnumerable<DO.Dependency> dependencies = task.Dependencies.Select(t => new DO.Dependency { DependentID = task.ID, RequisiteID = t.ID });
+        //add all the dependencies, 
+        IEnumerable<DO.Dependency> dependencies = task.Dependencies.Select(t => new DO.Dependency { ID=-1, DependentID = taskId, RequisiteID = t.ID }); //taskID is the task that was just created
+
+        //verify the dependencies
+        verifyDependencies(dependencies); //the only important check here is to see that the Requisite tasks exist
 
         foreach (DO.Dependency dep in dependencies)
         {
             _dal.Dependency.Create(dep);
         }
 
-        return task;
+        return Read(taskId); //will have the proper updated info of the task created
     }
     public void Delete(int id)
     {
@@ -72,16 +78,14 @@ internal class TaskImplementation : BlApi.ITask
         catch (Exception) { }
 
         //check that it isn't a requisite for other tasks
-        IEnumerable<DO.Dependency?> depdencies = _dal.Dependency.ReadAll(d => d.RequisiteID == id);
+        IEnumerable<DO.Dependency?> dependencies = _dal.Dependency.ReadAll(d => d.RequisiteID == id);
 
-        if (depdencies.Count() != 0)
+        if (dependencies.Count() != 0)
         {
-            throw new BlIllegalOperationException($"Cannot delete task {id} as {depdencies.Count()} tasks are dependent on it ");
-
+            throw new BlIllegalOperationException($"Cannot delete task {id} as {dependencies.Count()} tasks are dependent on it ");
         }
 
         //try to delete
-
         try
         {
             _dal.Task.Delete(id);
@@ -126,15 +130,24 @@ internal class TaskImplementation : BlApi.ITask
         }
         catch (Exception) { }
 
-        //if we are not in production we can update the dates
+
+        //the new dependencies that need to be verified
+        IEnumerable<DO.Dependency> dependencies = task.Dependencies.Select(d => new DO.Dependency { DependentID = task.ID, RequisiteID = d.ID })
+                                                                                .Where
+                                                                                    (d => (_dal.Dependency.Read(cur => cur.DependentID == d.DependentID
+                                                                                     && cur.RequisiteID == d.RequisiteID)) == null); //the dependencies that did not yet exist
+
+        //if we are not in production we can update the dates and add dependencies
         if (!production)
         {
             validateTask(task);
+            verifyDependencies(dependencies);
         }
-        else  //we cannot update the dates
+        else  //we cannot update the dates or dependencies
         {
             validateTask(task); validateTaskProduction(task);
         }
+
 
         DO.Task dTask = getDOTask(task);
 
@@ -152,20 +165,15 @@ internal class TaskImplementation : BlApi.ITask
         //we will now add the added dependencies if we are not in production
         if (!production)
         {
-            IEnumerable<DO.Dependency> dependencies = task.Dependencies.Select(d => new DO.Dependency { DependentID = task.ID, RequisiteID = d.ID })
-                                                                                .Where
-                                                                                    (d => (_dal.Dependency.Read(cur => cur.DependentID == d.DependentID
-                                                                                     && cur.RequisiteID == d.RequisiteID)) == null); //the dependencies that did not yet exist
-
+            //add those dependencies
             foreach (DO.Dependency dep in dependencies)
                 _dal.Dependency.Create(dep);
         }
 
 
+ 
 
-
-
-        return task;
+        return Read(task.ID); //the newly proper updated task
 
     }
 
@@ -204,7 +212,7 @@ internal class TaskImplementation : BlApi.ITask
         {
             if (!dep.Start.HasValue || !dep.End.HasValue || startDate < dep.End)
             {
-                throw new BlIllegalOperationException($"Cannot update task {id}'s start date");
+                throw new BlIllegalOperationException($"Cannot update task {id}'s start date as its dependencies have not been schduled yet");
             }
         }
 
@@ -214,7 +222,7 @@ internal class TaskImplementation : BlApi.ITask
         bTask.ProjectedStart = startDate;
 
 
-        return this.Update(bTask); // does the production checks, and returns the object itself
+        return this.Update(bTask); // does the production checks, and returns the the updated task
     }
 
 
@@ -227,7 +235,7 @@ internal class TaskImplementation : BlApi.ITask
     {
         if (task.ProjectedStart == null) return Status.Unscheduled;
         else if (task.ProjectedStart >= DateTime.Now) return Status.Scheduled;
-        else if (task.ActualEnd == null) return Status.OnTrack;
+        else if (task.ActualStart < DateTime.Now) return Status.OnTrack;
         else if (task.ActualEnd <= DateTime.Now) return Status.Completed;
         return null;
     }
@@ -240,9 +248,9 @@ internal class TaskImplementation : BlApi.ITask
     /// <returns></returns>
     private List<TaskInList> getDependencies(int taskID)
     {
-        IEnumerable<TaskInList> dependecies = _dal.Dependency.ReadAll(i => i.DependentID == taskID).Select(i => i.RequisiteID).Select(id => getTaskInList(id));
+        IEnumerable<TaskInList> dependencies = _dal.Dependency.ReadAll(i => i.DependentID == taskID).Select(i => i.RequisiteID).Select(id => getTaskInList(id));
 
-        return dependecies.ToList();
+        return dependencies.ToList();
 
 
     }
@@ -362,8 +370,20 @@ internal class TaskImplementation : BlApi.ITask
             }
         }
 
+
+    }
+
+
+    /// <summary>
+    /// method to verify the dependencies to be added
+    /// </summary>
+    /// <param name="dependencies"></param>
+    /// <exception cref="BlDoesNotExistException"></exception>
+    /// <exception cref="BlIllegalPropertyException"></exception>
+
+    private void verifyDependencies(IEnumerable<DO.Dependency> dependencies)
+    {
         //we will now check for a circular dependency and that the tasks we want to make as a dependency exist
-        IEnumerable<DO.Dependency> dependencies = task.Dependencies.Select(t => new DO.Dependency { DependentID = task.ID, RequisiteID = t.ID });
         foreach (DO.Dependency dep in dependencies)
         {
             try
@@ -375,14 +395,13 @@ internal class TaskImplementation : BlApi.ITask
                 throw new BlDoesNotExistException(e.Message, e); //the task we tried to to make as a dependency did not exist
             }
 
-            if (checkCircularDependency(dep))
+            if (checkCircularDependency(dep))  //the dependency will cause a circular dependency
             {
-                throw new BlIllegalPropertyException("Cannot creat a circular dependency");
+                throw new BlIllegalPropertyException($"Cannot create a circular dependency, {dep.RequisiteID} is already dependent on {dep.DependentID} ");
             }
         }
-
-
     }
+
 
     /// <summary>
     /// method checks if we insert a dependency will we have a circular dependency because of it
@@ -397,7 +416,7 @@ internal class TaskImplementation : BlApi.ITask
             return true;            // simplest circular dependency
         }
 
-        bool checkCircularHelper(DO.Dependency item, int dependentID)  //helper inner fucntion
+        bool checkCircularHelper(DO.Dependency item, int dependentID)  //helper inner function
         {
             IEnumerable<DO.Dependency?> chain;
             bool res;
@@ -428,10 +447,10 @@ internal class TaskImplementation : BlApi.ITask
     /// <exception cref="BlIllegalOperationException"></exception>
     private void validateTaskProduction(BO.Task task)
     {
-        DO.Task dTask;
+        BO.Task oTask;
         try
         {
-            dTask = _dal.Task.Read(task.ID);
+            oTask = Read(task.ID);
         }
         catch (DalDoesNotExistException e)
         {
@@ -441,13 +460,13 @@ internal class TaskImplementation : BlApi.ITask
         //if any of the non-textual items changed, throw an error
 
         if (
-            dTask.Created != task.Created ||
-            dTask.Deadline != task.Deadline ||
-            dTask.ProjectedStart != task.ProjectedStart ||
-            dTask.ActualStart != task.ActualStart ||
-            dTask.ActualEnd != task.ActualEnd ||
-            dTask.Duration != task.Duration ||
-            dTask.Difficulty != (DO.Experience?)task.Complexity
+            oTask.Created != task.Created ||
+            oTask.Deadline != task.Deadline ||
+            oTask.ProjectedStart != task.ProjectedStart ||
+            oTask.ActualStart != task.ActualStart ||
+            oTask.ActualEnd != task.ActualEnd ||
+            oTask.Duration != task.Duration ||
+            oTask.Complexity != task.Complexity 
             
        
             )
@@ -460,7 +479,7 @@ internal class TaskImplementation : BlApi.ITask
         {
             foreach(var dep in task.Dependencies)
             {
-                if (_dal.Dependency.Read(d=> d.RequisiteID==dep.ID && d.DependentID==task.ID)==null) // this dependency did not exist yet, we dont want to add another dependency
+                if (_dal.Dependency.Read(d=> d.RequisiteID==dep.ID && d.DependentID==task.ID)==null) // this dependency did not exist yet, we don't want to add another dependency
                 {
                     throw new BlIllegalOperationException("Cannot create new dependencies during production");
                 }
@@ -471,7 +490,7 @@ internal class TaskImplementation : BlApi.ITask
 
 
     /// <summary>
-    /// helper method to creat the DO.Task from the BO.Task
+    /// helper method to create the DO.Task from the BO.Task
     /// </summary>
     /// <param name="task"></param>
     /// <returns>a DO.Task</returns>
@@ -503,7 +522,7 @@ internal class TaskImplementation : BlApi.ITask
 
 
     /// <summary>
-    /// helper method that gets the BO.Task from the DO.Taks
+    /// helper method that gets the BO.Task from the DO.Task
     /// </summary>
     /// <param name="task"></param>
     /// <returns></returns>

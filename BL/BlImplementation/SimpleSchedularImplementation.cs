@@ -10,7 +10,7 @@ using DalApi;
 
 
 
-public class SimpleSchedularImplementation : ISchedular
+internal class SimpleSchedularImplementation : ISchedular
 {
     private IDal _dal = DalApi.Factory.Get;
     

@@ -7,5 +7,9 @@ namespace BlApi;
 /// </summary>
 public interface ISchedular
 {
-    void createSchecule(DateTime projectedStart);
+    /// <summary>
+    /// create a schedule for the project at hand
+    /// </summary>
+    /// <param name="projectedStart"></param>
+    void createSchedule(DateTime projectedStart);
 }

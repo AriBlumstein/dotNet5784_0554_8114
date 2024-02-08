@@ -15,8 +15,15 @@ public class SimpleSchedularImplementation : ISchedular
     private IDal _dal = DalApi.Factory.Get;
     
     
-    public void createSchecule(DateTime projectedStart)
+    public void createSchedule(DateTime projectedStart)
     {
+        //make sure our projectStart>=DateTime.Now
+
+        if(projectedStart<DateTime.Now)
+        {
+            throw new BlIllegalOperationException("cannot enter production with an date in the past");
+        }
+
         TaskImplementation taskImplementation = new TaskImplementation(); //we need to read the tasks from the business layer
 
         DateTime projectedEnd = projectedStart; // to be used later when updating config

@@ -54,14 +54,18 @@ public class SimpleSchedularImplementation : ISchedular
 
 
 
-        //we will check that each task has a duration, if it doesn't than we cannot make the schedule
+        //we will check that each task has a duration, if it doesn't than we cannot make the schedule, also make sure difficulties are well defined, otherwise we can't assign an engineer to it and production can't continue
         IEnumerable<DO.Task?> allDTasks = _dal.Task.ReadAll();
 
         foreach (DO.Task task in allDTasks)
         {
             if (task.Duration == null)
             {
-                throw new BlIllegalOperationException($"Cannot make a scheule as task {task.ID} does not have a duration");
+                throw new BlIllegalOperationException($"Cannot make a schedule as task {task.ID} does not have a duration");
+            }
+            if (task.Difficulty == null)
+            {
+                throw new BlIllegalOperationException($"Cannot make a schedule as task {task.ID} does not have complexity well defined");
             }
         }
 

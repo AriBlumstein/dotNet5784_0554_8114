@@ -3,7 +3,7 @@ namespace BO;
 
 public enum EngineerExperience
 {
-    Beginner, AdvancedBeginer, Intermediate, Advanced, Expert
+    Beginner, AdvancedBeginner, Intermediate, Advanced, Expert
 }
 
 

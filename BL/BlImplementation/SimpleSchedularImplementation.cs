@@ -7,8 +7,7 @@ namespace BlImplementation;
 using BlApi;
 using BO;
 using DalApi;
-
-
+using DO;
 
 internal class SimpleSchedularImplementation : ISchedular
 {
@@ -17,6 +16,14 @@ internal class SimpleSchedularImplementation : ISchedular
     
     public void createSchedule(DateTime projectedStart)
     {
+        //did we already entered production
+        try
+        {
+            _dal.Config.GetProjectStart();
+            throw new BlIllegalOperationException("Production already began");
+        }
+        catch(DALConfigDateNotSet){}
+
         //make sure our projectStart>=DateTime.Now
 
         if(projectedStart<DateTime.Now)

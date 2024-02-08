@@ -29,8 +29,14 @@ internal class EngineerImplementation : IEngineer
 
     
 
-    public void Delete(BO.Engineer engineer)
+    public void Delete(int id)
     {
+        BO.Engineer engineer;
+        try {
+          engineer  = Read(id);
+        }
+        catch (DalDoesNotExistException e) { throw new BlDoesNotExistException(e.Message, e); }
+
         //check if there are no completed tasks
         IEnumerable<DO.Task?> completedTasks = from task in _dal.Task.ReadAll(t => t.AssignedEngineer == engineer.ID)
                                                where task.ActualEnd<=DateTime.Now
@@ -99,7 +105,9 @@ internal class EngineerImplementation : IEngineer
 
     public BO.Engineer Update(BO.Engineer engineer)
     {
-        validEngineer(engineer); 
+        validEngineer(engineer);
+
+        BO.Engineer oldEngineer = Read(engineer.ID);
 
         try
         {
@@ -110,7 +118,19 @@ internal class EngineerImplementation : IEngineer
             throw new BlDoesNotExistException(ex.Message, ex);
         }
 
-        return engineer;
+        if (engineer.Task != null)
+        {
+            //add the engineer to the task
+            _dal.Task.Update(_dal.Task.Read(engineer.Task.ID)! with { AssignedEngineer = engineer.ID });
+
+        }
+
+        if (oldEngineer.Task != null)
+            //unassign the task
+            _dal.Task.Update(_dal.Task.Read(oldEngineer.Task.ID)! with { AssignedEngineer = null });
+
+
+        return Read(engineer.ID);
     }
 
 
@@ -176,6 +196,25 @@ internal class EngineerImplementation : IEngineer
         if (!isValidEmail(engineer.Email))
         {
             throw new BlIllegalPropertyException($"{engineer.Email} is not a valid email");
+        }
+        if (engineer.Task != null) {
+
+            DO.Task? task = _dal.Task.Read(t => t.ID == engineer.Task.ID);
+
+            if (task==null)
+            {
+                throw new BlIllegalPropertyException($"Task {engineer.Task.ID} does not exist");
+            } 
+
+            if(task.AssignedEngineer!=null && task.AssignedEngineer != engineer.ID)
+            {
+                throw new BlIllegalOperationException($"task {task.ID} is already assigned to engineer {task.AssignedEngineer}");
+            }
+
+            if (task.Difficulty>(Experience)engineer.Level)
+            {
+                throw new BlIllegalOperationException($"task {task.ID} is too hard for engineer {engineer.ID}");
+            }
         }
     }
 }

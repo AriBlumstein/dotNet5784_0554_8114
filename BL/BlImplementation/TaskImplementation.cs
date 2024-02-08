@@ -30,7 +30,7 @@ internal class TaskImplementation : BlApi.ITask
             _dal.Config.GetProjectStart();
             throw new BlIllegalOperationException("Cannot add a task during production");
         }
-        catch (Exception)
+        catch (DALConfigDateNotSet)
         {
 
         }
@@ -75,7 +75,7 @@ internal class TaskImplementation : BlApi.ITask
             throw new BlIllegalOperationException("cannot delete task during production");
 
         }
-        catch (Exception) { }
+        catch (DALConfigDateNotSet) { }
 
         //check that it isn't a requisite for other tasks
         IEnumerable<DO.Dependency?> dependencies = _dal.Dependency.ReadAll(d => d.RequisiteID == id);
@@ -128,7 +128,7 @@ internal class TaskImplementation : BlApi.ITask
             _dal.Config.GetProjectStart();
             production = true;
         }
-        catch (Exception) { }
+        catch (DALConfigDateNotSet) { }
 
 
         //the new dependencies that need to be verified

@@ -40,6 +40,7 @@ public static class Progarm
                 case "2":
                     break;
                 case "3":
+                    productionHandler();
                     break;
             }
 
@@ -243,6 +244,36 @@ public static class Progarm
             }
 
         } while (input != "0");
+    }
+
+    private static void productionHandler()
+    {
+        string answer;
+        Console.WriteLine("Are you sure you want to start production? Once production starts you will limited in what you can update in the database and the schedule will be set. The schedule will be automatically set.");
+        answer = Console.ReadLine();
+        if (answer.ToLower() == "y")
+        {
+            
+            DateTime start; 
+            Console.WriteLine("Enter the project start date: ");
+            while (!DateTime.TryParse(Console.ReadLine(), out start)) Console.WriteLine("Enter a valid date");
+            try
+            {
+
+            s_bl.Schedular.createSchedule(start);
+            }
+            catch (BlIllegalOperationException e)
+            {
+                Console.WriteLine($"Type: {e.GetType()}");
+                Console.WriteLine($"Message:{e.Message}");
+            }
+            catch (BlIllegalPropertyException e)
+            {
+                Console.WriteLine($"Type: {e.GetType()}");
+                Console.WriteLine($"Message:{e.Message}");
+            }
+
+        }
     }
 
 }

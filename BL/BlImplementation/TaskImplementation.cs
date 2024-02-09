@@ -95,6 +95,15 @@ internal class TaskImplementation : BlApi.ITask
             throw new BlDoesNotExistException(e.Message, e);
         }
 
+        //we now have to delete all of the dependencies that we were dependent on
+        IEnumerable<int> depIds=_dal.Dependency.ReadAll(d=>d.DependentID== id).Select(d=>d.ID);
+
+        foreach(var depId in depIds)
+        {
+            _dal.Dependency.Delete(depId);
+        }
+
+
     }
     public BO.Task Read(int id)
     {
@@ -330,10 +339,7 @@ internal class TaskImplementation : BlApi.ITask
 
     private void validateTask(BO.Task task)
     {
-        if (task.ID <= 0)
-        {
-            throw new BlIllegalPropertyException("ID must be positive");
-        }
+       
         if (task.Name == null)
         {
             throw new BlNullPropertyException("Must not be a null name");
@@ -341,6 +347,11 @@ internal class TaskImplementation : BlApi.ITask
         if (task.Name.Length == 0)
         {
             throw new BlIllegalPropertyException("Name must be none empty");
+        }
+        if(task.Duration.HasValue)
+        {
+            if (task.Duration <= 0) 
+            throw new BlIllegalPropertyException("Duration for a task cannot be less than or equal to 0");
         }
 
         //check that the engineer exists and that he has the proper skill level
@@ -360,7 +371,14 @@ internal class TaskImplementation : BlApi.ITask
                 //the task is too complex for the engineer
                 if (task.Complexity > (EngineerExperience)dEngineer!.Exp)
                 {
-                    throw new BlIllegalOperationException($"task {task.ID} is too complex for engineer {dEngineer.ID}");
+                    throw new BlIllegalOperationException($"the task is too complex for engineer {dEngineer.ID}");
+                }
+
+                DO.Task? anotherTask = _dal.Task.Read(t => t.AssignedEngineer == dEngineer.ID);
+
+                if(anotherTask !=null && anotherTask.ID!= task.ID)
+                {
+                    throw new BlIllegalPropertyException($"Engineer {dEngineer.ID} is already assigned to task {anotherTask!.ID}");
                 }
 
             }

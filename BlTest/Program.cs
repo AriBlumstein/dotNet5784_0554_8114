@@ -29,6 +29,7 @@ public static class Program
                 1) Test Engineer
                 2) Test Task
                 3) Begin Production
+                4) Reset Database/Start new project
                 """
                 );
             input = Console.ReadLine() ?? throw new FormatException("Invalid input");
@@ -44,6 +45,16 @@ public static class Program
                     break;
                 case "3":
                     productionHandler();
+                    break;
+                case "4":
+                    Console.WriteLine("Are you sure you want to reset, (i.e. start a new project) (Y/N)?");
+                    if (Console.ReadLine().ToLower()=="y")
+                    {
+                        s_bl.Reset();
+                    }
+                    break;
+                default:
+                    Console.WriteLine("not an option");
                     break;
             }
 

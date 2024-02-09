@@ -13,4 +13,10 @@ public interface IBl
 
     public ISchedular Schedular { get; }
 
+
+    /// <summary>
+    /// start a new project
+    /// </summary>
+    public void Reset();
+
 }

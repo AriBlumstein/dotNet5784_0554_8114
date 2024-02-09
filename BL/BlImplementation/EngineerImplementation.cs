@@ -24,6 +24,13 @@ internal class EngineerImplementation : IEngineer
             throw new BlAlreadyExistsException(e.Message, e);
         }
 
+        //add the task if we can
+        if (engineer.Task != null)
+        {
+            DO.Task task = _dal.Task.Read(engineer.Task.ID) with { AssignedEngineer = engineer.ID };
+            _dal.Task.Update(task);
+        }
+
         return engineer;
     }
 
@@ -121,13 +128,26 @@ internal class EngineerImplementation : IEngineer
         if (engineer.Task != null)
         {
             //add the engineer to the task
-            _dal.Task.Update(_dal.Task.Read(engineer.Task.ID)! with { AssignedEngineer = engineer.ID });
+            try
+            {
+                DO.Task newTask = _dal.Task.Read(engineer.Task.ID) with { AssignedEngineer = engineer.ID };
+                _dal.Task.Update(newTask);
+                
+            }
+            catch (DalDoesNotExistException ex)
+            {
+                throw new BlDoesNotExistException(ex.Message, ex);
+            }
 
         }
 
+        DO.Task oldTask;
+
         if (oldEngineer.Task != null)
-            //unassign the task
-            _dal.Task.Update(_dal.Task.Read(oldEngineer.Task.ID)! with { AssignedEngineer = null });
+        { //unassign the task
+            oldTask = _dal.Task.Read(oldEngineer.Task.ID) with { AssignedEngineer = null };
+            _dal.Task.Update(oldTask);
+        }
 
 
         return Read(engineer.ID);

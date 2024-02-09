@@ -4,7 +4,9 @@ namespace BlTest;
 
 using BlApi;
 using BO;
+using System.Net;
 using System.Reflection;
+using System.Reflection.Metadata;
 
 public static class Program
 {
@@ -38,6 +40,7 @@ public static class Program
                     engineerHandler();
                     break;
                 case "2":
+                    taskHandler();
                     break;
                 case "3":
                     productionHandler();
@@ -215,6 +218,9 @@ public static class Program
                         Engineer engineer = s_bl.Engineer.Read(id);
                         updateHandler(engineer);
                         break;
+                    default:
+                        Console.WriteLine("Not a valid option");
+                        break;
 
 
                 }
@@ -241,6 +247,10 @@ public static class Program
             catch (BlNullPropertyException e) {
                 Console.WriteLine($"Type: {e.GetType()}");
                 Console.WriteLine($"Message:{e.Message}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
         } while (input != "0");
@@ -272,8 +282,290 @@ public static class Program
                 Console.WriteLine($"Type: {e.GetType()}");
                 Console.WriteLine($"Message:{e.Message}");
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
         }
+    }
+
+    private static void taskHandler()
+    {
+
+        void readAllHandler()
+        {
+            Console.WriteLine("Would you like to find tasks with a specific complexity? (y/n)?");
+            string input = Console.ReadLine() ?? throw new FormatException("Invalid input");
+            IEnumerable<BO.Task> tasks;
+            if (input.ToLower() == "y")
+            {
+                EngineerExperience ee;
+                Console.WriteLine("Enter a level: ( Beginner, AdvancedBeginner, Intermediate, Advanced, Expert )");
+                input = Console.ReadLine() ?? throw new FormatException("invalid input");
+                while (!Enum.TryParse(input, out ee))
+                {
+                    Console.WriteLine("Invalid option: please choose one of the levels");
+                    input = Console.ReadLine() ?? throw new FormatException("invalid input");
+                }
+                tasks = s_bl.Task.ReadAll(i => i.Difficulty == (DO.Experience)ee);
+
+            }
+            else
+            {
+                tasks = s_bl.Task.ReadAll();
+            }
+
+            foreach (var task in tasks)
+            {
+                Console.WriteLine(task);
+                Console.WriteLine();
+            }
+        }
+
+        void createHandler()
+        {
+          
+
+            string name, description;
+            List<TaskInList> dTasks=new List<TaskInList>();
+            int dTask;
+            int duration;
+            String deliverable, notes;
+            EngineerInTask engineer=null;
+            int engineerId;
+            EngineerExperience ee;
+
+            Console.WriteLine("Enter the task name: ");
+            name = Console.ReadLine();
+
+            Console.WriteLine("Enter the task description: ");
+            description = Console.ReadLine();
+
+            Console.WriteLine("Would you like to add dependencies (y/n): ");
+            
+            if(Console.ReadLine().ToLower()=="y")
+            {
+                do
+                {
+                    Console.WriteLine("enter the id of the requisite task: ");
+                    while (!int.TryParse(Console.ReadLine(), out dTask)) { Console.WriteLine("Enter a valid number"); }
+
+                    dTasks.Add(new TaskInList { ID = dTask });
+
+                    Console.WriteLine("would you like to add another requisite task (y/n): ");
+
+
+                } while (Console.ReadLine().ToLower() != "n");
+            }
+
+            Console.WriteLine("Enter a duration: ");
+            
+            while(!int.TryParse(Console.ReadLine(), out duration)) { Console.WriteLine("Enter an integer"); }
+
+            Console.WriteLine("Enter deliverable:");
+            deliverable= Console.ReadLine();
+
+            Console.WriteLine("Enter notes:");
+
+            notes = Console.ReadLine();
+
+            Console.WriteLine("Enter the complexity:");
+
+            while (!Enum.TryParse(Console.ReadLine(), out ee)) { Console.WriteLine("Enter a proper complexity:"); }
+
+
+            Console.WriteLine("Would you like to add an engineer to this task:");
+
+            if(Console.ReadLine().ToLower()=="y")
+            {
+                Console.WriteLine("Enter the id of the engineer you want to add:"); 
+                while(!int.TryParse(Console.ReadLine(), out engineerId)) { Console.WriteLine("Enter an integer"); }
+
+                engineer=new EngineerInTask { ID = engineerId };
+            }
+
+            Console.WriteLine(s_bl.Task.Create(new Task {Notes=notes,Name=name, Descripiton=description, Created=DateTime.Now, Dependencies=dTasks, Duration=duration, Deliverable=deliverable, Engineer=engineer, Complexity=ee }));
+
+            
+        }
+
+        void deleteHandler()
+        {
+            int id;
+            Console.WriteLine("Enter the id of the task you want to delete:");
+            while(!int.TryParse(Console.ReadLine(), out id))
+            {
+                Console.WriteLine("Enter an integer");
+            }
+
+            s_bl.Task.Delete(id);
+        }
+
+
+        void updateHandler()
+        {
+            int id;
+            string name, description;
+            int dTask;
+            int duration;
+            String deliverable, notes;
+            EngineerInTask engineer = null;
+            int engineerId;
+            EngineerExperience ee;
+
+            BO.Task cur;
+
+            Console.WriteLine("Enter the id of the task you wish to update:");
+            while (!int.TryParse(Console.ReadLine(), out id)) { Console.WriteLine("Enter an integer"); }
+
+            cur = s_bl.Task.Read(id);
+
+            Console.WriteLine("Enter the task name:");
+            name = Console.ReadLine();
+
+            Console.WriteLine("Enter the task description:");
+            description = Console.ReadLine();
+
+            Console.WriteLine("Would you like to add dependencies (y/n)?");
+
+            if (Console.ReadLine().ToLower() == "y")
+            {
+                do
+                {
+                    Console.WriteLine("enter the id of the requisite task:");
+                    while (!int.TryParse(Console.ReadLine(), out dTask)) { Console.WriteLine("Enter a valid number"); }
+
+                    cur.Dependencies.Add(new TaskInList { ID = dTask });
+
+                    Console.WriteLine("would you like to add another requisite task (y/n)?");
+
+
+                } while (Console.ReadLine().ToLower() != "n");
+            }
+
+            Console.WriteLine("Enter a duration");
+
+            while (!int.TryParse(Console.ReadLine(), out duration)) { Console.WriteLine("Enter an integer"); }
+
+            Console.WriteLine("Enter deliverable:");
+            deliverable = Console.ReadLine();
+
+            Console.WriteLine("Enter notes:");
+
+            notes = Console.ReadLine();
+
+            Console.WriteLine("Enter the complexity:");
+
+            while (!Enum.TryParse(Console.ReadLine(), out ee)) { Console.WriteLine("Enter a proper complexity"); }
+
+
+            Console.WriteLine("Would you like to add an engineer to this task:");
+
+            if (Console.ReadLine().ToLower() == "y")
+            {
+                Console.WriteLine("Enter the id of the engineer you want to add:");
+                while (!int.TryParse(Console.ReadLine(), out engineerId)) { Console.WriteLine("Enter an integer"); }
+
+                engineer = new EngineerInTask { ID = engineerId };
+            }
+
+
+            cur.Name = name;
+            cur.Descripiton = description;
+            cur.Duration= duration;
+            cur.Deliverable = deliverable;
+            cur.Notes = notes;
+            cur.Engineer = engineer;
+            cur.Complexity = ee;
+
+            Console.WriteLine(s_bl.Task.Update(cur));
+
+
+        }
+
+
+        string input="";
+        do
+        {
+            try
+            {
+                Console.WriteLine(
+                    """
+                    0) Return
+                    1) Read all tasks
+                    2) Read a specific task
+                    3) Create a task
+                    4) Delete a task
+                    5) Update a task
+                    """);
+
+                input = Console.ReadLine() ?? throw new FormatException("Illegal input");
+
+                switch (input)
+                {
+                    case "0":
+                        return;
+                    case "1":
+                        readAllHandler();
+                        break;
+                    case "2":
+                        int id;
+                        Console.WriteLine("Enter the task ID: ");
+                        while (!int.TryParse(Console.ReadLine(), out id))
+                        {
+                            Console.WriteLine("Please enter a number: ");
+                        }
+                        Console.WriteLine(s_bl.Task.Read(id));
+                        break;
+                    case "3":
+                        createHandler();
+                        break;
+                    case "4":
+                        deleteHandler();
+                        break;
+                    case "5":
+                        updateHandler();
+                        break;
+
+                }
+            }
+            catch (BlAlreadyExistsException e)
+            {
+                Console.WriteLine($"Type: {e.GetType()}");
+                Console.WriteLine($"Message:{e.Message}");
+                Console.WriteLine($"Inner Exception:{e.InnerException!.GetType()}");
+
+            }
+            catch (BlIllegalOperationException e)
+            {
+                Console.WriteLine($"Type: {e.GetType()}");
+                Console.WriteLine($"Message:{e.Message}");
+            }
+            catch (BlDoesNotExistException e)
+            {
+                Console.WriteLine($"Type: {e.GetType()}");
+                Console.WriteLine($"Message:{e.Message}");
+                Console.WriteLine($"Inner Exception:{e.InnerException!.GetType()}");
+            }
+            catch (BlIllegalPropertyException e)
+            {
+                Console.WriteLine($"Type: {e.GetType()}");
+                Console.WriteLine($"Message:{e.Message}");
+            }
+            catch (BlNullPropertyException e)
+            {
+                Console.WriteLine($"Type: {e.GetType()}");
+                Console.WriteLine($"Message:{e.Message}");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+
+
+        } while (input != "0");
     }
 
 }

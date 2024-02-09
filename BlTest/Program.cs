@@ -146,7 +146,7 @@ public static class Program
             Console.WriteLine("Enter the engineer's salary/cost: ");
             while (!double.TryParse(Console.ReadLine(), out cost)) Console.WriteLine("Please enter a valid cost: ");
 
-            Console.WriteLine("Would you like to update the task in this engineer?");
+            Console.WriteLine("Would you like to update the task in this engineer? (not adding a task here will delete the old task if there was one for sake of test)");
             string answer = Console.ReadLine();
             if (answer.ToLower() == "y")
             {
@@ -154,13 +154,14 @@ public static class Program
                 Console.WriteLine("Enter the id of the task to add: ");
                 while (!int.TryParse(Console.ReadLine(), out taskId)) Console.WriteLine("Please enter a number: ");
                 task = new TaskInEngineer { ID = taskId };
-                engineer.Task = task;
+                
             }
 
             engineer.Name = name;
             engineer.Email = email;
             engineer.Cost = cost;
             engineer.Level = ee;
+            engineer.Task = task;
 
             Console.WriteLine(s_bl.Engineer.Update(engineer));
         }
@@ -375,7 +376,7 @@ public static class Program
             while (!Enum.TryParse(Console.ReadLine(), out ee)) { Console.WriteLine("Enter a proper complexity:"); }
 
 
-            Console.WriteLine("Would you like to add an engineer to this task:");
+            Console.WriteLine("Would you like to add an engineer to this task(y/n)?");
 
             if(Console.ReadLine().ToLower()=="y")
             {
@@ -460,7 +461,7 @@ public static class Program
             while (!Enum.TryParse(Console.ReadLine(), out ee)) { Console.WriteLine("Enter a proper complexity"); }
 
 
-            Console.WriteLine("Would you like to add an engineer to this task:");
+            Console.WriteLine("Would you like to add an engineer to this task: (y/n)");
 
             if (Console.ReadLine().ToLower() == "y")
             {

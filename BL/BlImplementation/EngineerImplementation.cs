@@ -125,7 +125,7 @@ internal class EngineerImplementation : IEngineer
             throw new BlDoesNotExistException(ex.Message, ex);
         }
 
-        if (engineer.Task != null)
+        if (engineer.Task != null && (oldEngineer.Task==null || oldEngineer.Task.ID!=engineer.Task.ID)) //if we have a new task and we didn't have one before or we had a different one before
         {
             //add the engineer to the task
             try
@@ -143,8 +143,10 @@ internal class EngineerImplementation : IEngineer
 
         DO.Task oldTask;
 
-        if (oldEngineer.Task != null)
-        { //unassign the task
+        //unassign the old task if it is different 
+        if (oldEngineer.Task != null && ( engineer.Task==null || oldEngineer.Task.ID!=engineer.Task.ID)) //if we had an old task, adn we don't have one now or we have a different one now
+        { 
+
             oldTask = _dal.Task.Read(oldEngineer.Task.ID) with { AssignedEngineer = null };
             _dal.Task.Update(oldTask);
         }

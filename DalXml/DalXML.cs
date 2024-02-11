@@ -8,9 +8,9 @@ using DalApi;
 
 sealed internal class DalXml : IDal
 {
-   private static readonly Lazy<DalXml> lazyInstance = new Lazy<DalXml>(() => new DalXml()); //for lazy initialization and thread safety, part of system
+   private static readonly Lazy<DalXml> _lazyInstance = new Lazy<DalXml>(() => new DalXml()); //for lazy initialization and thread safety, part of system
 
-    public static DalXml Instance {get {return lazyInstance.Value;}}
+    public static DalXml Instance {get {return _lazyInstance.Value;}}
 
 
     private DalXml() { }

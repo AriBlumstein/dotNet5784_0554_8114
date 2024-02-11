@@ -43,6 +43,13 @@ public interface IEngineer
     /// <param name="engineer"></param>
     BO.Engineer Update(BO.Engineer engineer);
 
+
+    /// <summary>
+    /// method that reads all the engineers, but groups them by experience
+    /// </summary>
+    /// <returns>A dictionary based off experience</returns>
+    IEnumerable<IGrouping<BO.EngineerExperience, BO.Engineer>> ReadGroupsOfExperience();
+
     /// <summary>
     /// method that returns the task the engineer is working on at the moment
     /// </summary>

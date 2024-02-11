@@ -190,6 +190,7 @@ public static class Program
             3) Add Engineer
             4) Delete Engineer
             5) Update Engineer
+            6) Read Organized List of Engineers by Experience
             """
                 );
                 input = Console.ReadLine() ?? throw new FormatException("Invalid Input");
@@ -229,6 +230,18 @@ public static class Program
                         }
                         Engineer engineer = s_bl.Engineer.Read(id);
                         updateHandler(engineer);
+                        break;
+                    case "6":
+                        var grouping = s_bl.Engineer.ReadGroupsOfExperience();
+                        foreach(var group in grouping)
+                        {
+                            Console.WriteLine($"{group.Key}:");
+                            foreach(var bEngineer in group)
+                            {
+                                Console.WriteLine(bEngineer);
+                            }
+                            Console.WriteLine();
+                        }
                         break;
                     default:
                         Console.WriteLine("Not a valid option");
@@ -307,6 +320,7 @@ public static class Program
 
         void readAllHandler()
         {
+            Console.WriteLine("In production the tasks will be returned in order by their projected start date");
             Console.WriteLine("Would you like to find tasks with a specific complexity? (y/n)?");
             string input = Console.ReadLine() ?? throw new FormatException("Invalid input");
             IEnumerable<BO.Task> tasks;

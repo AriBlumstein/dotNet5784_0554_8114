@@ -5,6 +5,7 @@ using BO;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Text.RegularExpressions;
 
 internal class EngineerImplementation : IEngineer
@@ -155,8 +156,24 @@ internal class EngineerImplementation : IEngineer
         return Read(engineer.ID);
     }
 
+    public IEnumerable<IGrouping<BO.EngineerExperience, BO.Engineer>> ReadGroupsOfExperience()
+    {
+        return from item in _dal.Engineer.ReadAll()
+               let bEngineer = new BO.Engineer
+               {
+                   ID = item.ID,
+                   Name = item.Name,
+                   Email = item.Email,
+                   Level = (BO.EngineerExperience)item.Exp,
+                   Task = TaskSearcher(item.ID),
+                   Cost = item.Cost
 
-    
+               }
+               group bEngineer by bEngineer.Level into res
+               orderby res.Key
+               select res;  
+    }
+
     public BO.TaskInEngineer? TaskSearcher(int engineerId) 
     {
         //find the task that this engineer is assigned to 

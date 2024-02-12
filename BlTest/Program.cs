@@ -320,10 +320,9 @@ public static class Program
 
         void readAllHandler()
         {
-            Console.WriteLine("In production the tasks will be returned in order by their projected start date");
             Console.WriteLine("Would you like to find tasks with a specific complexity? (y/n)?");
             string input = Console.ReadLine() ?? throw new FormatException("Invalid input");
-            IEnumerable<BO.Task> tasks;
+            IEnumerable<BO.TaskInList> tasks;
             if (input.ToLower() == "y")
             {
                 EngineerExperience ee;

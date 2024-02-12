@@ -122,9 +122,17 @@ internal class TaskImplementation : BlApi.ITask
 
     }
 
-    public IEnumerable<BO.Task> ReadAll(Func<DO.Task, bool>? filter = null)
+    public IEnumerable<BO.TaskInList> ReadAll(Func<DO.Task, bool>? filter = null)
     {
-        return _dal.Task.ReadAll(filter).Select(t => getBOTask(t));
+        return _dal.Task.ReadAll(filter).Select(t => new TaskInList
+        {
+            ID = t.ID,
+            Description = t.Description,
+            Name = t.Nickname,
+            Status = getStatus(t)
+        }); 
+    
+ 
     }
 
 

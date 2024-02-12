@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <!--Button to go to TaskListWindow-->
+        <Button Content="Handle Tasks" HorizontalAlignment="Left" Margin="200,192,0,0" Height="40" Width="100" Background="Orange" VerticalAlignment="Top" Click="showTaskList_Click" />
+        <Button Content="Initialize Database" Height="40" Width="100" HorizontalAlignment="Center" Margin="0,291,0,0" VerticalAlignment="Top" Background="LightBlue" RenderTransformOrigin="0.96,0.713" Click="initializeData_Click"/>
 
     </Grid>
 </Window>

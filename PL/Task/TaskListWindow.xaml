@@ -25,8 +25,7 @@
             <!--Label for filter name-->
             <Label Content="Label" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
             <!--the value of the filter-->
-            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}"
-/>
+            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged" />
         </Grid>
         <!--the list of tasks-->
         <ListView Grid.Row="1"  ItemsSource="{Binding TaskList}">

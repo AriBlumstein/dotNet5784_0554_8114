@@ -38,5 +38,18 @@ namespace PL.Task
             DependencyProperty.Register("TaskList", typeof(IEnumerable<BO.TaskInList>), typeof(TaskListWindow), new PropertyMetadata(null));
 
 
+
+        public BO.EngineerExperience Experience { get; set; } = BO.EngineerExperience.None; 
+
+        private void cbExperience_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TaskList = (Experience == BO.EngineerExperience.None) ?
+            s_bl?.Task.ReadAll()! : s_bl?.Task.ReadAll(item => (BO.EngineerExperience?)item.Difficulty == Experience )!;
+
+        }
+
+
     }
+
+
 }

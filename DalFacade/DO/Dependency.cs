@@ -19,7 +19,7 @@ public record Dependency
 )
 {
     /// <summary>
-    /// empty constuctor(
+    /// empty constructor(
     /// </summary>
     public Dependency(): this(-1,-1,-2) { }
 

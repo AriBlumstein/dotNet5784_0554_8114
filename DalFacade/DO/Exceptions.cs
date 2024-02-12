@@ -13,7 +13,7 @@ public class DalDoesNotExistException : Exception
 }
 
 /// <summary>
-/// excecption fro the item already existing
+/// exception fro the item already existing
 /// </summary>
 
 [Serializable]

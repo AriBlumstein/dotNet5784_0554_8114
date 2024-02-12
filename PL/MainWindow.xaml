@@ -10,6 +10,7 @@
         <!--Button to go to TaskListWindow-->
         <Button Content="Handle Tasks" HorizontalAlignment="Left" Margin="200,192,0,0" Height="40" Width="100" Background="Orange" VerticalAlignment="Top" Click="showTaskList_Click" />
         <Button Content="Initialize Database" Height="40" Width="100" HorizontalAlignment="Center" Margin="0,291,0,0" VerticalAlignment="Top" Background="LightBlue" RenderTransformOrigin="0.96,0.713" Click="initializeData_Click"/>
+        <Button Content="Handle Engineers" HorizontalAlignment="Left" Height="40" Width="100"  VerticalAlignment="Top" Margin="500,192,0,0" Background="Orange" Click="showEngineers_Click" RenderTransformOrigin="-0.514,0.668"/>
 
     </Grid>
 </Window>

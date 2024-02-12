@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Engineer"
         mc:Ignorable="d"
-        Title="EngineerListWindow" Height="450" Width="800">
+        Title="EngineerListWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
         <!--Extrnal Grid-->
         <Grid>
@@ -23,10 +24,10 @@
                 <!--Label for filter name-->
                 <Label Content="Label" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
                 <!--the value of the filter-->
-                <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
+                <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged"/>
             </Grid>
             <!--the list of tasks-->
-            <ListView Grid.Row="1">
+            <ListView Grid.Row="1" ItemsSource="{Binding EngineerList}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn/>

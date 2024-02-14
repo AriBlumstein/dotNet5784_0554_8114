@@ -7,10 +7,43 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <!--Button to go to TaskListWindow-->
-        <Button Content="Handle Tasks" HorizontalAlignment="Left" Margin="200,192,0,0" Height="40" Width="100" Background="Orange" VerticalAlignment="Top" Click="showTaskList_Click" />
-        <Button Content="Initialize Database" Height="40" Width="100" HorizontalAlignment="Center" Margin="0,291,0,0" VerticalAlignment="Top" Background="LightBlue" RenderTransformOrigin="0.96,0.713" Click="initializeData_Click"/>
-        <Button Content="Handle Engineers" HorizontalAlignment="Left" Height="40" Width="100"  VerticalAlignment="Top" Margin="500,192,0,0" Background="Orange" Click="showEngineers_Click" RenderTransformOrigin="-0.514,0.668"/>
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Button to go to TaskListWindow -->
+            <Button Content="Handle Tasks" 
+            Grid.Column="0" 
+            Grid.Row="0"
+            Style="{StaticResource HandleEntitiesStyle}" 
+            Click="showTaskList_Click" 
+            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <!-- Button to initialize data -->
+            <Button Content="Initialize Database" 
+            Grid.Column="1" 
+            Grid.Row="1"
+            Style="{StaticResource HandleOperationsStyle}"  
+            Click="initializeData_Click"
+            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <!-- Button to go to EngineerListWindow -->
+            <Button Content="Handle Engineers" 
+            Grid.Column="2" 
+            Grid.Row="0"
+            Style="{StaticResource HandleEntitiesStyle}" 
+            Click="showEngineers_Click" 
+            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+       
 
     </Grid>
 </Window>

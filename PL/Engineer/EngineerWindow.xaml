@@ -47,6 +47,6 @@
         <!-- for now we don't give options, next satge we will give specific options and can only assign from those options-->  
         
         </Grid>
-        <Button  HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Top" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
+        <Button Style="{StaticResource OperationButtonsStyle}"  HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Top" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
     </Grid>
 </Window>

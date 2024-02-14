@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using BO;
 using PL.Task;
 using System;
 using System.Collections.Generic;
@@ -65,20 +66,34 @@ namespace PL.Engineer
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
            
-
-
             Button button = sender as Button;
             if(button.Content.ToString()=="Update")
             {
 
-             
+
                 try
                 {
-                    Engineer=s_bl?.Engineer.Update(Engineer)!;
+                    Engineer = s_bl?.Engineer.Update(Engineer)!;
                     MessageBox.Show($"Successfully updated engineer {Engineer.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     Close();
                 }
-                catch(Exception ex) 
+                catch (BlDoesNotExistException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); //the errors are well written
+                }
+                catch (BlNullPropertyException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch(BlIllegalPropertyException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch(BlIllegalOperationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch(Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
@@ -94,12 +109,28 @@ namespace PL.Engineer
                     Close();
 
                 }
-                catch(Exception ex)
+                catch (BlDoesNotExistException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); //the errors are well written
+                }
+                catch (BlNullPropertyException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (BlIllegalPropertyException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (BlIllegalOperationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
-            }
+        }
 
         }
     }

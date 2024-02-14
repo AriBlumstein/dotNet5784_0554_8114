@@ -265,12 +265,12 @@ internal class EngineerImplementation : IEngineer
 
             if(task.AssignedEngineer!=null && task.AssignedEngineer != engineer.ID)
             {
-                throw new BlIllegalOperationException($"task \"{task.ID}\" is already assigned to engineer \"{task.AssignedEngineer}\"");
+                throw new BlIllegalOperationException($"Task \"{task.ID}\" is already assigned to engineer \"{task.AssignedEngineer}\"");
             }
 
             if (task.Difficulty>(Experience)engineer.Level)
             {
-                throw new BlIllegalOperationException($"task \"{task.ID}\" is too hard for engineer \"{engineer.ID}\"");
+                throw new BlIllegalOperationException($"Task \"{task.ID}\" is too hard for engineer \"{engineer.ID}\"");
             }
 
 

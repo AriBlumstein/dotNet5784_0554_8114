@@ -72,7 +72,7 @@ internal class TaskImplementation : BlApi.ITask
         {
             _dal.Config.GetProjectStart();
 
-            throw new BlIllegalOperationException("cannot delete task during production");
+            throw new BlIllegalOperationException("Cannot delete task during production");
 
         }
         catch (DALConfigDateNotSet) { }
@@ -241,7 +241,7 @@ internal class TaskImplementation : BlApi.ITask
         {
             if (!dep.Start.HasValue || !dep.End.HasValue || startDate < dep.End)
             {
-                throw new BlIllegalOperationException($"Cannot update task \"{id}\"'s start date as its dependencies have not been scheduled yet");
+                throw new BlIllegalOperationException($"Cannot update task \"{id}\"'s start date as not all of its dependencies have not been scheduled yet");
             }
         }
 
@@ -362,11 +362,11 @@ internal class TaskImplementation : BlApi.ITask
        
         if (task.Name == null)
         {
-            throw new BlNullPropertyException("Name cannot be empty");
+            throw new BlNullPropertyException("Name of a task cannot be empty");
         }
         if (task.Name.Length == 0)
         {
-            throw new BlIllegalPropertyException("Name cannot be blank");
+            throw new BlIllegalPropertyException("Name of a task cannot be blank");
         }
         if(task.Duration.HasValue)
         {
@@ -401,7 +401,7 @@ internal class TaskImplementation : BlApi.ITask
                 //the task is too complex for the engineer
                 if (task.Complexity > (EngineerExperience)dEngineer!.Exp)
                 {
-                    throw new BlIllegalOperationException($"the task is too complex for engineer \"{dEngineer.ID}\"");
+                    throw new BlIllegalOperationException($"Task \"{task.ID}\" is too complex for engineer \"{dEngineer.ID}\"");
                 }
 
                 DO.Task? anotherTask = _dal.Task.Read(t => t.AssignedEngineer == dEngineer.ID);
@@ -517,7 +517,7 @@ internal class TaskImplementation : BlApi.ITask
        
             )
         {
-            throw new BlIllegalOperationException("Cannot manipulate core data of task after production started");
+            throw new BlIllegalOperationException("Cannot manipulate core data of a task after production started");
         }
 
         //check that all the dependencies exist already

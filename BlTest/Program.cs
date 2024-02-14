@@ -438,6 +438,7 @@ public static class Program
             EngineerInTask engineer = null;
             int engineerId;
             EngineerExperience ee;
+            List <TaskInList> dependencies = new List<TaskInList>();
 
             BO.Task cur;
 
@@ -461,7 +462,7 @@ public static class Program
                     Console.WriteLine("enter the id of the requisite task:");
                     while (!int.TryParse(Console.ReadLine(), out dTask)) { Console.WriteLine("Enter a valid number"); }
 
-                    cur.Dependencies.Add(new TaskInList { ID = dTask });
+                   dependencies.Add(new TaskInList{ ID = dTask });
 
                     Console.WriteLine("would you like to add another requisite task (y/n)?");
 
@@ -503,6 +504,7 @@ public static class Program
             cur.Notes = notes;
             cur.Engineer = engineer;
             cur.Complexity = ee;
+            cur.Dependencies= dependencies;
 
             Console.WriteLine(s_bl.Task.Update(cur));
 

@@ -148,11 +148,19 @@ internal class TaskImplementation : BlApi.ITask
         catch (DALConfigDateNotSet) { }
 
 
+        //try to read the old task, needed for deleting dependencies
+        BO.Task oldTask = this.Read(task.ID);
+
+
         //the new dependencies that need to be verified
         IEnumerable<DO.Dependency> dependencies = task.Dependencies.Select(d => new DO.Dependency { DependentID = task.ID, RequisiteID = d.ID })
                                                                                 .Where
                                                                                     (d => (_dal.Dependency.Read(cur => cur.DependentID == d.DependentID
                                                                                      && cur.RequisiteID == d.RequisiteID)) == null); //the dependencies that did not yet exist
+        
+
+        //the old dependencies to delete
+        IEnumerable<DO.Dependency?> deleteDependencies = oldTask.Dependencies.Where(d=>!task.Dependencies.Any(cur=>cur.ID==d.ID)).Select(d => _dal.Dependency.Read(item => item.DependentID == task.ID && item.RequisiteID == d.ID)).Where(item=>item!=null);
 
         //if we are not in production we can update the dates and add dependencies
         if (!production)
@@ -179,12 +187,16 @@ internal class TaskImplementation : BlApi.ITask
             throw new BlDoesNotExistException(e.Message, e);
         }
 
-        //we will now add the added dependencies if we are not in production
+        //we will now add the added dependencies if we are not in production and delete dependencies not in
         if (!production)
         {
             //add those dependencies
             foreach (DO.Dependency dep in dependencies)
                 _dal.Dependency.Create(dep);
+            foreach(DO.Dependency dep in deleteDependencies)
+            {
+                _dal.Dependency.Delete(dep.ID);
+            }
         }
 
 

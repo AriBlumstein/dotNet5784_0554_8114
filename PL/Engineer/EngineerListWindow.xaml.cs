@@ -45,5 +45,29 @@ namespace PL.Engineer
             s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => (BO.EngineerExperience?)item.Exp == Experience)!;
 
         }
+
+        private void btnAddNewEngineer(object sender, RoutedEventArgs e)
+        {
+            new EngineerWindow().ShowDialog();
+            cbExperience_SelectionChanged(this, null);
+        }
+
+        private void listClickUpdateEngineer(object sender, RoutedEventArgs e)
+        {
+            BO.Engineer? engineer = (sender as ListView)?.SelectedItem as BO.Engineer;
+
+            new EngineerWindow(engineer.ID).ShowDialog();
+            cbExperience_SelectionChanged(this, null);
+        }
+
+
+        
+
+        
+
+
     }
+
+
+    
 }

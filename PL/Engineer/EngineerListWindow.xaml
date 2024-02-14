@@ -27,7 +27,7 @@
                 <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged"/>
             </Grid>
             <!--the list of tasks-->
-            <ListView Grid.Row="1" ItemsSource="{Binding EngineerList}">
+            <ListView ItemsSource="{Binding EngineerList}"  MouseDoubleClick="listClickUpdateEngineer" Height="356" Grid.RowSpan="2" VerticalAlignment="Bottom">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn/>
@@ -35,7 +35,7 @@
                 </ListView.View>
             </ListView>
             <!--add Engineers-->
-            <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+            <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="btnAddNewEngineer"/>
         </Grid>
     </Grid>
 </Window>

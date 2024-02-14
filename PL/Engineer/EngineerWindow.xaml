@@ -5,8 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Engineer"
         mc:Ignorable="d"
+        DataContext="{Binding Engineer, RelativeSource={RelativeSource Self}, Mode=TwoWay}"
+
         Title="EngineerWindow" Height="450" Width="800">
+    <!-- displaying the info of a signle engineer-->
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="350"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--ID-->
+        <Label Content="ID" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding ID, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" IsEnabled="{Binding ID, Mode=OneTime, Converter={StaticResource ConvertIdToUpdatableKey}}"  VerticalAlignment="Center" Width="120"/>
+        <!--Name-->
+        <Label Content="Name" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+        <!--Email-->
+        <Label Content="Email" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+        <!--Experience-->
+        <Label Content="Experience" HorizontalAlignment="Center"  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, 
+                ValidatesOnExceptions=true}" />
+        <!--Salary-->
+        <Label Content="Salary" HorizontalAlignment="Center"  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+        <!--Assigned Task-->
+        <Label Content="Assigned Task" HorizontalAlignment="Center"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TaskID, RelativeSource={RelativeSource AncestorType={x:Type local:EngineerWindow}}, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, Converter={StaticResource ConvertToNullableIntKey}}" VerticalAlignment="Center" Width="120"/>
+
+        </Grid>
+        <Button  HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Top" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
     </Grid>
 </Window>

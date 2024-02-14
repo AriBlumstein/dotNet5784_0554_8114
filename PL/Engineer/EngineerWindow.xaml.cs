@@ -76,6 +76,7 @@ namespace PL.Engineer
                 {
                     Engineer=s_bl?.Engineer.Update(Engineer)!;
                     MessageBox.Show($"Successfully updated engineer {Engineer.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
                 }
                 catch(Exception ex) 
                 {
@@ -90,6 +91,7 @@ namespace PL.Engineer
                     
                     Engineer = s_bl?.Engineer.Create(Engineer)!;
                     MessageBox.Show($"Successfully added engineer {Engineer.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
 
                 }
                 catch(Exception ex)

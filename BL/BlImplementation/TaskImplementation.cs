@@ -28,7 +28,7 @@ internal class TaskImplementation : BlApi.ITask
         try
         {
             _dal.Config.GetProjectStart();
-            throw new BlIllegalOperationException("Cannot add a task during production");
+            throw new BlIllegalOperationException("Cannot add a task to an engineer before production");
         }
         catch (DALConfigDateNotSet)
         {
@@ -82,7 +82,7 @@ internal class TaskImplementation : BlApi.ITask
 
         if (dependencies.Count() != 0)
         {
-            throw new BlIllegalOperationException($"Cannot delete task {id} as {dependencies.Count()} tasks are dependent on it ");
+            throw new BlIllegalOperationException($"Cannot delete task \"{id}\" as {dependencies.Count()} tasks are dependent on it ");
         }
 
         //try to delete
@@ -241,7 +241,7 @@ internal class TaskImplementation : BlApi.ITask
         {
             if (!dep.Start.HasValue || !dep.End.HasValue || startDate < dep.End)
             {
-                throw new BlIllegalOperationException($"Cannot update task {id}'s start date as its dependencies have not been schduled yet");
+                throw new BlIllegalOperationException($"Cannot update task \"{id}\"'s start date as its dependencies have not been scheduled yet");
             }
         }
 
@@ -362,11 +362,11 @@ internal class TaskImplementation : BlApi.ITask
        
         if (task.Name == null)
         {
-            throw new BlNullPropertyException("Must not be a null name");
+            throw new BlNullPropertyException("Name cannot be empty");
         }
         if (task.Name.Length == 0)
         {
-            throw new BlIllegalPropertyException("Name must be none empty");
+            throw new BlIllegalPropertyException("Name cannot be blank");
         }
         if(task.Duration.HasValue)
         {
@@ -385,7 +385,7 @@ internal class TaskImplementation : BlApi.ITask
             }
             catch(Exception)
             {
-                throw new BlIllegalOperationException("cannot assign an engineer to a task before production");
+                throw new BlIllegalOperationException("Cannot assign a task to an engineer before production");
             }
 
             try
@@ -395,20 +395,20 @@ internal class TaskImplementation : BlApi.ITask
                 //see that we have a complexity
                 if (task.Complexity == null)
                 {
-                    throw new BlIllegalOperationException($"Assign a complexity to task {task.ID} before assigning an engineer");
+                    throw new BlIllegalOperationException($"Assign a complexity to task \"{task.ID}\" before assigning it engineer");
                 }
 
                 //the task is too complex for the engineer
                 if (task.Complexity > (EngineerExperience)dEngineer!.Exp)
                 {
-                    throw new BlIllegalOperationException($"the task is too complex for engineer {dEngineer.ID}");
+                    throw new BlIllegalOperationException($"the task is too complex for engineer \"{dEngineer.ID}\"");
                 }
 
                 DO.Task? anotherTask = _dal.Task.Read(t => t.AssignedEngineer == dEngineer.ID);
 
                 if(anotherTask !=null && anotherTask.ID!= task.ID)
                 {
-                    throw new BlIllegalPropertyException($"Engineer {dEngineer.ID} is already assigned to task {anotherTask!.ID}");
+                    throw new BlIllegalPropertyException($"Engineer \"{dEngineer.ID}\" is already assigned to task {anotherTask!.ID}");
                 }
 
             }
@@ -445,7 +445,7 @@ internal class TaskImplementation : BlApi.ITask
 
             if (checkCircularDependency(dep))  //the dependency will cause a circular dependency
             {
-                throw new BlIllegalPropertyException($"Cannot create a circular dependency, {dep.RequisiteID} is already dependent on {dep.DependentID} ");
+                throw new BlIllegalPropertyException($"Cannot create a circular dependency, \"{dep.RequisiteID}\" is already dependent on \"{dep.DependentID}\"");
             }
         }
     }

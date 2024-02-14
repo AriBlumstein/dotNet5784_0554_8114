@@ -28,7 +28,7 @@ internal class SimpleSchedularImplementation : ISchedular
 
         if(projectedStart<DateTime.Now)
         {
-            throw new BlIllegalOperationException("cannot enter production with an date in the past");
+            throw new BlIllegalOperationException("Cannot enter production with a date in the past");
         }
 
         //we will check that each task has a duration, if it doesn't than we cannot make the schedule, also make sure difficulties are well defined, otherwise we can't assign an engineer to it and production can't continue
@@ -38,11 +38,11 @@ internal class SimpleSchedularImplementation : ISchedular
         {
             if (task.Duration == null)
             {
-                throw new BlIllegalOperationException($"Cannot make a schedule as task {task.ID} does not have a duration");
+                throw new BlIllegalOperationException($"Cannot make a schedule as task \"{task.ID}\" does not have a duration");
             }
             if (task.Difficulty == null)
             {
-                throw new BlIllegalOperationException($"Cannot make a schedule as task {task.ID} does not have complexity well defined");
+                throw new BlIllegalOperationException($"Cannot make a schedule as task \"{task.ID}\" does not have complexity that is well defined");
             }
         }
 

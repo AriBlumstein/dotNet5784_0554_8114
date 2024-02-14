@@ -28,7 +28,7 @@ internal class EngineerImplementation : IEngineer
         //add the task if we can
         if (engineer.Task != null)
         {
-            DO.Task task = _dal.Task.Read(engineer.Task.ID) with { AssignedEngineer = engineer.ID };
+            DO.Task task = _dal.Task.Read(engineer.Task.ID)! with { AssignedEngineer = engineer.ID };
             _dal.Task.Update(task);
         }
 
@@ -54,13 +54,13 @@ internal class EngineerImplementation : IEngineer
         
         if (completedTasks.Count() != 0) //there exists a task
         {
-            throw new BlIllegalOperationException($"Engineer with ID {engineer.ID} cannot be deleted as he worked on tasks in the past");
+            throw new BlIllegalOperationException($"Engineer with ID \"{engineer.ID}\" cannot be deleted as he worked on tasks in the past");
         }
 
         // check if the engineer is currently working on a task
         if (engineer.Task != null)
         {
-            throw new BlIllegalOperationException($"Engineer with ID {engineer.ID} is currently working on task {engineer.Task.ID}");
+            throw new BlIllegalOperationException($"Engineer with ID \"{engineer.ID}\" is currently working on task \"{engineer.Task.ID}\"");
         }
 
         //try to delete
@@ -214,15 +214,15 @@ internal class EngineerImplementation : IEngineer
         //check validity of fields
         if (engineer.ID <= 0)
         {
-            throw new BlIllegalPropertyException($"{engineer.ID} is not a valid id");
+            throw new BlIllegalPropertyException($"\"{engineer.ID}\" is not a valid id");
         }
         if(engineer.Name==null)
         {
-            throw new BlNullPropertyException("Name of engineer cannot be null");
+            throw new BlNullPropertyException("The name of an engineer cannot be empty");
         }
         if (engineer.Name.Length == 0)
         {
-            throw new BlIllegalPropertyException("An Engineer must have a non-empty name");
+            throw new BlIllegalPropertyException("The name of an engineer cannot be blank");
         }
         if (engineer.Cost <= 0)
         {
@@ -230,12 +230,14 @@ internal class EngineerImplementation : IEngineer
         }
         if (engineer.Email == null)
         {
-            throw new BlNullPropertyException("Email cannot be null");
+            throw new BlNullPropertyException("Email cannot be empty");
         }
         if (!isValidEmail(engineer.Email))
         {
-            throw new BlIllegalPropertyException($"{engineer.Email} is not a valid email");
+            throw new BlIllegalPropertyException($"\"{engineer.Email}\" is not a valid email");
         }
+
+        //checking task attributes
         if (engineer.Task != null) {
 
             //check if we are in production, if we aren't in production, we cannot assign an engineer
@@ -249,21 +251,26 @@ internal class EngineerImplementation : IEngineer
                 throw new BlIllegalOperationException("Cannot assign tasks to engineers before production");
             }
 
-            DO.Task? task = _dal.Task.Read(t => t.ID == engineer.Task.ID);
+            DO.Task? task;
 
-            if (task==null)
+            //check the task exists
+            try
             {
-                throw new BlIllegalPropertyException($"Task {engineer.Task.ID} does not exist");
-            } 
+                task = _dal.Task.Read(engineer.Task.ID);
+            }
+            catch(DalDoesNotExistException e)
+            {
+                throw new BlDoesNotExistException(e.Message, e);
+            }
 
             if(task.AssignedEngineer!=null && task.AssignedEngineer != engineer.ID)
             {
-                throw new BlIllegalOperationException($"task {task.ID} is already assigned to engineer {task.AssignedEngineer}");
+                throw new BlIllegalOperationException($"task \"{task.ID}\" is already assigned to engineer \"{task.AssignedEngineer}\"");
             }
 
             if (task.Difficulty>(Experience)engineer.Level)
             {
-                throw new BlIllegalOperationException($"task {task.ID} is too hard for engineer {engineer.ID}");
+                throw new BlIllegalOperationException($"task \"{task.ID}\" is too hard for engineer \"{engineer.ID}\"");
             }
 
 

@@ -25,6 +25,7 @@ namespace PL.Task
         {
             InitializeComponent();
             TaskList = s_bl?.Task.ReadAll()!;
+            MessageBox.Show("The add and update functionality for tasks is not ready yet for this stage (stage5) only the list view, check out Engineer Windows for add update functionality", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 

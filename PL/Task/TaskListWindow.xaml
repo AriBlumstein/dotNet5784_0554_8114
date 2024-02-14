@@ -23,7 +23,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--Label for filter name-->
-            <Label Content="Label" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+            <Label Content="Experience" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
             <!--the value of the filter-->
             <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged" />
         </Grid>

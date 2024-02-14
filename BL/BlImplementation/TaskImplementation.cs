@@ -378,6 +378,16 @@ internal class TaskImplementation : BlApi.ITask
 
         if (task.Engineer != null)
         {
+            //check that we are in production
+            try
+            {
+                _dal.Config.GetProjectStart();
+            }
+            catch(Exception)
+            {
+                throw new BlIllegalOperationException("cannot assign an engineer to a task before production");
+            }
+
             try
             {
                 DO.Engineer dEngineer = _dal.Engineer.Read(task.Engineer.ID)!;

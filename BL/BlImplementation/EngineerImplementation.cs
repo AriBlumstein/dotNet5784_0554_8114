@@ -238,6 +238,17 @@ internal class EngineerImplementation : IEngineer
         }
         if (engineer.Task != null) {
 
+            //check if we are in production, if we aren't in production, we cannot assign an engineer
+
+            try
+            {
+                _dal.Config.GetProjectStart();
+            }
+            catch(Exception ) 
+            {
+                throw new BlIllegalOperationException("Cannot assign tasks to engineers before production");
+            }
+
             DO.Task? task = _dal.Task.Read(t => t.ID == engineer.Task.ID);
 
             if (task==null)
@@ -254,6 +265,9 @@ internal class EngineerImplementation : IEngineer
             {
                 throw new BlIllegalOperationException($"task {task.ID} is too hard for engineer {engineer.ID}");
             }
+
+
+
         }
     }
 }

@@ -511,8 +511,6 @@ internal class TaskImplementation : BlApi.ITask
             oTask.Created != task.Created ||
             oTask.Deadline != task.Deadline ||
             oTask.ProjectedStart != task.ProjectedStart ||
-            oTask.ActualStart != task.ActualStart ||
-            oTask.ActualEnd != task.ActualEnd ||
             oTask.Duration != task.Duration ||
             oTask.Complexity != task.Complexity 
             

@@ -58,25 +58,13 @@ namespace PL.Engineer
             else
             {
                 Engineer = s_bl?.Engineer.Read(id)!;
-                if(Engineer.Task!=null)
-                {
-                    TaskID=Engineer.Task.ID;
-                }
              
             }
         }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-            //for the task
-            if (TaskID.HasValue)
-            {
-                Engineer.Task = new BO.TaskInEngineer { ID = TaskID.Value };
-            }
-            else
-            {
-                Engineer.Task = null;
-            }
+           
 
 
             Button button = sender as Button;

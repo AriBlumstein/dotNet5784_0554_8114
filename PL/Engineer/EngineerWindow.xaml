@@ -45,9 +45,7 @@
             <TextBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
         <!--Assigned Task-->
         <!-- for now we don't give options, next satge we will give specific options and can only assign from those options-->  
-        <Label Content="Assigned Task" HorizontalAlignment="Center"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TaskID, RelativeSource={RelativeSource AncestorType={x:Type local:EngineerWindow}}, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true, Converter={StaticResource ConvertToNullableIntKey}}" VerticalAlignment="Center" Width="120"/>
-
+        
         </Grid>
         <Button  HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Top" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
     </Grid>

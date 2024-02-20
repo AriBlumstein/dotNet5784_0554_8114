@@ -1,19 +1,8 @@
 ﻿using BlApi;
 using BO;
-using PL.Task;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Engineer
 {
@@ -48,6 +37,15 @@ namespace PL.Engineer
         }
 
 
+        public static readonly DependencyProperty PossibleTasksProperty=
+            DependencyProperty.Register("PossibleTasks", typeof(ObservableCollection<int>), typeof(EngineerWindow), new PropertyMetadata(null));
+
+        public ObservableCollection<int> PossibleTasks
+        {
+            get { return (ObservableCollection<int>)GetValue(PossibleTasksProperty); }
+            set { SetValue(PossibleTasksProperty, value); }
+        }
+
 
         public EngineerWindow(int id=0)
         {
@@ -55,12 +53,19 @@ namespace PL.Engineer
             if(id == 0)
             {
                 Engineer = new BO.Engineer();
+                
             }
             else
             {
                 Engineer = s_bl?.Engineer.Read(id)!;
-             
+                
+                
+
             }
+
+            PossibleTasks = new ObservableCollection<int>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => t.ID));
+
+
         }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
@@ -132,6 +137,19 @@ namespace PL.Engineer
 
         }
 
+        private void Experience_Level_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Engineer.Level==BO.EngineerExperience.None)
+            {
+                PossibleTasks=new ObservableCollection<int> { };
+            }
+            else
+            {
+
+            PossibleTasks = new ObservableCollection<int>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => t.ID));
+            }
+
         }
+    }
     }
 

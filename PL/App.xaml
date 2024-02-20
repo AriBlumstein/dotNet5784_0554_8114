@@ -8,7 +8,7 @@
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToUpdatable x:Key="ConvertIdToUpdatableKey"/>
         <local:StringToNullableInt x:Key="ConvertToNullableIntKey"/>
-        <local:EnumerableNullReplaceConverter x:Key="EnumerableNullReplaceConverterKey"/>
+        <local:NullReplaceConverter x:Key="NullReplaceConverterKey" />
 
         <!--`Stryling the pages with a common theme-->
         <Style x:Key="HandleEntitiesStyle" TargetType="Button">

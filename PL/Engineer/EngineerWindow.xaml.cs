@@ -69,6 +69,7 @@ namespace PL.Engineer
             {
                 TaskID = Engineer.Task.ID;
             }
+          
 
         }
 
@@ -79,6 +80,7 @@ namespace PL.Engineer
             {
                 Engineer.Task = new TaskInEngineer { ID = TaskID.Value };
             }
+          
 
             Button button = sender as Button;
             if (button.Content.ToString() == "Update")

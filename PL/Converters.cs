@@ -34,7 +34,7 @@ namespace PL
         }
     }
 
-    public class StringToNullableInt : IValueConverter
+    class StringToNullableInt : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -61,22 +61,17 @@ namespace PL
        
     }
 
-    public class EnumerableNullReplaceConverter : IValueConverter
+
+    class NullReplaceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var collection = (IEnumerable)value;
-
-            return
-                collection
-                .Cast<object>()
-                .Select(x => x ?? parameter)
-                .ToArray();
+            return value ?? parameter;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (int?)value;
+            return value.Equals(parameter) ? null : value;
         }
     }
 }

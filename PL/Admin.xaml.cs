@@ -3,6 +3,7 @@
 namespace PL;
 
 using BlApi;
+using PL.Components;
 using PL.Engineer;
 using Task;
 
@@ -11,7 +12,8 @@ using Task;
 /// </summary>
 public partial class Admin : Window
 {
-    private readonly IBl s_bl = BlApi.Factory.Get();
+    private static readonly IBl s_bl = BlApi.Factory.Get();
+
     public Admin()
     {
         InitializeComponent();
@@ -56,7 +58,7 @@ public partial class Admin : Window
         
     }
 
-    private void reset_click(object sender, RoutedEventArgs e)
+    private void reset_Click(object sender, RoutedEventArgs e)
     {
         MessageBoxResult result = MessageBox.Show("Do you want to proceed? (doing so will clear all data if there was any)", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -64,5 +66,10 @@ public partial class Admin : Window
         {   
          s_bl.Reset();   
         }
+    }
+
+    private void beginProduction_Click(object sender, RoutedEventArgs e)
+    {
+        new SchedulerWindow().ShowDialog();
     }
 }

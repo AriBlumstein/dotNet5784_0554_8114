@@ -35,14 +35,21 @@
             Style="{StaticResource HandleOperationsStyle}"  
             Click="initializeData_Click"
             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <!-- Button to go to EngineerListWindow -->
+        <Button Content="Begin Production" 
+          Grid.Column="1" 
+          Grid.Row="0"
+          Style="{StaticResource HandleEntitiesStyle}" 
+          Click="beginProduction_Click" 
+          HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <!-- Button to Reset data -->
         <Button Content="Reset Database" 
               Grid.Column="2" 
               Grid.Row="1"
               Style="{StaticResource HandleOperationsStyle}"  
-              Click="reset_click"
-               FontSize="13"
+              Click="reset_Click"
+              FontSize="13"
               HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <!-- Button to go to EngineerListWindow -->

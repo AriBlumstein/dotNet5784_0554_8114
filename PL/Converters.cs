@@ -3,8 +3,7 @@
 
 namespace PL
 {
-
-
+    using System.Collections;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Data;
@@ -57,6 +56,27 @@ namespace PL
                 return result;
 
             return DependencyProperty.UnsetValue;
+        }
+
+       
+    }
+
+    public class EnumerableNullReplaceConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var collection = (IEnumerable)value;
+
+            return
+                collection
+                .Cast<object>()
+                .Select(x => x ?? parameter)
+                .ToArray();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (int?)value;
         }
     }
 }

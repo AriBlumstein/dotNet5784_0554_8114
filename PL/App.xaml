@@ -8,7 +8,8 @@
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToUpdatable x:Key="ConvertIdToUpdatableKey"/>
         <local:StringToNullableInt x:Key="ConvertToNullableIntKey"/>
-        
+        <local:EnumerableNullReplaceConverter x:Key="EnumerableNullReplaceConverterKey"/>
+
         <!--`Stryling the pages with a common theme-->
         <Style x:Key="HandleEntitiesStyle" TargetType="Button">
             <Setter Property="Background" Value="LightBlue"/>

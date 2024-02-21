@@ -63,7 +63,7 @@ namespace PL.Engineer
 
             }
 
-            PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => t.ID).Select(i=>(int?)i));
+            PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t=>s_bl.Task.Read(t.ID)).Where(t=>noDependencies(t)).Select(t => t.ID).Select(i=>(int?)i));
             if (Engineer.Task != null)
             {
                 TaskID = Engineer.Task.ID;
@@ -163,9 +163,9 @@ namespace PL.Engineer
             else
             {
 
-                PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => t.ID).Select(i => (int?)i));
-               
-               
+                PossibleTasks = PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => s_bl.Task.Read(t.ID)).Where(t => noDependencies(t)).Select(t => t.ID).Select(i => (int?)i));
+
+
             }
 
             if(TaskID!=null)
@@ -180,7 +180,22 @@ namespace PL.Engineer
 
         }
 
-        
+
+
+        /// <summary>
+        /// private method that determines if this is a task with no more dependencies
+        /// </summary>
+        /// <param name="cur"></param>
+        /// <returns>bool</returns>
+
+        private bool noDependencies(BO.Task cur)
+        {
+            return s_bl.Task.ReadDependencies(cur).Count()==0;
+        }
+
     }
+
+
+    
 
 }

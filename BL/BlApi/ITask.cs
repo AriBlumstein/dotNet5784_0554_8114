@@ -46,4 +46,12 @@ public interface ITask
     /// <param name="id"></param>
     /// <param name="startDate"></param>
     BO.Task UpdateProjectedStartDate(int id, DateTime startDate);
+
+
+    /// <summary>
+    /// gets the list of dependencies as tasks in list that were not yet completed
+    /// </summary>
+    /// <param name="task"></param>
+    /// <returns></returns>
+    IEnumerable<BO.TaskInList> ReadDependencies(BO.Task task);
 }

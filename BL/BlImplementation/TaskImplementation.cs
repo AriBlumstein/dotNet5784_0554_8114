@@ -598,6 +598,11 @@ internal class TaskImplementation : BlApi.ITask
 
     }
 
+    public IEnumerable<BO.TaskInList> ReadDependencies(BO.Task task)
+    {
+        return _dal.Dependency.ReadAll(d => d.DependentID == task.ID).Select(d => this.Read(d.RequisiteID)).Where(t=>t.ActualEnd==null).Select(t => new BO.TaskInList { ID = t.ID, Description = t.Descripiton, Name = t.Name, Status = t.Status });
+    }
+
 
 }
 

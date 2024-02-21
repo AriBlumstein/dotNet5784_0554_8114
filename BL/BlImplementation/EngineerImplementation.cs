@@ -263,6 +263,18 @@ internal class EngineerImplementation : IEngineer
                 throw new BlDoesNotExistException(e.Message, e);
             }
 
+
+            //check if the tasks dependencies are fulfilled
+            IEnumerable<DO.Dependency?> dependencies = _dal.Dependency.ReadAll(d => d.DependentID == task.ID);
+
+            foreach(DO.Dependency dep in dependencies)
+            {
+                if (_dal.Task.Read(dep.RequisiteID).ActualEnd==null)
+                {
+                    throw new BlIllegalOperationException($"Cannot assign task \"{task.ID}\" to an engineer as its dependencies have not yet been completed");
+                }
+            }
+
             if(task.AssignedEngineer!=null && task.AssignedEngineer != engineer.ID)
             {
                 throw new BlIllegalOperationException($"Task \"{task.ID}\" is already assigned to engineer \"{task.AssignedEngineer}\"");

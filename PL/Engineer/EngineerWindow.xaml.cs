@@ -64,7 +64,6 @@ namespace PL.Engineer
             }
 
             PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => t.ID).Select(i=>(int?)i));
-            PossibleTasks.Add(null);
             if (Engineer.Task != null)
             {
                 TaskID = Engineer.Task.ID;
@@ -158,14 +157,14 @@ namespace PL.Engineer
         {
             if (Engineer.Level == BO.EngineerExperience.None)
             {
-                PossibleTasks = new ObservableCollection<int?> { null };
+                PossibleTasks = new ObservableCollection<int?> ();
                 
             }
             else
             {
 
                 PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => t.ID).Select(i => (int?)i));
-                PossibleTasks.Add(null);
+               
                
             }
 

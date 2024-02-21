@@ -80,6 +80,11 @@ namespace PL.Engineer
             {
                 Engineer.Task = new TaskInEngineer { ID = TaskID.Value };
             }
+
+            else
+            {
+                Engineer.Task = null;
+            }
           
 
             Button button = sender as Button;
@@ -154,16 +159,29 @@ namespace PL.Engineer
             if (Engineer.Level == BO.EngineerExperience.None)
             {
                 PossibleTasks = new ObservableCollection<int?> { null };
+                
             }
             else
             {
 
                 PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => t.ID).Select(i => (int?)i));
                 PossibleTasks.Add(null);
+               
+            }
+
+            if(TaskID!=null)
+            {
+                BO.Task cur = s_bl.Task.Read(TaskID.Value);
+
+                if (cur.Complexity > Engineer.Level)
+                {
+                    TaskID = null;
+                }
             }
 
         }
 
+        
     }
 
 }

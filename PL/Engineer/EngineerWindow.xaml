@@ -48,7 +48,7 @@
             <ComboBox Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center"   VerticalAlignment="Center" Width="120" ItemsSource="{Binding PossibleTasks, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" SelectedValue="{Binding TaskID, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding"/>
+                        <TextBlock Text="{Binding Converter={StaticResource NullReplaceConverterKey}}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>

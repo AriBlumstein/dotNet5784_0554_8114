@@ -31,7 +31,7 @@ internal class SimpleSchedularImplementation : ISchedular
 
         //make sure our projectStart>=The internal clock
 
-        if(projectedStart<_bl.Clock)
+        if(projectedStart<_bl.Clock.Date)
         {
             throw new BlIllegalOperationException("Cannot enter production with a date in the past");
         }

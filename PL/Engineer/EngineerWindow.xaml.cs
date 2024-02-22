@@ -16,7 +16,7 @@ namespace PL.Engineer
 
 
         public static readonly DependencyProperty EngineerProperty =
-         DependencyProperty.Register("Engineer", typeof(BO.Engineer), typeof(EngineerWindow), new PropertyMetadata(null));
+         DependencyProperty.Register("Engineer", typeof(BO.Engineer), typeof(EngineerWindow), new PropertyMetadata(null));  //the engineer himself
 
         public BO.Engineer Engineer
         {
@@ -25,7 +25,7 @@ namespace PL.Engineer
         }
 
 
-        //for the task update
+        //for the task update, needed cause the task may be null, and we want to show only task numbers for this screen, more concise
         public static readonly DependencyProperty TaskIDProperty =
          DependencyProperty.Register("TaskID", typeof(int?), typeof(EngineerWindow), new PropertyMetadata(null));
 
@@ -38,7 +38,7 @@ namespace PL.Engineer
 
 
         public static readonly DependencyProperty PossibleTasksProperty =
-            DependencyProperty.Register("PossibleTasks", typeof(ObservableCollection<int?>), typeof(EngineerWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("PossibleTasks", typeof(ObservableCollection<int?>), typeof(EngineerWindow), new PropertyMetadata(null));  //the possible tasks to choose from to assign
 
         public ObservableCollection<int?> PossibleTasks
         {
@@ -79,7 +79,7 @@ namespace PL.Engineer
             {
                 Engineer.Task = new TaskInEngineer { ID = TaskID.Value };
             }
-
+                                        //logic to be added based on clocke to be added, setting the start time
             else
             {
                 Engineer.Task = null;

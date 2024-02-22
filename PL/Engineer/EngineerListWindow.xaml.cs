@@ -43,9 +43,12 @@ namespace PL.Engineer
         private void cbExperience_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EngineerList = (Experience == BO.EngineerExperience.None) ?
-            s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => (BO.EngineerExperience?)item.Exp == Experience)!;
+            s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => (BO.EngineerExperience?)item.Exp == Experience)!; 
 
         }
+
+
+        //even is different but accomplishes very similar goals of updating this screen properly depending on the selected exp, repeated code, byt decoupled, allows us to handle events differently if we choose to
 
         private void engineerWindow_Closed(Object Sender, EventArgs e)
         {
@@ -56,7 +59,7 @@ namespace PL.Engineer
         private void btnAddNewEngineer(object sender, RoutedEventArgs e)
         {
             EngineerWindow newWindow = new EngineerWindow();
-            newWindow.Closed += engineerWindow_Closed!;
+            newWindow.Closed += engineerWindow_Closed!;  //add our event listener to this event, so the event will be handled 
             newWindow.ShowDialog();
             
         }
@@ -68,7 +71,7 @@ namespace PL.Engineer
             if (engineer!=null)
             {
                 EngineerWindow newWindow = new EngineerWindow(engineer.ID);
-                newWindow.Closed += engineerWindow_Closed!;
+                newWindow.Closed += engineerWindow_Closed!;  //add our event listener to this event, so the event will be handled
                 newWindow.ShowDialog();
             }
         }

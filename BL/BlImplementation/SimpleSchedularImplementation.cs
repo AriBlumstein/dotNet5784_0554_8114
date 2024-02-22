@@ -12,10 +12,15 @@ using DO;
 internal class SimpleSchedularImplementation : ISchedular
 {
     private IDal _dal = DalApi.Factory.Get;
+
+    private readonly Bl _bl;
+
+    internal SimpleSchedularImplementation(Bl bl)=> _bl = bl;
     
     
     public void createSchedule(DateTime projectedStart)
     {
+
         //did we already entered production
         try
         {
@@ -24,9 +29,9 @@ internal class SimpleSchedularImplementation : ISchedular
         }
         catch(DALConfigDateNotSet){}
 
-        //make sure our projectStart>=DateTime.Now
+        //make sure our projectStart>=The internal clock
 
-        if(projectedStart<DateTime.Now)
+        if(projectedStart<_bl.Clock)
         {
             throw new BlIllegalOperationException("Cannot enter production with a date in the past");
         }
@@ -46,8 +51,6 @@ internal class SimpleSchedularImplementation : ISchedular
             }
         }
 
-        TaskImplementation taskImplementation = new TaskImplementation(); //we need to read the tasks from the business layer
-
         DateTime projectedEnd = projectedStart; // to be used later when updating config
 
         //helper method to get the best earliest possible start date
@@ -59,7 +62,7 @@ internal class SimpleSchedularImplementation : ISchedular
             {
                 BO.Task depTask;
                 
-                depTask = taskImplementation.Read(dep.ID);
+                depTask = _bl.Task.Read(dep.ID);
 
 
                 if (innerProjectedStart<depTask.ProjectedEnd)
@@ -85,11 +88,11 @@ internal class SimpleSchedularImplementation : ISchedular
 
         foreach (int id in ids)
         {
-            BO.Task cur = taskImplementation.Read(id);
+            BO.Task cur = _bl.Task.Read(id);
 
             //update the projected start date
 
-            cur=taskImplementation.UpdateProjectedStartDate(id, earliestDate(cur));
+            cur=_bl.Task.UpdateProjectedStartDate(id, earliestDate(cur));
 
             //update the projected end as we see fit
             if(projectedEnd<cur.ProjectedEnd)

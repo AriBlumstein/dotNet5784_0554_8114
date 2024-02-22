@@ -1,5 +1,7 @@
 ﻿
 
+using System.Runtime.CompilerServices;
+
 namespace BlApi;
 
 /// <summary>
@@ -18,5 +20,14 @@ public interface IBl
     /// start a new project
     /// </summary>
     public void Reset();
+
+
+    public DateTime Clock { get; }
+
+    public void MoveForwardHour();
+
+    public void MoveForwardDay();
+
+    public void TimeReset();
 
 }

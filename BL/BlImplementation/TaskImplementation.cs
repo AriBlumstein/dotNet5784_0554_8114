@@ -13,6 +13,16 @@ using System.Threading.Tasks;
 
 internal class TaskImplementation : BlApi.ITask
 {
+
+
+    private readonly Bl _bl;
+
+    internal TaskImplementation(Bl bl)=>_bl=bl;
+
+
+
+
+
     private DalApi.IDal _dal = DalApi.Factory.Get;
 
     //helper private class
@@ -263,9 +273,9 @@ internal class TaskImplementation : BlApi.ITask
     private Status? getStatus(DO.Task task)
     {
         if (task.ProjectedStart == null) return Status.Unscheduled;
-        else if (task.ProjectedStart >= DateTime.Now) return Status.Scheduled;
-        else if (task.ActualStart < DateTime.Now) return Status.OnTrack;
-        else if (task.ActualEnd <= DateTime.Now) return Status.Completed;
+        else if (task.ProjectedStart >= _bl.Clock) return Status.Scheduled;
+        else if (task.ActualStart < _bl.Clock) return Status.OnTrack;
+        else if (task.ActualEnd <= _bl.Clock) return Status.Completed;
         return null;
     }
 

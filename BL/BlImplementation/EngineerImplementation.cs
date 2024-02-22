@@ -10,6 +10,13 @@ using System.Text.RegularExpressions;
 
 internal class EngineerImplementation : IEngineer
 {
+
+    private readonly Bl _bl;
+
+    internal EngineerImplementation(Bl bl)=>_bl=bl;
+
+
+
     private DalApi.IDal _dal = DalApi.Factory.Get;
     public BO.Engineer Create(BO.Engineer engineer)
     {
@@ -47,7 +54,7 @@ internal class EngineerImplementation : IEngineer
 
         //check if there are no completed tasks
         IEnumerable<DO.Task?> completedTasks = from task in _dal.Task.ReadAll(t => t.AssignedEngineer == engineer.ID)
-                                               where task.ActualEnd<=DateTime.Now
+                                               where task.ActualEnd<=_bl.Clock
                                                select task;  // return the completed tasks
 
        
@@ -177,7 +184,7 @@ internal class EngineerImplementation : IEngineer
     public BO.TaskInEngineer? TaskSearcher(int engineerId) 
     {
         //find the task that this engineer is assigned to 
-        DO.Task? task=_dal.Task.Read(t => t.AssignedEngineer == engineerId && (t.ActualEnd==null||t.ActualEnd>=DateTime.Now)); //only find the tasks that have not yet been completed, if completed, I do not want it to show up as the task the engineer is assigned to
+        DO.Task? task=_dal.Task.Read(t => t.AssignedEngineer == engineerId && (t.ActualEnd==null||t.ActualEnd>=_bl.Clock)); //only find the tasks that have not yet been completed, if completed, I do not want it to show up as the task the engineer is assigned to
 
         if (task != null)
             return new TaskInEngineer { ID = task.ID, Alias = task.Nickname };

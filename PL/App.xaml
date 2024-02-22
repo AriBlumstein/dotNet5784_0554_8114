@@ -31,10 +31,18 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="40"/>
+            <Setter Property="FontWeight" Value="Bold"/>
         </Style>
         <Style x:Key="ComboBoxCenter" TargetType="ComboBox">
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="DispalyTitlesKey" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Foreground" Value="Blue"/>
         </Style>
 
     </Application.Resources>

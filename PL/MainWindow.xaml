@@ -5,15 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+   
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
 
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Style="{StaticResource OperationButtonsStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Admin" Click="openAdminWindowClick"/>
-        <Button Grid.Column="1" Style="{StaticResource OperationButtonsStyle}" Background="Orange" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Engineer"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+       
+        
+        <!-- Display Title-->
+
+        <Grid Grid.Row="0">
+            <TextBlock Style="{StaticResource DispalyTitlesKey}" Text="Welcome to the Engineer/Task Management System">
+                
+            </TextBlock>
+        </Grid>
+
+        
+        <!--Buttons to move to different screens-->
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Style="{StaticResource OperationButtonsStyle}" Background="Blue"  VerticalAlignment="Center" HorizontalAlignment="Center" Content="Admin" Click="openAdminWindowClick"/>
+            <Button Grid.Column="1" Style="{StaticResource OperationButtonsStyle}" Background="Orange" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Engineer"/>
+        </Grid>
+
+       
+        
+        <!-- the internal clock-->
+        <Grid  Grid.Row="2" >
+           
+            <Border Background="AliceBlue" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Gray" BorderThickness="5" Margin="20" Padding="5">
+                <!-- Clock and buttons -->
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <!-- Clock display -->
+                    <TextBlock Text="{Binding Clock, Mode=TwoWay, StringFormat='{}{0:hh:mm:ss}'}" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Clock, Mode=TwoWay, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10"/>
+
+                    <!-- Buttons -->
+                    <UniformGrid Rows="1" HorizontalAlignment="Center">
+                        <Button Content="Add Hour" Click="forwardHour_Click" Margin="5"/>
+                        <Button Content="Add Day" Click="forwardDay_Click" Margin="5"/>
+                        <Button Content="Reset" Click="reset_Click" Margin="5"/>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+
+
+
 
     </Grid>
 </Window>

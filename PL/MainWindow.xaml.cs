@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using BlApi;
+using PL.Engineer;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -7,14 +10,57 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly IBl s_bl = BlApi.Factory.Get();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            // Start a DispatcherTimer to update the Clock property periodically
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1); // 1 second
+            timer.Tick += (sender, e) =>
+            {
+                Clock = s_bl.Clock;
+            };
+            timer.Start();
+
+        }
+
+
+        public static readonly DependencyProperty ClockProperty =
+        DependencyProperty.Register("Clock", typeof(DateTime), typeof(MainWindow), new PropertyMetadata(null));
+
+        public DateTime Clock
+        {
+            get { return (DateTime)GetValue(ClockProperty); }
+            set { SetValue(ClockProperty, value);  }
         }
 
         private void openAdminWindowClick(object sender, RoutedEventArgs e)
         {
             new Admin().ShowDialog();
         }
+
+        private void forwardHour_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.MoveForwardHour();
+            Clock = s_bl.Clock;
+        }
+
+        private void forwardDay_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.MoveForwardDay();
+            Clock = s_bl.Clock;
+        }
+
+        private void reset_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.TimeReset();
+            Clock = s_bl.Clock;
+        }
     }
+
+
+
 }

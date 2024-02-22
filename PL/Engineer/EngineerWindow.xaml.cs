@@ -78,8 +78,8 @@ namespace PL.Engineer
             if (TaskID != null)
             {
                 Engineer.Task = new TaskInEngineer { ID = TaskID.Value };
+
             }
-                                        //logic to be added based on clocke to be added, setting the start time
             else
             {
                 Engineer.Task = null;
@@ -95,6 +95,11 @@ namespace PL.Engineer
                 {
                     Engineer = s_bl?.Engineer.Update(Engineer)!;
                     MessageBox.Show($"Successfully updated engineer {Engineer.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    //update the task actual start time
+
+                    updateTaskTime();
+
                     Close();
                 }
                 catch (BlDoesNotExistException ex)
@@ -126,6 +131,7 @@ namespace PL.Engineer
 
                     Engineer = s_bl?.Engineer.Create(Engineer)!;
                     MessageBox.Show($"Successfully added engineer {Engineer.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    updateTaskTime();
                     Close();
 
                 }
@@ -152,6 +158,20 @@ namespace PL.Engineer
 
         }
 
+        /// <summary>
+        /// Helper method to update the task
+        /// </summary>
+        private void updateTaskTime()
+        {
+            if (Engineer.Task != null)
+            {
+                BO.Task curTask = s_bl!.Task.Read(Engineer.Task.ID);
+
+                curTask.ActualStart = s_bl.Clock.Date;
+
+                s_bl!.Task.Update(curTask);
+            }
+        }
 
         private void Experience_Level_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

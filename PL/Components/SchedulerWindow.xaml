@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <StackPanel Visibility="Visible" Grid.Column="0" Grid.Row="0"  HorizontalAlignment="Center" VerticalAlignment="Center">
             <DatePicker  HorizontalAlignment="Center" VerticalAlignment="Center" SelectedDate="{Binding ProjectStartDate}" />
-            <Button Content="Start Production" MaxWidth="100" Click="startProduction_Click"/>
+            <Button Content="Start Production" Style="{StaticResource OperationButtonsStyle}" MaxWidth="100" Click="startProduction_Click"/>
         </StackPanel>
         
     </Grid>

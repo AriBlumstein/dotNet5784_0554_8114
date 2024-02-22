@@ -30,7 +30,9 @@ namespace PL.Components
         private void startProduction_Click(object sender, RoutedEventArgs e)
         {
             try
-            {s_bl.Schedular.createSchedule(ProjectStartDate);
+            {
+                s_bl.Schedular.createSchedule(ProjectStartDate);
+                MessageBox.Show("Successfully Scheduled the Tasks", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();                                                  //on this event, we start the production, close only on success
             }
             catch (BlIllegalOperationException ex)

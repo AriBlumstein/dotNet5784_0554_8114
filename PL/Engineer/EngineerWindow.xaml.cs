@@ -210,9 +210,36 @@ namespace PL.Engineer
 
         private bool noDependencies(BO.Task cur)
         {
-            return s_bl.Task.ReadDependencies(cur).Count()==0;
+            return s_bl.Task.ReadUncompletedDependencies(cur).Count()==0;
         }
 
+        private void AssignTaskClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                s_bl.Engineer.Update(Engineer);
+                EngineerTaskAssigner taskAssigner = new EngineerTaskAssigner(Engineer.ID);
+                taskAssigner.Show();
+
+            }
+            catch (BlDoesNotExistException ex)
+            {
+                try {
+                    s_bl.Engineer.Create(Engineer);
+                    EngineerTaskAssigner taskAssigner = new EngineerTaskAssigner(Engineer.ID);
+                    taskAssigner.Show();
+                }  
+                catch (Exception)
+                {
+                    MessageBox.Show("Make sure all other fields for an engineer are legal", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                }
+            }
+            catch( Exception)
+            {
+                MessageBox.Show("Make sure all other fields for an engineer are legal", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 
 

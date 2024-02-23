@@ -53,5 +53,5 @@ public interface ITask
     /// </summary>
     /// <param name="task"></param>
     /// <returns></returns>
-    IEnumerable<BO.TaskInList> ReadDependencies(BO.Task task);
+    IEnumerable<BO.TaskInList> ReadUncompletedDependencies(BO.Task task);
 }

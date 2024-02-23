@@ -25,26 +25,7 @@ namespace PL.Engineer
         }
 
 
-        //for the task update, needed cause the task may be null, and we want to show only task numbers for this screen, more concise
-        public static readonly DependencyProperty TaskIDProperty =
-         DependencyProperty.Register("TaskID", typeof(int?), typeof(EngineerWindow), new PropertyMetadata(null));
-
-
-        public int? TaskID
-        {
-            get { return (int?)GetValue(TaskIDProperty); }
-            set { SetValue(TaskIDProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty PossibleTasksProperty =
-            DependencyProperty.Register("PossibleTasks", typeof(ObservableCollection<int?>), typeof(EngineerWindow), new PropertyMetadata(null));  //the possible tasks to choose from to assign
-
-        public ObservableCollection<int?> PossibleTasks
-        {
-            get { return (ObservableCollection<int?>)GetValue(PossibleTasksProperty); }
-            set { SetValue(PossibleTasksProperty, value); }
-        }
+       
 
 
         public EngineerWindow(int id = 0)
@@ -58,15 +39,6 @@ namespace PL.Engineer
             else
             {
                 Engineer = s_bl?.Engineer.Read(id)!;
-
-
-
-            }
-
-            PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t=>s_bl.Task.Read(t.ID)).Where(t=>noDependencies(t)).Select(t => t.ID).Select(i=>(int?)i));
-            if (Engineer.Task != null)
-            {
-                TaskID = Engineer.Task.ID;
             }
           
 
@@ -75,15 +47,6 @@ namespace PL.Engineer
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
 
-            if (TaskID != null)
-            {
-                Engineer.Task = new TaskInEngineer { ID = TaskID.Value };
-
-            }
-            else
-            {
-                Engineer.Task = null;
-            }
           
 
             Button button = sender as Button;
@@ -95,10 +58,7 @@ namespace PL.Engineer
                 {
                     Engineer = s_bl?.Engineer.Update(Engineer)!;
                     MessageBox.Show($"Successfully updated engineer {Engineer.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    //update the task actual start time
-
-                    updateTaskTime();
+                   
 
                     Close();
                 }
@@ -131,7 +91,7 @@ namespace PL.Engineer
 
                     Engineer = s_bl?.Engineer.Create(Engineer)!;
                     MessageBox.Show($"Successfully added engineer {Engineer.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    updateTaskTime();
+                  
                     Close();
 
                 }
@@ -158,48 +118,7 @@ namespace PL.Engineer
 
         }
 
-        /// <summary>
-        /// Helper method to update the task
-        /// </summary>
-        private void updateTaskTime()
-        {
-            if (Engineer.Task != null)
-            {
-                BO.Task curTask = s_bl!.Task.Read(Engineer.Task.ID);
-
-                curTask.ActualStart = s_bl.Clock.Date;
-
-                s_bl!.Task.Update(curTask);
-            }
-        }
-
-        private void Experience_Level_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (Engineer.Level == BO.EngineerExperience.None)
-            {
-                PossibleTasks = new ObservableCollection<int?> ();
-                
-            }
-            else
-            {
-
-                PossibleTasks = PossibleTasks = new ObservableCollection<int?>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= Engineer.Level).Select(t => s_bl.Task.Read(t.ID)).Where(t => noDependencies(t)).Select(t => t.ID).Select(i => (int?)i));
-
-
-            }
-
-            if(TaskID!=null)
-            {
-                BO.Task cur = s_bl.Task.Read(TaskID.Value);
-
-                if (cur.Complexity > Engineer.Level)
-                {
-                    TaskID = null;
-                }
-            }
-
-        }
-
+        
 
         private void taskAssigned(object sender, EventArgs e)
         {
@@ -208,17 +127,6 @@ namespace PL.Engineer
         }
 
 
-
-        /// <summary>
-        /// private method that determines if this is a task with no more dependencies
-        /// </summary>
-        /// <param name="cur"></param>
-        /// <returns>bool</returns>
-
-        private bool noDependencies(BO.Task cur)
-        {
-            return s_bl.Task.ReadUncompletedDependencies(cur).Count()==0;
-        }
 
         private void AssignTaskClick(object sender, RoutedEventArgs e)
         {

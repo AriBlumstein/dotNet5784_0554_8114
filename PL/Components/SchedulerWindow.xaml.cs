@@ -24,7 +24,7 @@ namespace PL.Components
         public SchedulerWindow()
         {
             InitializeComponent();
-            ProjectStartDate = DateTime.Now;  //currently datetime.now, logic will change with the clock to be added
+            ProjectStartDate = s_bl.Clock;  //currently datetime.now, logic will change with the clock to be added
         }
 
         private void startProduction_Click(object sender, RoutedEventArgs e)

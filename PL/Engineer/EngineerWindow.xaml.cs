@@ -201,6 +201,13 @@ namespace PL.Engineer
         }
 
 
+        private void taskAssigned(object sender, EventArgs e)
+        {
+            Engineer=s_bl.Engineer.Read(Engineer.ID);
+
+        }
+
+
 
         /// <summary>
         /// private method that determines if this is a task with no more dependencies
@@ -219,6 +226,7 @@ namespace PL.Engineer
             {
                 s_bl.Engineer.Update(Engineer);
                 EngineerTaskAssigner taskAssigner = new EngineerTaskAssigner(Engineer.ID);
+                taskAssigner.Closed += taskAssigned!;
                 taskAssigner.Show();
 
             }
@@ -227,6 +235,7 @@ namespace PL.Engineer
                 try {
                     s_bl.Engineer.Create(Engineer);
                     EngineerTaskAssigner taskAssigner = new EngineerTaskAssigner(Engineer.ID);
+                    taskAssigner.Closed += taskAssigned!;
                     taskAssigner.Show();
                 }  
                 catch (Exception)

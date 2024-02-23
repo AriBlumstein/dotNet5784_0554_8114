@@ -5,11 +5,11 @@
     <Nickname>Structural Analysis and Design</Nickname>
     <Description>Analyzing and designing structures for various projects.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-12-19T12:16:33.9032587+02:00</Created>
-    <ProjectedStart>2024-02-23T12:16:34.3780778+02:00</ProjectedStart>
+    <Created>2024-02-07T12:28:20.3929286+02:00</Created>
+    <ProjectedStart>2025-09-06T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>79</Duration>
+    <Duration>5</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
     <Difficulty>Beginner</Difficulty>
@@ -20,14 +20,14 @@
     <Nickname>Systems Integration Testing</Nickname>
     <Description>Conducting testing to ensure seamless integration of systems.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-02-18T12:16:33.915813+02:00</Created>
-    <ProjectedStart>2024-02-23T12:16:34.3780778+02:00</ProjectedStart>
-    <ActualStart>2024-02-23T12:21:17.9884707+02:00</ActualStart>
+    <Created>2024-01-16T12:28:20.4008006+02:00</Created>
+    <ProjectedStart>2024-02-23T12:28:20.8048121+02:00</ProjectedStart>
+    <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>63</Duration>
+    <Duration>73</Duration>
     <ActualEnd xsi:nil="true" />
-    <AssignedEngineer>308669134</AssignedEngineer>
-    <Difficulty>Beginner</Difficulty>
+    <AssignedEngineer xsi:nil="true" />
+    <Difficulty>Intermediate</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -35,14 +35,14 @@
     <Nickname>Finite Element Analysis (FEA)</Nickname>
     <Description>Performing Finite Element Analysis for structural simulations.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-11-24T12:16:33.9386599+02:00</Created>
-    <ProjectedStart>2024-06-04T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2023-11-19T12:28:20.4221413+02:00</Created>
+    <ProjectedStart>2024-08-13T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>88</Duration>
+    <Duration>4</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Advanced</Difficulty>
+    <Difficulty>AdvancedBeginner</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -50,14 +50,14 @@
     <Nickname>Prototyping and Validation</Nickname>
     <Description>Creating prototypes and validating their functionality.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-12-04T12:16:33.9545737+02:00</Created>
-    <ProjectedStart>2024-11-19T12:16:34.3780778+02:00</ProjectedStart>
+    <Created>2024-01-07T12:28:20.4371262+02:00</Created>
+    <ProjectedStart>2024-08-13T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>66</Duration>
+    <Duration>84</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <Difficulty>Beginner</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -65,14 +65,14 @@
     <Nickname>Project Scheduling and Planning</Nickname>
     <Description>Planning and scheduling tasks for successful project completion.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-11-27T12:16:33.9919145+02:00</Created>
-    <ProjectedStart>2024-05-18T12:16:34.3780778+03:00</ProjectedStart>
-    <ActualStart xsi:nil="true" />
+    <Created>2024-01-28T12:28:20.4536756+02:00</Created>
+    <ProjectedStart>2024-02-23T12:28:20.8048121+02:00</ProjectedStart>
+    <ActualStart>2024-02-23T12:30:37.7824696+02:00</ActualStart>
     <Deadline xsi:nil="true" />
-    <Duration>17</Duration>
+    <Duration>41</Duration>
     <ActualEnd xsi:nil="true" />
-    <AssignedEngineer xsi:nil="true" />
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <AssignedEngineer>378674713</AssignedEngineer>
+    <Difficulty>Beginner</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -80,14 +80,14 @@
     <Nickname>Environmental Impact Assessment</Nickname>
     <Description>Assessing and mitigating environmental impacts of engineering projects.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-12-11T12:16:34.0091014+02:00</Created>
-    <ProjectedStart>2025-03-21T12:16:34.3780778+02:00</ProjectedStart>
+    <Created>2023-12-26T12:28:20.4715273+02:00</Created>
+    <ProjectedStart>2024-12-24T12:28:20.8048121+02:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>97</Duration>
+    <Duration>78</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <Difficulty>Beginner</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -95,14 +95,14 @@
     <Nickname>Design Optimization</Nickname>
     <Description>Optimizing designs for efficiency and performance.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-12-21T12:16:34.0184376+02:00</Created>
-    <ProjectedStart>2024-05-18T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2024-01-29T12:28:20.4898522+02:00</Created>
+    <ProjectedStart>2024-08-17T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>93</Duration>
+    <Duration>20</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <Difficulty>Advanced</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -110,14 +110,14 @@
     <Nickname>Materials Selection and Testing</Nickname>
     <Description>Selecting materials and conducting testing for suitability.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-12-24T12:16:34.049803+02:00</Created>
-    <ProjectedStart>2025-03-21T12:16:34.3780778+02:00</ProjectedStart>
+    <Created>2023-12-11T12:28:20.5207881+02:00</Created>
+    <ProjectedStart>2024-08-17T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>26</Duration>
+    <Duration>75</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Intermediate</Difficulty>
+    <Difficulty>Expert</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -125,14 +125,14 @@
     <Nickname>Quality Assurance and Control</Nickname>
     <Description>Ensuring and controlling the quality of engineering processes.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-01-01T12:16:34.0989346+02:00</Created>
-    <ProjectedStart>2024-05-18T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2024-02-04T12:28:20.5414413+02:00</Created>
+    <ProjectedStart>2025-05-24T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>81</Duration>
+    <Duration>8</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Expert</Difficulty>
+    <Difficulty>Advanced</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -140,14 +140,14 @@
     <Nickname>Regulatory Compliance Review</Nickname>
     <Description>Reviewing and ensuring compliance with regulatory standards.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-12-03T12:16:34.1159615+02:00</Created>
-    <ProjectedStart>2025-04-16T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2024-02-14T12:28:20.5505376+02:00</Created>
+    <ProjectedStart>2024-10-21T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>54</Duration>
+    <Duration>20</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Advanced</Difficulty>
+    <Difficulty>AdvancedBeginner</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -155,14 +155,14 @@
     <Nickname>Cost Estimation and Budgeting</Nickname>
     <Description>Estimating project costs and creating budgets.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-01-15T12:16:34.1748118+02:00</Created>
-    <ProjectedStart>2025-09-15T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2023-12-07T12:28:20.5589766+02:00</Created>
+    <ProjectedStart>2025-03-12T12:28:20.8048121+02:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
     <Duration>73</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <Difficulty>Beginner</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -170,14 +170,14 @@
     <Nickname>Geotechnical Investigation</Nickname>
     <Description>Investigating soil and rock properties for construction projects.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-02-05T12:16:34.1916346+02:00</Created>
-    <ProjectedStart>2025-06-26T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2023-12-04T12:28:20.5735802+02:00</Created>
+    <ProjectedStart>2024-12-13T12:28:20.8048121+02:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>21</Duration>
+    <Duration>4</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Advanced</Difficulty>
+    <Difficulty>Expert</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -185,14 +185,14 @@
     <Nickname>Risk Assessment and Management</Nickname>
     <Description>Assessing and managing risks associated with engineering projects.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-12-17T12:16:34.21316+02:00</Created>
-    <ProjectedStart>2025-06-09T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2023-12-01T12:28:20.5892018+02:00</Created>
+    <ProjectedStart>2024-09-06T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>98</Duration>
+    <Duration>45</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Expert</Difficulty>
+    <Difficulty>Advanced</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -200,14 +200,14 @@
     <Nickname>3D Modeling and Rendering</Nickname>
     <Description>Creating detailed 3D models and realistic renderings.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-02-03T12:16:34.2214709+02:00</Created>
-    <ProjectedStart>2025-07-17T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2024-01-31T12:28:20.6040225+02:00</Created>
+    <ProjectedStart>2024-05-17T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>61</Duration>
+    <Duration>88</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <Difficulty>Intermediate</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -215,14 +215,14 @@
     <Nickname>Failure Mode and Effect Analysis (FMEA)</Nickname>
     <Description>Analyzing potential failure modes and their effects.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-01-24T12:16:34.2302104+02:00</Created>
-    <ProjectedStart>2024-09-21T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2024-02-15T12:28:20.621562+02:00</Created>
+    <ProjectedStart>2025-03-12T12:28:20.8048121+02:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>59</Duration>
+    <Duration>13</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Beginner</Difficulty>
+    <Difficulty>Intermediate</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -230,14 +230,14 @@
     <Nickname>Field Inspection and Monitoring</Nickname>
     <Description>Inspecting and monitoring projects in the field.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-12-31T12:16:34.2412086+02:00</Created>
-    <ProjectedStart>2024-05-12T12:16:34.3780778+03:00</ProjectedStart>
-    <ActualStart xsi:nil="true" />
+    <Created>2023-12-23T12:28:20.6388098+02:00</Created>
+    <ProjectedStart>2024-02-23T12:28:20.8048121+02:00</ProjectedStart>
+    <ActualStart>2024-02-23T12:29:27.2814942+02:00</ActualStart>
     <Deadline xsi:nil="true" />
-    <Duration>6</Duration>
+    <Duration>84</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <Difficulty>Intermediate</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -245,14 +245,14 @@
     <Nickname>Energy Efficiency Analysis</Nickname>
     <Description>Analyzing and improving energy efficiency in designs.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-01-21T12:16:34.2631736+02:00</Created>
-    <ProjectedStart>2024-07-10T12:16:34.3780778+03:00</ProjectedStart>
-    <ActualStart xsi:nil="true" />
+    <Created>2023-11-30T12:28:20.6643086+02:00</Created>
+    <ProjectedStart>2024-02-23T12:28:20.8048121+02:00</ProjectedStart>
+    <ActualStart>2024-02-23T12:29:16.2814942+02:00</ActualStart>
     <Deadline xsi:nil="true" />
-    <Duration>73</Duration>
+    <Duration>39</Duration>
     <ActualEnd xsi:nil="true" />
-    <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Expert</Difficulty>
+    <AssignedEngineer>399850757</AssignedEngineer>
+    <Difficulty>Beginner</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -260,14 +260,14 @@
     <Nickname>Simulation and Modeling</Nickname>
     <Description>Conducting simulations and mathematical modeling.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-02-18T12:16:34.2818647+02:00</Created>
-    <ProjectedStart>2024-02-23T12:16:34.3780778+02:00</ProjectedStart>
-    <ActualStart>2024-02-23T12:18:42.4788063+02:00</ActualStart>
+    <Created>2023-12-26T12:28:20.6837605+02:00</Created>
+    <ProjectedStart>2024-10-31T12:28:20.8048121+02:00</ProjectedStart>
+    <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>11</Duration>
+    <Duration>54</Duration>
     <ActualEnd xsi:nil="true" />
-    <AssignedEngineer>231813277</AssignedEngineer>
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <AssignedEngineer xsi:nil="true" />
+    <Difficulty>Beginner</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -275,14 +275,14 @@
     <Nickname>Technical Documentation and Reporting</Nickname>
     <Description>Preparing technical documentation and reports.</Description>
     <Milestone>false</Milestone>
-    <Created>2023-11-16T12:16:34.2978914+02:00</Created>
-    <ProjectedStart>2024-06-04T12:16:34.3780778+03:00</ProjectedStart>
+    <Created>2024-02-06T12:28:20.7006377+02:00</Created>
+    <ProjectedStart>2025-06-01T12:28:20.8048121+03:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>36</Duration>
+    <Duration>97</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>Beginner</Difficulty>
+    <Difficulty>Intermediate</Difficulty>
     <Active>true</Active>
   </Task>
   <Task>
@@ -290,14 +290,14 @@
     <Nickname>Supplier and Vendor Coordination</Nickname>
     <Description>Coordinating with suppliers and vendors for project components.</Description>
     <Milestone>false</Milestone>
-    <Created>2024-01-27T12:16:34.3135795+02:00</Created>
-    <ProjectedStart>2025-01-24T12:16:34.3780778+02:00</ProjectedStart>
+    <Created>2024-01-30T12:28:20.7149195+02:00</Created>
+    <ProjectedStart>2024-11-10T12:28:20.8048121+02:00</ProjectedStart>
     <ActualStart xsi:nil="true" />
     <Deadline xsi:nil="true" />
-    <Duration>56</Duration>
+    <Duration>33</Duration>
     <ActualEnd xsi:nil="true" />
     <AssignedEngineer xsi:nil="true" />
-    <Difficulty>AdvancedBeginner</Difficulty>
+    <Difficulty>Advanced</Difficulty>
     <Active>true</Active>
   </Task>
 </ArrayOfTask>

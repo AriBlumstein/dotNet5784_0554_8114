@@ -9,6 +9,7 @@
         <local:ConvertIdToUpdatable x:Key="ConvertIdToUpdatableKey"/>
         <local:StringToNullableInt x:Key="ConvertToNullableIntKey"/>
         <local:NullReplaceConverter x:Key="NullReplaceConverterKey" />
+        <local:ZeroToInvisibilityConverter x:Key="ZeroToInvisibilityConverterKey"/>
 
         <!--`Stryling the pages with a common theme-->
         <Style x:Key="HandleEntitiesStyle" TargetType="Button">

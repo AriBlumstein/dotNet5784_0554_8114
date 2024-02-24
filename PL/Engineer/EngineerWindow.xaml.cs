@@ -25,11 +25,18 @@ namespace PL.Engineer
         }
 
 
-       
 
+        public static readonly DependencyProperty AdminPrivilegesProperty =
+        DependencyProperty.Register("AdminPrivileges", typeof(bool), typeof(EngineerWindow), new PropertyMetadata(null));
 
-        public EngineerWindow(int id = 0, bool editingRights=true)
+        public bool AdminPrivileges
         {
+            get => (bool)GetValue(AdminPrivilegesProperty); set { SetValue(AdminPrivilegesProperty, value);}
+        }
+
+        public EngineerWindow(int id = 0, bool adminPrivileges = true)
+        {
+            AdminPrivileges = adminPrivileges;
             InitializeComponent();
             if (id == 0)
             {

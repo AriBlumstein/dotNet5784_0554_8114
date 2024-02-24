@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using Microsoft.VisualBasic;
 using PL.Engineer;
 using System.Windows;
 using System.Windows.Threading;
@@ -42,6 +43,9 @@ namespace PL
             new Admin().ShowDialog();
         }
 
+
+
+
         private void forwardHour_Click(object sender, RoutedEventArgs e)
         {
             s_bl.MoveForwardHour();
@@ -58,6 +62,35 @@ namespace PL
         {
             s_bl.TimeReset();
             Clock = s_bl.Clock;
+        }
+
+        private void openEngineerWindowClick(object sender, RoutedEventArgs e)
+        {
+            int input;
+
+            string inputString = Interaction.InputBox("Enter your ID here:", "Engineer Access");
+
+            if (inputString == null )
+            {
+                MessageBox.Show("You did not enter a value","Error", MessageBoxButton.OK, MessageBoxImage.Error );
+            }
+            else if(!int.TryParse(inputString, out input))
+            {
+                MessageBox.Show($"\"{inputString}\" is not a valid ID", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                BO.Engineer engineer;
+                try
+                {
+                    engineer = s_bl.Engineer.Read(input);
+                    new EngineerWindow(engineer.ID, false).ShowDialog();
+                }
+                catch (BO.BlDoesNotExistException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 

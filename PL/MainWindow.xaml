@@ -35,7 +35,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Style="{StaticResource OperationButtonsStyle}" Background="Blue"  VerticalAlignment="Center" HorizontalAlignment="Center" Content="Admin" Click="openAdminWindowClick"/>
-            <Button Grid.Column="1" Style="{StaticResource OperationButtonsStyle}" Background="Orange" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Engineer"/>
+            <Button Grid.Column="1" Style="{StaticResource OperationButtonsStyle}" Background="Orange" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Engineer" Click="openEngineerWindowClick"/>
         </Grid>
 
        

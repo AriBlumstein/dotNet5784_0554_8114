@@ -12,6 +12,7 @@
         <local:ZeroToInvisibilityConverter x:Key="ZeroToInvisibilityConverterKey"/>
         <local:CannotAssignATaskConverter x:Key="CannotAssignATaskConverterKey"/>
         <local:TaskIsDisplayableConverter x:Key="TaskIsDisplayableConverterKey"/>
+        <local:AdminPrivilegesToVisibilityConverter x:Key="AdminPrivilegesToVisibilityConverterKey"/>
 
         <!--`Styling the pages with a common theme-->
         <Style x:Key="HandleEntitiesStyle" TargetType="Button">

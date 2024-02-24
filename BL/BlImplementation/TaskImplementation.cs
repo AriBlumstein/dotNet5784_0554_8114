@@ -273,8 +273,8 @@ internal class TaskImplementation : BlApi.ITask
     private Status? getStatus(DO.Task task)
     {
         if (task.ProjectedStart == null) return Status.Unscheduled;
-        else if (task.ProjectedStart >= _bl.Clock) return Status.Scheduled;
-        else if (task.ActualStart < _bl.Clock) return Status.OnTrack;
+        else if (task.ProjectedStart != _bl.Clock && task.ActualStart==null) return Status.Scheduled;
+        else if (task.ActualStart < _bl.Clock && (task.ActualEnd==null||task.ActualEnd>_bl.Clock)) return Status.OnTrack;
         else if (task.ActualEnd <= _bl.Clock) return Status.Completed;
         return null;
     }
@@ -416,7 +416,7 @@ internal class TaskImplementation : BlApi.ITask
 
                 DO.Task? anotherTask = _dal.Task.Read(t => t.AssignedEngineer == dEngineer.ID);
 
-                if(anotherTask !=null && anotherTask.ID!= task.ID)
+                if(anotherTask !=null && anotherTask.ActualEnd!=null && anotherTask.ID!= task.ID)
                 {
                     throw new BlIllegalPropertyException($"Engineer \"{dEngineer.ID}\" is already assigned to task {anotherTask!.ID}");
                 }
@@ -610,7 +610,9 @@ internal class TaskImplementation : BlApi.ITask
 
     public IEnumerable<BO.TaskInList> ReadUncompletedDependencies(BO.Task task)
     {
-        return _dal.Dependency.ReadAll(d => d.DependentID == task.ID).Select(d => this.Read(d.RequisiteID)).Where(t=>t.ActualEnd==null).Select(t => new BO.TaskInList { ID = t.ID, Description = t.Descripiton, Name = t.Name, Status = t.Status });
+        return _dal.Dependency.ReadAll(d => d.DependentID == task.ID).Select(d => Read(d.RequisiteID)).Where(t=>t.ActualEnd==null).Select(t => new BO.TaskInList { ID = t.ID, Description = t.Descripiton, Name = t.Name, Status = t.Status });
+
+       
     }
 
 

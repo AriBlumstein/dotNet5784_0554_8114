@@ -28,7 +28,7 @@ namespace PL.Engineer
        
 
 
-        public EngineerWindow(int id = 0)
+        public EngineerWindow(int id = 0, bool editingRights=true)
         {
             InitializeComponent();
             if (id == 0)
@@ -156,6 +156,26 @@ namespace PL.Engineer
             {
                 MessageBox.Show("Make sure all other fields for an engineer are legal", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void updateTaskAsComplete_Click(object sender, RoutedEventArgs e)
+        {
+            BO.Task task = s_bl.Task.Read(Engineer.Task.ID);
+            
+            task.ActualEnd = s_bl.Clock;
+
+            task.Engineer = null;
+
+            s_bl.Task.Update(task);
+
+
+
+            Engineer.Task = null;
+
+
+            Engineer = s_bl.Engineer.Update(Engineer);
+
+           
         }
     }
 

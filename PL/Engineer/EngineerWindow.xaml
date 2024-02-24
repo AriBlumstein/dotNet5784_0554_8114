@@ -43,10 +43,34 @@
         <!--Salary-->
         <Label Content="Salary" HorizontalAlignment="Center"  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-        <!--Assigned Task-->
-            <Label Content="Task" Visibility="{Binding ID, Mode=OneTime, Converter={StaticResource ZeroToInvisibilityConverterKey}}" HorizontalAlignment="Center"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
-            <Button Content="Assign a Task" Visibility="{Binding ID, Mode=OneTime, Converter={StaticResource ZeroToInvisibilityConverterKey}}" Click="AssignTaskClick" Grid.Row="6" Grid.Column="1" Style="{StaticResource OperationButtonsStyle}"/>
+       
+            
+        <!--Assigned Task--> <!--On adding this is never visible loginc will be be bad with the experieence level and adding-->
+        <Label Content="Task" Visibility="{Binding ID, Mode=OneTime, Converter={StaticResource ZeroToInvisibilityConverterKey}}" HorizontalAlignment="Center"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+            
+            <!--Button to assign a task that was not yet assigned-->
+            <Button Content="Assign a Task" Click="AssignTaskClick" Grid.Row="6" Grid.Column="1" Style="{StaticResource OperationButtonsStyle}">
+                <Button.Visibility>
+                    <MultiBinding Converter="{StaticResource CannotAssignATaskConverterKey}">
+                        <Binding Path="ID" Mode="OneTime"/>
+                        <Binding Path="Task" Mode="TwoWay"/>
+                    </MultiBinding>
+                </Button.Visibility>
+            </Button>
+
+            <Border BorderBrush="Gray" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="1" Margin="5">
+                <StackPanel>
+                    <TextBlock Text="{Binding Task.Alias, Mode=TwoWay}"  
+                   Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource TaskIsDisplayableConverterKey}}" 
+                   HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Button Content="Mark As Complete" Click="updateTaskAsComplete_Click" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource TaskIsDisplayableConverterKey}}"/>
+                </StackPanel>
+            </Border>
+
+
         </Grid>
-        <Button Style="{StaticResource OperationButtonsStyle}"  HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Top" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
+        <Button Style="{StaticResource OperationButtonsStyle}"  HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
     </Grid>
 </Window>

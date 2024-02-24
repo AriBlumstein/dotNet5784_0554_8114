@@ -25,12 +25,12 @@ namespace PL.Engineer
 
         private BO.Engineer engineer;
         
-        public static readonly DependencyProperty PossibleTasksProperty = DependencyProperty.Register("PossibleTasks", typeof(ObservableCollection<TaskInList>),
+        public static readonly DependencyProperty PossibleTasksProperty = DependencyProperty.Register("PossibleTasks", typeof(ObservableCollection<BO.TaskInList>),
             typeof(EngineerTaskAssigner), new PropertyMetadata(null));
 
-        public ObservableCollection<TaskInList> PossibleTasks
+        public ObservableCollection<BO.TaskInList> PossibleTasks
         {
-            get { return (ObservableCollection<TaskInList>)GetValue(PossibleTasksProperty);  }
+            get { return (ObservableCollection<BO.TaskInList>)GetValue(PossibleTasksProperty);  }
             set { SetValue(PossibleTasksProperty, value);   }
         }
         
@@ -41,13 +41,24 @@ namespace PL.Engineer
 
             if (engineer.Level == EngineerExperience.None)
             {
-                PossibleTasks = new ObservableCollection<TaskInList>();
+                PossibleTasks = new ObservableCollection<BO.TaskInList>();
             }
             else
             {
-                PossibleTasks = new ObservableCollection<TaskInList>(s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= engineer.Level).Select(t => s_bl.Task.Read(t.ID)).Where(t => noDependencies(t)).Where(t=>t.Engineer==null).Select(t => new TaskInList { ID = t.ID, Description = t.Descripiton, Name = t.Name, Status = t.Status }));
+                PossibleTasks = new ObservableCollection<BO.TaskInList>(
+                                             from item in s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= engineer.Level)
+                                             let curTask = s_bl.Task.Read(item.ID)
+                                             where noDependencies(curTask)
+                                             where curTask.Engineer == null
+                                             where curTask.Status != Status.Completed
+                                             select item
+                                             ) ;
+
+                
             }
-            
+
+
+
         }
 
 

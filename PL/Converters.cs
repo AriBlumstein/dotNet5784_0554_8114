@@ -3,6 +3,7 @@
 
 namespace PL
 {
+    using BO;
     using System.Collections;
     using System.Globalization;
     using System.Windows;
@@ -87,4 +88,60 @@ namespace PL
             throw new NotImplementedException();
         }
     }
+
+    /// <summary>
+    /// converter for the task properties in the engineer window
+    /// </summary>
+    public class CannotAssignATaskConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+
+            bool collapsed = false;
+
+            foreach (var value in values)
+            {
+                if (value is int)
+                {
+                    collapsed = (int)value == 0;
+                    if(collapsed)
+                    {
+                        return Visibility.Collapsed;
+                    }
+                }
+                   
+
+                //we are now in out second check
+                if (value is BO.TaskInEngineer)
+                {
+                    return (BO.TaskInEngineer)value!=null ? Visibility.Collapsed : Visibility.Visible;
+                }
+            }
+           
+
+            // Otherwise, return Visible
+            return Visibility.Visible;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    class TaskIsDisplayableConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (value as TaskInEngineer) == null ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
 }

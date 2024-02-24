@@ -10,8 +10,10 @@
         <local:StringToNullableInt x:Key="ConvertToNullableIntKey"/>
         <local:NullReplaceConverter x:Key="NullReplaceConverterKey" />
         <local:ZeroToInvisibilityConverter x:Key="ZeroToInvisibilityConverterKey"/>
+        <local:CannotAssignATaskConverter x:Key="CannotAssignATaskConverterKey"/>
+        <local:TaskIsDisplayableConverter x:Key="TaskIsDisplayableConverterKey"/>
 
-        <!--`Stryling the pages with a common theme-->
+        <!--`Styling the pages with a common theme-->
         <Style x:Key="HandleEntitiesStyle" TargetType="Button">
             <Setter Property="Background" Value="LightBlue"/>
             <Setter Property="Foreground" Value="DarkBlue"/>

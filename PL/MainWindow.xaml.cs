@@ -68,13 +68,14 @@ namespace PL
         {
             int input;
 
-            string inputString = Interaction.InputBox("Enter your ID here:", "Engineer Access");
+            string inputString = Interaction.InputBox("Enter your ID here:", "Engineer Access", "00000");
 
-            if (inputString == null )
+            if (inputString == "")
             {
-                MessageBox.Show("You did not enter a value","Error", MessageBoxButton.OK, MessageBoxImage.Error );
+                // User pressed Cancel
+                return;
             }
-            else if(!int.TryParse(inputString, out input))
+            else if (!int.TryParse(inputString, out input))
             {
                 MessageBox.Show($"\"{inputString}\" is not a valid ID", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }

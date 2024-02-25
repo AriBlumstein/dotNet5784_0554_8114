@@ -29,7 +29,6 @@ namespace PL.Task
         }
 
 
-
         public TaskWindow(int id=0, bool adminPrivileges = true)
         {
             AdminPrivileges = adminPrivileges;
@@ -37,7 +36,7 @@ namespace PL.Task
             if (id == 0)
             {
                 Task = new BO.Task();
-
+                Task.Created = s_bl.Clock;
             }
             else
             {

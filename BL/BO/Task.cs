@@ -10,7 +10,7 @@ public class Task
 
     public string Name { get; set; }
     public String Descripiton { get; set; }
-    public DateTime Created { get; init; }
+    public DateTime Created { get; set; }
     public Status? Status { get; set; }
     public List<TaskInList> Dependencies { get; set; }
     public MilestoneInTask? Milestone {get; set;}

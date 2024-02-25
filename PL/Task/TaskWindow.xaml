@@ -33,42 +33,54 @@
                 <RowDefinition Height="*"/>
 
             </Grid.RowDefinitions>
+            <!--ID-->
             <Label Content="ID" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding ID, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" IsEnabled="{Binding ID, Mode=OneTime, Converter={StaticResource ConvertIdToUpdatableKey}}"  VerticalAlignment="Center" Width="120"/>
+          
             <!--Name-->
             <Label Content="Name" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-
+           
+            <!--Description-->
             <Label Content="Description" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"  Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Descripiton, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
 
+            <!--Date Created-->
             <Label Content="Date Created" HorizontalAlignment="Center"    Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="False"  Grid.Column="1" Grid.Row="3"  HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Created, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true, StringFormat='{}{0:MM/dd/yyyy}'}" VerticalAlignment="Center" Width="120"/>
 
+            <!--Projected Start-->
             <Label Content="Projected Start" HorizontalAlignment="Center"  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="False"  Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding ProjectedStart, Mode=OneTime, NotifyOnValidationError=true,  ValidatesOnExceptions=true, StringFormat='{}{0:MM/dd/yyyy}'}" VerticalAlignment="Center" Width="120"/>
 
+            <!--Duration-->
             <Label Content="Duration" HorizontalAlignment="Center"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"  Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Duration, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
 
+            <!--Actual Start-->
             <Label Content="Actual Start" HorizontalAlignment="Center"  Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="False"  Grid.Column="1" Grid.Row="6" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding ActualStart, Mode=OneTime, NotifyOnValidationError=true,  ValidatesOnExceptions=true, StringFormat='{}{0:MM/dd/yyyy}'}" VerticalAlignment="Center" Width="120"/>
 
+            <!--Projected End-->
             <Label Content="Projected End" HorizontalAlignment="Center"  Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="False"  Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding ProjectedEnd, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true, StringFormat='{}{0:MM/dd/yyyy}'}" VerticalAlignment="Center" Width="120"/>
 
+            <!--Actual End-->
             <Label Content="Actual End" HorizontalAlignment="Center"  Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="False"  Grid.Column="1" Grid.Row="8" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding ActualEnd, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true, StringFormat='{}{0:MM/dd/yyyy}'}" VerticalAlignment="Center" Width="120"/>
 
+            <!--Deliverable-->
             <Label Content="Deliverable" HorizontalAlignment="Center"  Grid.Row="9" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"  Grid.Column="1" Grid.Row="9" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Deliverable, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
 
+            <!-- Notes-->
             <Label Content="Notes" HorizontalAlignment="Center"  Grid.Row="10" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox  Grid.Column="1" Grid.Row="10" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Notes, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
 
+            <!-- Complexity -->
             <Label Content="Complexity" HorizontalAlignment="Center"  Grid.Row="11" Grid.Column="0" VerticalAlignment="Center"/>
-            
-            
+
+            <!-- Assigned Engineer -->
             <Label Content="Assigned Engineer" HorizontalAlignment="Center"  Grid.Row="12" Grid.Column="0" VerticalAlignment="Center"/>
 
         </Grid>

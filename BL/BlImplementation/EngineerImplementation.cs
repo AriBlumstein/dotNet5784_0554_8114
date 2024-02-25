@@ -294,6 +294,32 @@ internal class EngineerImplementation : IEngineer
 
 
 
+
+
         }
+
+
+        //we wil now check that the engineers skill level only increases
+
+        BO.Engineer oldEngineer;
+
+       
+
+        //only check if the old engineer existed
+        try
+        {
+            oldEngineer = Read(engineer.ID);
+            if (oldEngineer.Level > engineer.Level)
+            {
+                throw new BlIllegalOperationException($"An engineer's experience can only increase not decrease, please select an experience greater than or equal to \"{oldEngineer.Level}\"");
+                   
+            }
+        }
+        catch(BlDoesNotExistException)
+        {
+
+        }
+
+
     }
 }

@@ -94,6 +94,10 @@ namespace PL.Engineer
                     {
                         MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("Unknown Error, try again later", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
 
                    
 

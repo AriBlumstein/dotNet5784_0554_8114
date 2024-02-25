@@ -47,8 +47,8 @@
                 <!-- Clock and buttons -->
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <!-- Clock display -->
-                    <TextBlock Text="{Binding Clock, Mode=TwoWay, StringFormat='{}{0:hh:mm:ss}'}" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding Clock, Mode=TwoWay, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10"/>
+                    <TextBlock Text="{Binding Clock, Mode=OneWay, StringFormat='{}{0:hh:mm:ss}'}" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Clock, Mode=OneWay, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10"/>
 
                     <!-- Buttons -->
                     <UniformGrid Rows="1" HorizontalAlignment="Center">

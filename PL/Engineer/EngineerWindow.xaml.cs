@@ -145,23 +145,21 @@ namespace PL.Engineer
                 taskAssigner.Show();
 
             }
-            catch (BlDoesNotExistException ex)
+            catch (BlIllegalOperationException ex)
             {
-                try {
-                    s_bl.Engineer.Create(Engineer);
-                    EngineerTaskAssigner taskAssigner = new EngineerTaskAssigner(Engineer.ID);
-                    taskAssigner.Closed += taskAssigned!;
-                    taskAssigner.Show();
-                }  
-                catch (Exception)
-                {
-                    MessageBox.Show("Make sure all other fields for an engineer are legal", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                }
+                MessageBox.Show($"Make sure all other fields for an engineer are legal:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch( Exception)
+            catch(BlNullPropertyException ex)
             {
-                MessageBox.Show("Make sure all other fields for an engineer are legal", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Make sure all other fields for an engineer are legal:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch(BlIllegalPropertyException ex)
+            {
+                MessageBox.Show($"Make sure all other fields for an engineer are legal:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

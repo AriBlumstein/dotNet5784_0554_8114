@@ -2,7 +2,7 @@
 <ArrayOfTask xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Task>
     <ID>1</ID>
-    <Nickname>Structural Analysis and Design</Nickname>
+    <Nickname>asdfas;lkdfj</Nickname>
     <Description>Analyzing and designing structures for various projects.</Description>
     <Milestone>false</Milestone>
     <Created>2023-12-05T00:27:19.0806945+02:00</Created>

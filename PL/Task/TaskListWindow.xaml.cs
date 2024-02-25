@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.Engineer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,6 @@ namespace PL.Task
         {
             InitializeComponent();
             TaskList = s_bl?.Task.ReadAll()!;
-            MessageBox.Show("The add and update functionality for tasks is not ready yet for this stage (stage5) only the list view, check out Engineer Windows for add update functionality", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 
@@ -48,8 +48,31 @@ namespace PL.Task
             s_bl?.Task.ReadAll()! : s_bl?.Task.ReadAll(item => (BO.EngineerExperience?)item.Difficulty == Experience )!;
 
         }
+        
+        //this event handler is specifically for the task window closing, we wanted to decouple this from the selection changed so we can change them freely
 
+        private void taskWindowClosed(object sender, EventArgs e)
+        {
+            TaskList = (Experience == BO.EngineerExperience.None) ?
+           s_bl?.Task.ReadAll()! : s_bl?.Task.ReadAll(item => (BO.EngineerExperience?)item.Difficulty == Experience)!;
 
+        }
+
+        private void listClickUpdateTask(object sender, MouseButtonEventArgs e)
+        {
+            BO.TaskInList? task = (sender as ListView)?.SelectedItem as BO.TaskInList;
+
+            if (task != null)
+            {
+                
+                TaskWindow newWindow = new TaskWindow(task.ID);
+
+                newWindow.Closed += taskWindowClosed!;  //add our event listener to this event, so the event will be handled
+                newWindow.ShowDialog();
+            }
+        }
+
+      
     }
 
 

@@ -47,8 +47,6 @@ namespace PL.Engineer
             {
                 Engineer = s_bl?.Engineer.Read(id)!;
             }
-          
-
         }
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)

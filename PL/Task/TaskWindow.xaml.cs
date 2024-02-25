@@ -1,5 +1,7 @@
 ﻿using BlApi;
+using BO;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PL.Task
 {
@@ -44,5 +46,75 @@ namespace PL.Task
             }
         }
 
+        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            if (button.Content.ToString() == "Update")
+            {
+
+
+                try
+                {
+                    Task = s_bl?.Task.Update(Task)!;
+                    MessageBox.Show($"Successfully updated task {Task.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+                    Close();
+                }
+                catch (BlDoesNotExistException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); //the errors are well written
+                }
+                catch (BlNullPropertyException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (BlIllegalPropertyException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (BlIllegalOperationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+            }
+            else if (button.Content.ToString() == "Add")
+
+                try
+                {
+
+                    Task = s_bl?.Task.Create(Task)!;
+                    MessageBox.Show($"Successfully added task {Task.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    Close();
+
+                }
+                catch (BlDoesNotExistException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); //the errors are well written
+                }
+                catch (BlNullPropertyException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (BlIllegalPropertyException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (BlIllegalOperationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+        }
     }
 }

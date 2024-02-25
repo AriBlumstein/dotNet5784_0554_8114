@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Task"
         mc:Ignorable="d"
-        Title="TaskWindow" Height="450" Width="800"
+        Title="TaskWindow" Height="800" Width="800"
         DataContext="{Binding Task, RelativeSource={RelativeSource Self}, Mode=TwoWay}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="350"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
             <Grid.ColumnDefinitions>
@@ -72,5 +72,7 @@
             <Label Content="Assigned Engineer" HorizontalAlignment="Center"  Grid.Row="12" Grid.Column="0" VerticalAlignment="Center"/>
 
         </Grid>
+        <Button Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding AdminPrivileges, Converter={StaticResource AdminPrivilegesToVisibilityConverterKey}, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
+
     </Grid>
 </Window>

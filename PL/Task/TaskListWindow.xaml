@@ -28,13 +28,14 @@
             <ComboBox Style="{StaticResource ComboBoxCenter}" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged" />
         </Grid>
         <!--the list of tasks-->
-        <ListView Grid.Row="1"  ItemsSource="{Binding TaskList}">
+        <ListView Grid.Row="1" MouseDoubleClick="listClickUpdateTask" ItemsSource="{Binding TaskList}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
+        
         <!--add tasks-->
         <Button Style="{StaticResource OperationButtonsStyle}" Content="Add" Grid.Row="2" HorizontalAlignment="Center"/>
     </Grid>

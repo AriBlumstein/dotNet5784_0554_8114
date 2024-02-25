@@ -38,7 +38,7 @@ internal class TaskImplementation : BlApi.ITask
         try
         {
             _dal.Config.GetProjectStart();
-            throw new BlIllegalOperationException("Cannot add a task to an engineer before production");
+            throw new BlIllegalOperationException("Cannot add a new task during production");
         }
         catch (DALConfigDateNotSet)
         {
@@ -60,10 +60,20 @@ internal class TaskImplementation : BlApi.ITask
             throw new BlAlreadyExistsException(e.Message, e);
         }
 
-   
+
 
         //add all the dependencies, 
-        IEnumerable<DO.Dependency> dependencies = task.Dependencies.Select(t => new DO.Dependency { ID=-1, DependentID = taskId, RequisiteID = t.ID }); //taskID is the task that was just created
+        IEnumerable<DO.Dependency> dependencies;
+
+        if (task.Dependencies != null)
+        {
+            dependencies=task.Dependencies.Select(t => new DO.Dependency { ID = -1, DependentID = taskId, RequisiteID = t.ID }); //taskID is the task that was just created}
+        }
+        else
+        {
+            dependencies = new List<Dependency>();
+        }
+        
 
         //verify the dependencies
         verifyDependencies(dependencies); //the only important check here is to see that the Requisite tasks exist
@@ -82,7 +92,7 @@ internal class TaskImplementation : BlApi.ITask
         {
             _dal.Config.GetProjectStart();
 
-            throw new BlIllegalOperationException("Cannot delete task during production");
+            throw new BlIllegalOperationException("Cannot delete a task during production");
 
         }
         catch (DALConfigDateNotSet) { }
@@ -441,6 +451,8 @@ internal class TaskImplementation : BlApi.ITask
 
     private void verifyDependencies(IEnumerable<DO.Dependency> dependencies)
     {
+          
+
         //we will now check for a circular dependency and that the tasks we want to make as a dependency exist
         foreach (DO.Dependency dep in dependencies)
         {

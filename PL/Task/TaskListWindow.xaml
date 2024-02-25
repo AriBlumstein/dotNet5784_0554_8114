@@ -37,7 +37,7 @@
         </ListView>
         
         <!--add tasks-->
-        <Button Style="{StaticResource OperationButtonsStyle}" Content="Add" Grid.Row="2" HorizontalAlignment="Center"/>
+        <Button Style="{StaticResource OperationButtonsStyle}" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Click="addTaskClick"/>
     </Grid>
 
 </Window>

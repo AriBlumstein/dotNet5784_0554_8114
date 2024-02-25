@@ -72,19 +72,32 @@ namespace PL.Engineer
                 MessageBoxResult answer  =MessageBox.Show($"Are you sure you want to assign task with \"{task.ID}\" to the engineer with id \"{engineer.ID}\"", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (answer == MessageBoxResult.Yes)
                 {
+
+
                     engineer.Task = new TaskInEngineer
                     {
                         ID=task.ID,
                         Alias=task.Name,  
                     };
 
-                    BO.Task curTask = s_bl.Task.Read(task.ID);
 
-                    curTask.ActualStart = s_bl.Clock;
+                    try //to add, will fail if not in production, or it belongs to a different engineer, though this window displays tasks that are not yet assigned
+                    {
+                        s_bl.Engineer.Update(engineer);
 
-                    s_bl.Task.Update(curTask);
+                        BO.Task curTask = s_bl.Task.Read(task.ID);
 
-                    s_bl.Engineer.Update(engineer);
+                        curTask.ActualStart = s_bl.Clock;
+
+                        s_bl.Task.Update(curTask);
+                    } catch (BlIllegalOperationException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                   
+
+                   
                     Close();
                 }
             }

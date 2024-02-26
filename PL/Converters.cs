@@ -116,6 +116,12 @@ namespace PL
                 {
                     return (BO.TaskInEngineer)value!=null ? Visibility.Collapsed : Visibility.Visible;
                 }
+
+                //second check if converter is being used in a task window
+                if(value is BO.EngineerInTask)
+                {
+                    return (BO.EngineerInTask)value!=null? Visibility.Collapsed : Visibility.Visible;
+                }
             }
            
 
@@ -130,11 +136,18 @@ namespace PL
     }
 
 
-    class TaskIsDisplayableConverter : IValueConverter
+    class ItemIsDisplayableConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value as TaskInEngineer) == null ? Visibility.Collapsed : Visibility.Visible;
+            if (value is TaskInEngineer || value is EngineerInTask)
+            {
+                return  Visibility.Visible;
+            }
+            
+
+            return Visibility.Collapsed;
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

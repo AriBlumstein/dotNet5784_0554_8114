@@ -116,5 +116,25 @@ namespace PL.Task
                 }
 
         }
+
+        private void AssignEngineer_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+        private void updateTaskAsComplete_Click(object sender, RoutedEventArgs e)
+        {
+           
+
+            Task.ActualEnd = s_bl.Clock;
+
+            Task.Engineer = null;
+
+            s_bl.Task.Update(Task);
+
+
+            Task = s_bl.Task.Update(Task);
+        }
     }
 }

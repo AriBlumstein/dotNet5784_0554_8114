@@ -11,7 +11,7 @@
         <local:NullReplaceConverter x:Key="NullReplaceConverterKey" />
         <local:ZeroToInvisibilityConverter x:Key="ZeroToInvisibilityConverterKey"/>
         <local:CannotAssignATaskConverter x:Key="CannotAssignATaskConverterKey"/>
-        <local:TaskIsDisplayableConverter x:Key="TaskIsDisplayableConverterKey"/>
+        <local:ItemIsDisplayableConverter x:Key="ItemIsDisplayableConverterKey"/>
         <local:AdminPrivilegesToVisibilityConverter x:Key="AdminPrivilegesToVisibilityConverterKey"/>
 
         <!--`Styling the pages with a common theme-->

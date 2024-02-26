@@ -61,11 +61,11 @@
             <Border BorderBrush="Gray" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="1" Margin="5">
                 <StackPanel>
                     <TextBlock Text="{Binding Task.Alias, Mode=TwoWay}"  
-                   Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource TaskIsDisplayableConverterKey}}" 
+                   Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource ItemIsDisplayableConverterKey}}" 
                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     <Button Content="Mark As Complete" Click="updateTaskAsComplete_Click" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Center" 
-                Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource TaskIsDisplayableConverterKey}}"/>
+                Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource ItemIsDisplayableConverterKey}}"/>
                 </StackPanel>
             </Border>
 

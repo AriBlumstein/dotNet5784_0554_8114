@@ -171,17 +171,41 @@ namespace PL
     }
 
 
-    class CanAssignAnEngineer : IValueConverter
+    class CanAssignAnEngineer : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        
+
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return (DateTime?)value == null ? Visibility.Visible : Visibility.Collapsed;
+            foreach (var value in values)
+            {
+                if (value is int)
+                {
+                    if ((int)value==0)
+                    {
+                        return Visibility.Collapsed;
+                    }
+                }
+
+                // second check
+                if (value is (DateTime))
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+
+            return Visibility.Visible;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+       
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
     }
+
+
+  
 
 }

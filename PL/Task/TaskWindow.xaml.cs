@@ -170,5 +170,10 @@ namespace PL.Task
 
             Close();
         }
+
+        private void viewDependencies_Click(object sender, RoutedEventArgs e)
+        {
+            new TaskListWindow(Task).ShowDialog();
+        }
     }
 }

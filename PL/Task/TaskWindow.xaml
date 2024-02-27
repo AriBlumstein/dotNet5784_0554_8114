@@ -9,7 +9,8 @@
         DataContext="{Binding Task, RelativeSource={RelativeSource Self}, Mode=TwoWay}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="8*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
@@ -32,6 +33,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+               
 
             </Grid.RowDefinitions>
             <!--ID-->
@@ -84,15 +86,23 @@
               ValidatesOnExceptions=true}"  />
 
             <!-- Assigned Engineer -->
-            <Label Content="Assigned Engineer" HorizontalAlignment="Center"  Grid.Row="12" Grid.Column="0" VerticalAlignment="Center"/>
+            <Label Content="Assigned Engineer" HorizontalAlignment="Center"  Grid.Row="12" Grid.Column="0" VerticalAlignment="Center" Visibility="{Binding ID, Converter={StaticResource ZeroToInvisibilityConverterKey}}"/>
             <!--Button to assign a task that was not yet assigned-->
-            <Button Content="Assign an Engineer" FontSize="10" Click="AssignEngineer_Click" Grid.Row="12" Grid.Column="1" Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding ActualStart, Converter={StaticResource CanAssignAnEngineerKey}}">
-                
+            <Button Content="Assign an Engineer" FontSize="10" Click="AssignEngineer_Click" Grid.Row="12" Grid.Column="1" Style="{StaticResource OperationButtonsStyle}">
+                <Button.Visibility>
+                    <MultiBinding Converter="{StaticResource CanAssignAnEngineerKey}">
+                        <Binding Path="ID"/>
+                        <Binding Path="ActualStart"/>
+                    </MultiBinding>
+                </Button.Visibility>
             </Button>
+
             <TextBox  Grid.Column="1" Grid.Row="12" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Engineer.ID, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"  Visibility="{Binding Engineer, Converter={StaticResource ItemIsDisplayableConverterKey}}" IsEnabled="False"/>
+            
+            
             <!--Status-->
-            <Label Content="Status" HorizontalAlignment="Center"  Grid.Row="13" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="13" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Status, Mode=OneWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Status" HorizontalAlignment="Center"  Grid.Row="13" Grid.Column="0" VerticalAlignment="Center" Visibility="{Binding ID, Converter={StaticResource ZeroToInvisibilityConverterKey}}"/>
+            <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="13" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Status, Mode=OneWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" Visibility="{Binding ID, Converter={StaticResource ZeroToInvisibilityConverterKey}}"/>
 
 
            
@@ -104,8 +114,12 @@
 
 
         </Grid>
-        <Button Style="{StaticResource OperationButtonsStyle}" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
-        <Button Content="Mark As Complete" Click="updateTaskAsComplete_Click" Style="{StaticResource OperationButtonsStyle}" FontSize="10" Grid.Row="1"
+        
+        <!-- view the dependencies-->
+        <Button Style="{StaticResource OperationButtonsStyle}" FontSize="10" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="View Dependencies" Click="viewDependencies_Click" Visibility="{Binding ID, Converter={StaticResource ZeroToInvisibilityConverterKey}}" />
+
+        <Button Style="{StaticResource OperationButtonsStyle}" HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Center" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
+        <Button Content="Mark As Complete" Click="updateTaskAsComplete_Click" Style="{StaticResource OperationButtonsStyle}" FontSize="10" Grid.Row="2"
                 Visibility="{Binding Engineer, Mode=TwoWay, Converter={StaticResource ItemIsDisplayableConverterKey}}"
                 HorizontalAlignment="Right" VerticalAlignment="Center"
                 />

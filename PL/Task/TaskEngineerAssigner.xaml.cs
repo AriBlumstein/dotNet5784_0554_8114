@@ -16,12 +16,12 @@ namespace PL.Task
         private readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
 
-        public static readonly DependencyProperty PossibleEngineersProperty = DependencyProperty.Register("PossibleEngineers", typeof(ObservableCollection<BO.Engineer>),
-           typeof(EngineerTaskAssigner), new PropertyMetadata(null));
+        public static readonly DependencyProperty PossibleEngineersProperty = DependencyProperty.Register("PossibleEngineers", typeof(ObservableCollection<BO.EngineerInTask>),
+           typeof(TaskEngineerAssigner), new PropertyMetadata(null));
 
-        public ObservableCollection<BO.Engineer> PossibleEngineers
+        public ObservableCollection<BO.EngineerInTask> PossibleEngineers
         {
-            get { return (ObservableCollection<BO.Engineer>)GetValue(PossibleEngineersProperty); }
+            get { return (ObservableCollection<BO.EngineerInTask>)GetValue(PossibleEngineersProperty); }
             set { SetValue(PossibleEngineersProperty, value); }
         }
 
@@ -31,17 +31,21 @@ namespace PL.Task
 
             this.task = task;
 
-            //PossibleEngineers = new ObservableCollection<BO.Engineer> { new BO.Engineer { ID = 3, Name = "hi" } };
+            
             if (task.Complexity== EngineerExperience.None)
             {
-                PossibleEngineers = new ObservableCollection<BO.Engineer>();
+                PossibleEngineers = new ObservableCollection<BO.EngineerInTask>();
             }
             else
             {
-                PossibleEngineers = new ObservableCollection<BO.Engineer>(
+                PossibleEngineers = new ObservableCollection<BO.EngineerInTask>(
                                              from item in s_bl.Engineer.ReadAll(e => (EngineerExperience?)e.Exp >= task.Complexity)
                                              where item.Task == null
-                                             select item
+                                             select new EngineerInTask
+                                             {
+                                                 ID = item.ID,
+                                                 Name = item.Name,
+                                             }
                                              ); ;
                
 

@@ -137,8 +137,8 @@ namespace PL.Engineer
         {
             try
             {
-                s_bl.Engineer.Update(Engineer);
-                EngineerTaskAssigner taskAssigner = new EngineerTaskAssigner(Engineer.ID);
+                Engineer=s_bl.Engineer.Update(Engineer);
+                EngineerTaskAssigner taskAssigner = new EngineerTaskAssigner(Engineer);
                 taskAssigner.Closed += taskAssigned!;
                 taskAssigner.Show();
 

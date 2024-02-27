@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BO;
+using PL.Engineer;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -31,7 +32,7 @@ namespace PL.Task
         }
 
 
-        public TaskWindow(int id=0, bool adminPrivileges = true)
+        public TaskWindow(int id = 0, bool adminPrivileges = true)
         {
             AdminPrivileges = adminPrivileges;
             InitializeComponent();
@@ -117,15 +118,49 @@ namespace PL.Task
 
         }
 
+        private void engineerAssigned(object sender, EventArgs e)
+        {
+            Task = s_bl.Task.Read(Task.ID);
+
+        }
+
         private void AssignEngineer_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                Task = s_bl.Task.Update(Task);
+                TaskEngineerAssigner engineerAssigner = new TaskEngineerAssigner(Task);
+                engineerAssigner.Closed += engineerAssigned!;
+                engineerAssigner.Show();
+
+            }
+            catch (BlDoesNotExistException ex)
+            {
+                MessageBox.Show($"Make sure all fields for a task are legal:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); //the errors are well written
+            }
+            catch (BlNullPropertyException ex)
+            {
+                MessageBox.Show($"Make sure all fields for a task are legal:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (BlIllegalPropertyException ex)
+            {
+                MessageBox.Show($"Make sure all fields for a task are legal:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (BlIllegalOperationException ex)
+            {
+                MessageBox.Show($"Make sure all fields for a task are legal:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
 
         private void updateTaskAsComplete_Click(object sender, RoutedEventArgs e)
         {
-           
+
 
             Task.ActualEnd = s_bl.Clock;
 

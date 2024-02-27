@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BO;
+using PL.Task;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -161,24 +162,22 @@ namespace PL.Engineer
             }
         }
 
-        private void updateTaskAsComplete_Click(object sender, RoutedEventArgs e)
+        private void viewTask_Click(object sender, RoutedEventArgs e)
         {
             BO.Task task = s_bl.Task.Read(Engineer.Task.ID);
             
-            task.ActualEnd = s_bl.Clock;
+            TaskWindow taskWindow=new TaskWindow(Engineer.Task.ID, AdminPrivileges);
 
-            task.Engineer = null;
-
-            s_bl.Task.Update(task);
-
-
-
-            Engineer.Task = null;
-
-
-            Engineer = s_bl.Engineer.Update(Engineer);
-
+            taskWindow.Closed += updateWindow!;
            
+            taskWindow.ShowDialog(); 
+           
+        }
+
+
+        private void updateWindow(object sender, EventArgs e)
+        {
+            Engineer=s_bl.Engineer.Read(Engineer.ID);
         }
     }
 

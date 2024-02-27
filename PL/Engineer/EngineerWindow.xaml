@@ -63,7 +63,7 @@
                     <TextBlock Text="{Binding Task.Alias, Mode=TwoWay}"  
                    Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource ItemIsDisplayableConverterKey}}" 
                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                    <Button Content="Mark As Complete" Click="updateTaskAsComplete_Click" 
+                    <Button Content="View Task Details" Click="viewTask_Click" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Center" 
                 Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource ItemIsDisplayableConverterKey}}"/>
                 </StackPanel>

@@ -170,4 +170,18 @@ namespace PL
         }
     }
 
+
+    class CanAssignAnEngineer : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (BO.Status)value==Status.Scheduled ?  Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }

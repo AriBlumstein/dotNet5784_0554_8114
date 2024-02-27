@@ -13,6 +13,7 @@
         <local:CannotAssignATaskConverter x:Key="CannotAssignATaskConverterKey"/>
         <local:ItemIsDisplayableConverter x:Key="ItemIsDisplayableConverterKey"/>
         <local:AdminPrivilegesToVisibilityConverter x:Key="AdminPrivilegesToVisibilityConverterKey"/>
+        <local:CanAssignAnEngineer x:Key="CanAssignAnEngineerKey"/>
 
         <!--`Styling the pages with a common theme-->
         <Style x:Key="HandleEntitiesStyle" TargetType="Button">

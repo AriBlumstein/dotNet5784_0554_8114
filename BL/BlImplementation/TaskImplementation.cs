@@ -431,6 +431,18 @@ internal class TaskImplementation : BlApi.ITask
                     throw new BlIllegalPropertyException($"Engineer \"{dEngineer.ID}\" is already assigned to task {anotherTask!.ID}");
                 }
 
+                //check that all the dependencies have been completed
+
+                foreach(var dependency in task.Dependencies)
+                {
+                    anotherTask = _dal.Task.Read(dependency.ID);
+                    if (anotherTask.ActualEnd == null)
+                    {
+                        throw new BlIllegalOperationException($"Task {task.ID} is dependent on task {anotherTask.ID} and task {anotherTask.ID} has not been completed");
+                    }
+                }
+                
+
             }
             catch (DalDoesNotExistException ex) //the engineer didn't exist
             {

@@ -168,8 +168,7 @@ namespace PL.Task
 
             s_bl.Task.Update(Task);
 
-
-            Task = s_bl.Task.Update(Task);
+            Close();
         }
     }
 }

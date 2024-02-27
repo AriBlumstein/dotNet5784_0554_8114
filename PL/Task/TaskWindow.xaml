@@ -86,11 +86,10 @@
             <!-- Assigned Engineer -->
             <Label Content="Assigned Engineer" HorizontalAlignment="Center"  Grid.Row="12" Grid.Column="0" VerticalAlignment="Center"/>
             <!--Button to assign a task that was not yet assigned-->
-            <Button Content="Assign an Engineer" FontSize="10" Click="AssignEngineer_Click" Grid.Row="12" Grid.Column="1" Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding Status, Converter={StaticResource CanAssignAnEngineerKey}}">
+            <Button Content="Assign an Engineer" FontSize="10" Click="AssignEngineer_Click" Grid.Row="12" Grid.Column="1" Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding ActualStart, Converter={StaticResource CanAssignAnEngineerKey}}">
                 
             </Button>
-
-
+            <TextBox  Grid.Column="1" Grid.Row="12" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Engineer.ID, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"  Visibility="{Binding Engineer, Converter={StaticResource ItemIsDisplayableConverterKey}}" IsEnabled="False"/>
             <!--Status-->
             <Label Content="Status" HorizontalAlignment="Center"  Grid.Row="13" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox IsEnabled="False" Grid.Column="1" Grid.Row="13" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Status, Mode=OneWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
@@ -98,18 +97,14 @@
 
            
 
-            <Border BorderBrush="Gray" Grid.Row="12" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="1" Margin="5">
-                <StackPanel>
-                    <TextBlock Text="{Binding Engineer.ID , Mode=TwoWay}"  
-                    Visibility="{Binding Engineer, Mode=TwoWay, Converter={StaticResource ItemIsDisplayableConverterKey}}" 
-                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
+           
+          
                     
-                </StackPanel>
-            </Border>
+            
 
 
         </Grid>
-        <Button Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding AdminPrivileges, Converter={StaticResource AdminPrivilegesToVisibilityConverterKey}, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
+        <Button Style="{StaticResource OperationButtonsStyle}" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
         <Button Content="Mark As Complete" Click="updateTaskAsComplete_Click" Style="{StaticResource OperationButtonsStyle}" FontSize="10" Grid.Row="1"
                 Visibility="{Binding Engineer, Mode=TwoWay, Converter={StaticResource ItemIsDisplayableConverterKey}}"
                 HorizontalAlignment="Right" VerticalAlignment="Center"

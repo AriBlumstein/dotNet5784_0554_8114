@@ -15,12 +15,12 @@ namespace PL.Engineer
 
         private BO.Engineer engineer;
         
-        public static readonly DependencyProperty PossibleTasksProperty = DependencyProperty.Register("PossibleTasks", typeof(ObservableCollection<BO.TaskInList>),
+        public static readonly DependencyProperty PossibleTasksProperty = DependencyProperty.Register("PossibleTasks", typeof(IEnumerable<BO.TaskInList>),
             typeof(EngineerTaskAssigner), new PropertyMetadata(null));
 
-        public ObservableCollection<BO.TaskInList> PossibleTasks
+        public IEnumerable<BO.TaskInList> PossibleTasks
         {
-            get { return (ObservableCollection<BO.TaskInList>)GetValue(PossibleTasksProperty);  }
+            get { return (IEnumerable<BO.TaskInList>)GetValue(PossibleTasksProperty);  }
             set { SetValue(PossibleTasksProperty, value);   }
         }
 
@@ -38,14 +38,20 @@ namespace PL.Engineer
             }
             else
             {
-                PossibleTasks = new ObservableCollection<BO.TaskInList>(
-                                             from item in s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= engineer.Level)
-                                             let curTask = s_bl.Task.Read(item.ID)
-                                             where noDependencies(curTask)
-                                             where curTask.Engineer == null
-                                             where curTask.Status != Status.Completed
-                                             select item
-                                             ) ;
+                try
+                {
+                    PossibleTasks = from item in s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= engineer.Level)
+                                    let curTask = s_bl.Task.Read(item.ID)
+                                    where noDependencies(curTask)
+                                    where curTask.Engineer == null
+                                    where curTask.Status != Status.Completed
+                                    select item;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                                              
 
                 
             }

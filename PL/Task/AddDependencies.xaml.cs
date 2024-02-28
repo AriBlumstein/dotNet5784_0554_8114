@@ -40,11 +40,19 @@ namespace PL.Task
         public AddDependencies(BO.Task task)
         {
             this.task = task;
-            TaskList = s_bl.Task.ReadAll().Where(t => t.ID != task.ID);
 
-            foreach (var d in task.Dependencies)
+            try
             {
-                TaskList = TaskList.Where(t => t.ID != d.ID);
+                TaskList = s_bl.Task.ReadAll().Where(t => t.ID != task.ID);
+
+                foreach (var d in task.Dependencies)
+                {
+                    TaskList = TaskList.Where(t => t.ID != d.ID);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
               
             InitializeComponent();

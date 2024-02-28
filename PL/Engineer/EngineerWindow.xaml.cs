@@ -46,7 +46,14 @@ namespace PL.Engineer
             }
             else
             {
-                Engineer = s_bl?.Engineer.Read(id)!;
+                try
+                {
+                    Engineer = s_bl?.Engineer.Read(id)!;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 

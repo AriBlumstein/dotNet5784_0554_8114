@@ -25,7 +25,15 @@ namespace PL.Engineer
         public EngineerListWindow()
         {
             InitializeComponent();
-            EngineerList=s_bl.Engineer.ReadAll()!;
+
+            try
+            {
+                EngineerList = s_bl.Engineer.ReadAll()!;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             
         }
 

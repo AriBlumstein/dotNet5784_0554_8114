@@ -17,12 +17,12 @@ namespace PL.Task
         private readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
 
-        public static readonly DependencyProperty PossibleEngineersProperty = DependencyProperty.Register("PossibleEngineers", typeof(ObservableCollection<BO.EngineerInTask>),
+        public static readonly DependencyProperty PossibleEngineersProperty = DependencyProperty.Register("PossibleEngineers", typeof(IEnumerable<BO.EngineerInTask>),
            typeof(TaskEngineerAssigner), new PropertyMetadata(null));
 
-        public ObservableCollection<BO.EngineerInTask> PossibleEngineers
+        public IEnumerable<BO.EngineerInTask> PossibleEngineers
         {
-            get { return (ObservableCollection<BO.EngineerInTask>)GetValue(PossibleEngineersProperty); }
+            get { return (IEnumerable<BO.EngineerInTask>)GetValue(PossibleEngineersProperty); }
             set { SetValue(PossibleEngineersProperty, value); }
         }
 
@@ -39,15 +39,20 @@ namespace PL.Task
             }
             else
             {
-                PossibleEngineers = new ObservableCollection<BO.EngineerInTask>(
-                                             from item in s_bl.Engineer.ReadAll(e => (EngineerExperience?)e.Exp >= task.Complexity)
-                                             where item.Task == null
-                                             select new EngineerInTask
-                                             {
-                                                 ID = item.ID,
-                                                 Name = item.Name,
-                                             }
-                                             ); ;
+                try
+                {
+                    PossibleEngineers = from item in s_bl.Engineer.ReadAll(e => (EngineerExperience?)e.Exp >= task.Complexity)
+                                        where item.Task == null
+                                        select new EngineerInTask
+                                        {
+                                            ID = item.ID,
+                                            Name = item.Name,
+                                        };
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                
 
             }

@@ -190,7 +190,7 @@ internal class TaskImplementation : BlApi.ITask
         }
         else  //we cannot update the dates or dependencies
         {
-            validateTask(task); validateTaskProduction(task);
+             validateTaskProduction(task); validateTask(task);
         }
 
 
@@ -479,7 +479,7 @@ internal class TaskImplementation : BlApi.ITask
 
             if (checkCircularDependency(dep))  //the dependency will cause a circular dependency
             {
-                throw new BlIllegalPropertyException($"Cannot create a circular dependency, \"{dep.RequisiteID}\" is already dependent on \"{dep.DependentID}\"");
+                throw new BlIllegalPropertyException($"Cannot create a circular dependency, task \"{dep.RequisiteID}\" is already dependent on task \"{dep.DependentID}\"");
             }
         }
     }

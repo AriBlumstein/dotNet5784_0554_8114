@@ -225,7 +225,16 @@ public static class Initialization
             //get random task numbers
             int rand1 = s_rand.Next(0, tasks.Count()), rand2 =s_rand.Next(0,tasks.Count());
 
-            int dependentID = taskIDs[rand1], requisiteID = taskIDs[rand2];          
+            int dependentID = taskIDs[rand1], requisiteID = taskIDs[rand2];
+
+            Dependency oldExisted = s_dal.Dependency.Read(d => d.DependentID == dependentID && d.RequisiteID == requisiteID);
+
+            if(oldExisted != null)
+            {
+                i--;
+                continue;
+            }
+            
            
        
             DO.Dependency newD = new Dependency(-1, dependentID, requisiteID);

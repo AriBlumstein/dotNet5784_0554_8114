@@ -15,6 +15,7 @@
         <local:AdminPrivilegesToVisibilityConverter x:Key="AdminPrivilegesToVisibilityConverterKey"/>
         <local:CanAssignAnEngineer x:Key="CanAssignAnEngineerKey"/>
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverterKey"/>
+        <local:NullToInvisibiltyConverter x:Key="NullToInvisibiltyConverterKey"/>
 
         <!--`Styling the pages with a common theme-->
         <Style x:Key="HandleEntitiesStyle" TargetType="Button">

@@ -70,7 +70,7 @@ namespace PL.Task
         
         //this event handler is specifically for the task window closing, we wanted to decouple this from the selection changed so we can change them freely
 
-        private void taskWindowClosed(object sender, EventArgs e)
+        private void windowClosed(object sender, EventArgs e)
         {
             if(Task!= null)
             {
@@ -101,7 +101,7 @@ namespace PL.Task
                 
                 TaskWindow newWindow = new TaskWindow(newTask.ID);
 
-                newWindow.Closed += taskWindowClosed!;  //add our event listener to this event, so the event will be handled
+                newWindow.Closed += windowClosed!;  //add our event listener to this event, so the event will be handled
                 newWindow.ShowDialog();
             }
         }
@@ -113,12 +113,14 @@ namespace PL.Task
             if (Task == null)
             {
                 TaskWindow newWindow = new TaskWindow();
-                newWindow.Closed += taskWindowClosed!;  //add our event listener to this event, so the event will be handled 
+                newWindow.Closed += windowClosed!;  //add our event listener to this event, so the event will be handled 
                 newWindow.ShowDialog();
             }
             else
             {
-                //new window to add dependencies
+                AddDependencies newWindow = new AddDependencies(Task);
+                newWindow.Closed += windowClosed!;
+                newWindow.ShowDialog();
             }
 
         }

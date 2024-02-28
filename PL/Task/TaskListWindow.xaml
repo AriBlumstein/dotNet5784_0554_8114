@@ -12,10 +12,21 @@
     <!--Extrnal Grid-->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
+            <RowDefinition Height="60*"/>
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        
+        
+        <!-- Dependency Title  -->
+        <StackPanel Grid.Row="0" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}">
+            <!-- Static Info -->
+            <TextBlock Text="Dependencies for Task:" Style="{StaticResource DispalyTitlesKey}" FontWeight="Bold" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}"/>
+
+            <!-- TextBox with Binding to Dependency Property -->
+            <TextBlock  Text="{Binding Task.ID, Mode=OneTime}" Style="{StaticResource DispalyTitlesKey}" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}" />
+        </StackPanel>
+
         <!--Internal, Upper Grid-->
         <Grid Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToVisibilityConverterKey }}" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>

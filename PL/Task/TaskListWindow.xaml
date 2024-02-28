@@ -17,16 +17,18 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--Internal, Upper Grid-->
-        <Grid Visibility="{Binding Task.ID, Mode=OneTime, Converter={StaticResource ZeroToInvisibilityConverterKey}}" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+        <Grid Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToVisibilityConverterKey }}" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
 		        <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--Label for filter name-->
-            <Label Visibility="{Binding Task.ID, Mode=OneTime, Converter={StaticResource ZeroToInvisibilityConverterKey}}" Content="Experience" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+            <Label Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToVisibilityConverterKey }}"  Content="Experience" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
             <!--the value of the filter-->
-            <ComboBox Visibility="{Binding Task.ID, Mode=OneTime, Converter={StaticResource ZeroToInvisibilityConverterKey}}" Style="{StaticResource ComboBoxCenter}" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged" />
+            <ComboBox Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToVisibilityConverterKey }}" Style="{StaticResource ComboBoxCenter}" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged" />
         </Grid>
+        
+        
         <!--the list of tasks-->
         <ListView Grid.Row="1" MouseDoubleClick="listClickUpdateTask" ItemsSource="{Binding TaskList}">
             <ListView.View>

@@ -27,18 +27,22 @@ namespace PL.Task
 
     public TaskListWindow(BO.Task task=null)
         {
+
+            this.Task = task;
             InitializeComponent();
           
             if (task == null) 
             { 
                 TaskList = s_bl?.Task.ReadAll()!; 
-                Task= new BO.Task();
+                
             }
             else
             {
                 TaskList = task.Dependencies;
-                Task = task;
+                
             }
+
+            
         
             
         }
@@ -68,7 +72,7 @@ namespace PL.Task
 
         private void taskWindowClosed(object sender, EventArgs e)
         {
-            if(Task.ID != 0)
+            if(Task!= null)
             {
                 Task=s_bl?.Task.Read(Task.ID)!;
                 TaskList= Task.Dependencies;
@@ -85,7 +89,7 @@ namespace PL.Task
 
         private void listClickUpdateTask(object sender, MouseButtonEventArgs e)
         {
-            if (Task.ID!=0) { return; } //diable view Task details if we look at them as depedndencies, would lead to a non-user friendly set up
+            if (Task!=null) { return; } //prevent view Task details if we look at them as depe, would lead to a non-user friendly set up
 
 
             BO.TaskInList? newTask = (sender as ListView)?.SelectedItem as BO.TaskInList;
@@ -106,7 +110,7 @@ namespace PL.Task
         {
 
 
-            if (Task.ID == 0)
+            if (Task == null)
             {
                 TaskWindow newWindow = new TaskWindow();
                 newWindow.Closed += taskWindowClosed!;  //add our event listener to this event, so the event will be handled 

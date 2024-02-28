@@ -62,7 +62,7 @@ namespace PL.Engineer
             BO.TaskInList? task = (sender as ListView)?.SelectedItem as BO.TaskInList;
             if (task != null)
             {
-                MessageBoxResult answer  =MessageBox.Show($"Are you sure you want to assign task with \"{task.ID}\" to the engineer with id \"{engineer.ID}\"", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult answer  =MessageBox.Show($"Are you sure you want to assign task with id \"{task.ID}\" to the engineer with id \"{engineer.ID}\"", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (answer == MessageBoxResult.Yes)
                 {
 

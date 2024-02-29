@@ -1,6 +1,6 @@
 ﻿using BlApi;
 using BO;
-using PL.Engineer;
+
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,7 +11,7 @@ namespace PL.Task
     /// </summary>
     public partial class TaskWindow : Window
     {
-        private readonly IBl s_bl = Factory.Get();
+        private static readonly IBl s_bl = Factory.Get();
 
         public static readonly DependencyProperty TaskProperty =
         DependencyProperty.Register("Task", typeof(BO.Task), typeof(TaskWindow), new PropertyMetadata(null));  //the task itself
@@ -173,7 +173,7 @@ namespace PL.Task
 
         private void viewDependencies_Click(object sender, RoutedEventArgs e)
         {
-            new TaskListWindow(Task).ShowDialog();
+            new TaskListWindow(Task, AdminPrivileges).ShowDialog();
         }
     }
 }

@@ -21,10 +21,10 @@
         <!-- Dependency Title  -->
         <StackPanel Grid.Row="0" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}">
             <!-- Static Info -->
-            <TextBlock Text="Dependencies for Task:" Style="{StaticResource DispalyTitlesKey}" FontWeight="Bold" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}"/>
+            <TextBlock Text="Dependencies for Task:" Style="{StaticResource DisplayTitlesKey}" FontWeight="Bold" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}"/>
 
             <!-- TextBox with Binding to Dependency Property -->
-            <TextBlock  Text="{Binding Task.ID, Mode=OneTime}" Style="{StaticResource DispalyTitlesKey}" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}" />
+            <TextBlock  Text="{Binding Task.ID, Mode=OneTime}" Style="{StaticResource DisplayTitlesKey}" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}" />
         </StackPanel>
 
         <!--Internal, Upper Grid-->
@@ -50,7 +50,7 @@
         </ListView>
         
         <!--add tasks-->
-        <Button Style="{StaticResource OperationButtonsStyle}" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Click="addTaskClick"/>
+        <Button Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding AdminPrivileges, Mode=OneTime, Converter={StaticResource AdminPrivilegesToVisibilityConverterKey}}" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Click="addTaskClick"/>
     </Grid>
 
 </Window>

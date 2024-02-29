@@ -21,7 +21,7 @@ namespace PL.Engineer
     /// </summary>
     public partial class EngineerListWindow : Window
     {
-        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public EngineerListWindow()
         {
             InitializeComponent();

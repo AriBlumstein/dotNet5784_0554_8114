@@ -116,7 +116,7 @@
         </Grid>
         
         <!-- view the dependencies-->
-        <Button Style="{StaticResource OperationButtonsStyle}" FontSize="10" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="View Dependencies" Click="viewDependencies_Click" Visibility="{Binding ID, Converter={StaticResource ZeroToInvisibilityConverterKey}}" />
+        <Button Style="{StaticResource OperationButtonsStyle}" FontSize="10" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="View Dependencies" Click="viewDependencies_Click" Visibility="{Binding ID, Converter={StaticResource ZeroToInvisibilityConverterKey}}"/>
 
         <Button Style="{StaticResource OperationButtonsStyle}" HorizontalAlignment="Center"  Grid.Row="2" VerticalAlignment="Center" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
         <Button Content="Mark As Complete" Click="updateTaskAsComplete_Click" Style="{StaticResource OperationButtonsStyle}" FontSize="10" Grid.Row="2"

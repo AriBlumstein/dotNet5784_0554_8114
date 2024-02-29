@@ -20,7 +20,7 @@
         <!-- Display Title-->
 
         <Grid Grid.Row="0">
-            <TextBlock Style="{StaticResource DispalyTitlesKey}" Text="Welcome to the Engineer/Task Management System">
+            <TextBlock Style="{StaticResource DisplayTitlesKey}" Text="Welcome to the Engineer/Task Management System">
                 
             </TextBlock>
         </Grid>

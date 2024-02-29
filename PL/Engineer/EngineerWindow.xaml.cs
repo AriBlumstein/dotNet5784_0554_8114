@@ -13,7 +13,7 @@ namespace PL.Engineer
     public partial class EngineerWindow : Window
     {
 
-        private readonly IBl s_bl = Factory.Get();
+        private static readonly IBl s_bl = Factory.Get();
 
 
         public static readonly DependencyProperty EngineerProperty =

@@ -7,8 +7,6 @@
         <local:ExperienceCollection x:Key="ExperienceCollectionKey" />
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToUpdatable x:Key="ConvertIdToUpdatableKey"/>
-        <local:StringToNullableInt x:Key="ConvertToNullableIntKey"/>
-        <local:NullReplaceConverter x:Key="NullReplaceConverterKey" />
         <local:ZeroToInvisibilityConverter x:Key="ZeroToInvisibilityConverterKey"/>
         <local:CannotAssignATaskConverter x:Key="CannotAssignATaskConverterKey"/>
         <local:ItemIsDisplayableConverter x:Key="ItemIsDisplayableConverterKey"/>
@@ -44,7 +42,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
-        <Style x:Key="DispalyTitlesKey" TargetType="TextBlock">
+        <Style x:Key="DisplayTitlesKey" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="FontFamily" Value="Arial"/>

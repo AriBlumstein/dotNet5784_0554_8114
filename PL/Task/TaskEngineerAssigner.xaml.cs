@@ -14,7 +14,7 @@ namespace PL.Task
     {
 
         private BO.Task task;
-        private readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
 
         public static readonly DependencyProperty PossibleEngineersProperty = DependencyProperty.Register("PossibleEngineers", typeof(IEnumerable<BO.EngineerInTask>),

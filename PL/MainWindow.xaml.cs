@@ -11,7 +11,7 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IBl s_bl = BlApi.Factory.Get();
+        private static readonly IBl s_bl = BlApi.Factory.Get();
 
         public MainWindow()
         {

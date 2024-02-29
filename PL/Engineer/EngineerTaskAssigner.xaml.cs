@@ -11,7 +11,7 @@ namespace PL.Engineer
     /// </summary>
     public partial class EngineerTaskAssigner : Window
     {
-        private readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         private BO.Engineer engineer;
         

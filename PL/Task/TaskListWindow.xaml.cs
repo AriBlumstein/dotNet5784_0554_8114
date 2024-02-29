@@ -10,7 +10,7 @@ namespace PL.Task
     public partial class TaskListWindow : Window
     {
 
-        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         public static readonly DependencyProperty TaskProperty =
         DependencyProperty.Register("Task", typeof(BO.Task), typeof(TaskListWindow), new PropertyMetadata(null));
@@ -22,13 +22,23 @@ namespace PL.Task
             set { SetValue(TaskProperty, value); }
         }
 
+
+        public static readonly DependencyProperty AdminPrivilegesProperty =
+            DependencyProperty.Register("AdminPrivileges", typeof(bool), typeof(TaskListWindow), new PropertyMetadata(null));
+
     
+        public bool AdminPrivileges
+        {
+            get => (bool)GetValue(AdminPrivilegesProperty);
+            set => SetValue(AdminPrivilegesProperty, value);
+        }
 
 
-    public TaskListWindow(BO.Task task=null)
+    public TaskListWindow(BO.Task task=null, bool adminPrivileges=true)
         {
 
             this.Task = task;
+            AdminPrivileges = adminPrivileges;
             InitializeComponent();
           
             if (task == null) 

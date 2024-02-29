@@ -14,7 +14,7 @@
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="75*"/>
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource DispalyTitlesKey}">Double Click a Task to add it as a dependency </TextBlock >
+            <TextBlock Style="{StaticResource DisplayTitlesKey}">Double Click a Task to add it as a dependency </TextBlock >
             <ListView ItemsSource="{Binding PossibleTaskList}" MouseDoubleClick="addDependency_DoubleClick" Grid.Row="1">
                 <ListView.View>
                     <GridView>

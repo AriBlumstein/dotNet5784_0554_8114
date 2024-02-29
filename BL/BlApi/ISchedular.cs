@@ -17,8 +17,16 @@ public interface ISchedular
     /// <summary>
     /// method that checks if we are already in production
     /// </summary>
-    /// <returns></returns>
+    /// <returns>if there is a project start date</returns>
     bool InProduction();
+
+
+    /// <summary>
+    /// method that returns the project startdate
+    /// </summary>
+    /// <returns></returns>
+
+    DateTime GetProjectStartDate();
 
     
 }

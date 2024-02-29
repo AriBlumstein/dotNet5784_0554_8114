@@ -181,6 +181,19 @@ internal class SimpleSchedularImplementation : ISchedular
             _dal.Config.GetProjectStart();
             return true;
         }
-        catch { return false; }
+        catch(Exception ex) 
+        { return false; }
+    }
+
+    public DateTime GetProjectStartDate()
+    {
+        try
+        {
+            return _dal.Config.GetProjectStart();
+        }
+        catch(DALConfigDateNotSet e)
+        {
+            throw new BlIllegalOperationException("Production has not started yet");
+        }
     }
 }

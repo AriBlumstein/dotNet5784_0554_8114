@@ -35,6 +35,15 @@
             Style="{StaticResource HandleOperationsStyle}"  
             Click="initializeData_Click"
             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <!-- Button to initialize data -->
+        <Button Content="Gannt Chart" 
+        Grid.Column="1" 
+        Grid.Row="1"
+        Style="{StaticResource HandleOperationsStyle}"  
+        Click="showGanttChart_Click"
+        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
         <!-- Button to go to EngineerListWindow -->
         <Button Content="Begin Production" 
           Grid.Column="1" 

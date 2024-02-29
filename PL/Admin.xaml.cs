@@ -72,4 +72,9 @@ public partial class Admin : Window
     {
         new SchedulerWindow().ShowDialog();
     }
+
+    private void showGanttChart_Click(object sender, RoutedEventArgs e)
+    {
+        //new GanttChartWindow().ShowDialog();
+    }
 }

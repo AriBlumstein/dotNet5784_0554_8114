@@ -173,4 +173,14 @@ internal class SimpleSchedularImplementation : ISchedular
 
 
     }
+
+    public bool InProduction()
+    {
+        try
+        {
+            _dal.Config.GetProjectStart();
+            return true;
+        }
+        catch { return false; }
+    }
 }

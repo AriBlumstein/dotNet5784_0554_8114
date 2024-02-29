@@ -12,4 +12,13 @@ public interface ISchedular
     /// </summary>
     /// <param name="projectedStart"></param>
     void createSchedule(DateTime projectedStart);
+
+
+    /// <summary>
+    /// method that checks if we are already in production
+    /// </summary>
+    /// <returns></returns>
+    bool InProduction();
+
+    
 }

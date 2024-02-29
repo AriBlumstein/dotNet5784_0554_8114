@@ -37,7 +37,7 @@
             HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <!-- Button to initialize data -->
-        <Button Content="Gannt Chart" 
+        <Button Content="Gantt Chart" 
         Grid.Column="1" 
         Grid.Row="1"
         Style="{StaticResource HandleOperationsStyle}"  

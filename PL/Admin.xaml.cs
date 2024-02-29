@@ -75,6 +75,11 @@ public partial class Admin : Window
 
     private void showGanttChart_Click(object sender, RoutedEventArgs e)
     {
-        //new GanttChartWindow().ShowDialog();
+        if(!s_bl.Schedular.InProduction())
+        {
+            MessageBox.Show("Gantt Chart unavailable, please start production", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+        new GanttChartWindow().ShowDialog();
     }
 }

@@ -280,7 +280,7 @@ namespace PL
             return (Color)ColorConverter.ConvertFromString("#6e6c67");
         }
 
-        internal class TaskData
+        private class TaskData
         {
             public string Name { get; set; }
             public DateTime StartDate { get; set; }

@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Gantt Chart" Height="450" Width="800">
     <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
-        <Grid>
-            <Canvas x:Name="GanttChartCanvas"/>
+        
+        <!--the grid with event handler that will find the canvas and load it with the proper items we do this so when looking for the children of the grid, we don't need to start from the window-->
+        <Grid Loaded="grid_Loaded">
+            <Canvas/>
         </Grid>
     </ScrollViewer>
 </Window>

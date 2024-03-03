@@ -13,12 +13,7 @@
         <local:AdminPrivilegesToVisibilityConverter x:Key="AdminPrivilegesToVisibilityConverterKey"/>
         <local:CanAssignAnEngineer x:Key="CanAssignAnEngineerKey"/>
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverterKey"/>
-<<<<<<< HEAD
-        <local:NullToInvisibiltyConverter x:Key="NullToInvisibiltyConverterKey"/>
         <local:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverterKey" />
-=======
-        <local:NullToInvisibilityConverter x:Key="NullToInvisibilityConverterKey"/>
->>>>>>> cb070c2993c7f97a66dfedb49a69ab2811ba78ea
 
         <!--`Styling the pages with a common theme-->
         <Style x:Key="HandleEntitiesStyle" TargetType="Button">

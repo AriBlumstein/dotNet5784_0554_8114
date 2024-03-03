@@ -1,7 +1,4 @@
 ﻿using BlApi;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +15,7 @@ namespace PL
 
         private HashSet<int> _coloredRed; //helper hash set so we know what to color red
 
-        private Canvas _ganttChartCanvas; //the ganttChart canvas we need to deal with
+        private Canvas _ganttChartCanvas; //The canvas we will draw the gantt chart on
 
         public GanttChartWindow()
         {
@@ -28,7 +25,7 @@ namespace PL
         private void canvas_Loaded(object sender, RoutedEventArgs e)
         {
 
-            _ganttChartCanvas = sender as Canvas; //we get the canvas with this line
+            _ganttChartCanvas = sender as Canvas; //retrieve the canvas
 
             if (_ganttChartCanvas != null) 
             {
@@ -42,9 +39,9 @@ namespace PL
                     Close();
                 }
             }
-            else //dealing with possible  in xaml file
+            else //dealing with any possible error in the xaml file
             {
-                MessageBox.Show("Xaml file corrupted. Cannot display Gantt Chart.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+                MessageBox.Show("Xaml file corrupted. Cannot display the Gantt Chart.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
                 Close();
             }
         }
@@ -61,19 +58,19 @@ namespace PL
             _ganttChartCanvas.Children.Clear();
 
             // Define some constants for rendering
-            double rowHeight = 50; // Row height for each bar
-            double columnWidth = 150; // Column width for the timing
+            const double rowHeight = 50; // Row height for each bar
+            const double columnWidth = 150; // Column width for the timing
             double xOffset = 150; // Margin for labels and name column
             double yOffset = 50; // Margin for labels
             double y = yOffset; // Helper entity to help the drawing process
 
-            // Find the earliest start date and latest end date so our Gantt chart is properly set up
+            // Find the earliest start date and latest end date to define the bounds of our Gantt chart 
             DateTime startDate = _items.Min(item => item.StartDate);
             DateTime endDate = _items.Max(item => item.EndDate);
 
             // Calculate the total duration in 4-week stints
             TimeSpan totalDuration = endDate - startDate;
-            int numStints = (int)Math.Ceiling(totalDuration.TotalDays / (28)); // Calculate number of 4-week intervals
+            int numStints = (int)Math.Ceiling(totalDuration.TotalDays / 28); // Calculate number of 4-week intervals
 
             // Calculate the width and height of the canvas
             double canvasWidth = numStints * columnWidth + xOffset; // Adding margins for name column so it can be fully displayed
@@ -86,17 +83,17 @@ namespace PL
             // Draw column headers (dates)
             for (int i = 0; i < numStints; i++)
             {
-                DateTime currentStintStart = startDate.AddDays(i * 28); // Increment by 4 weeks
+                DateTime currentStintStart = startDate.AddDays(i * 28); // Increment by 28 days (4 weeks)
                 TextBlock dateLabel = new TextBlock
                 {
                     Text = currentStintStart.ToShortDateString(),
-                    Margin = new Thickness(xOffset + i * columnWidth + (columnWidth - 80) / 2, 0, 0, 0), // Centering the date
-                    Width = 80, // Setting a fixed width to ensure entire date is visible
-                    TextAlignment = TextAlignment.Center // Centering the text
+                    Margin = new Thickness(xOffset + i * columnWidth + (columnWidth - 80) / 2, 0, 0, 0), // center the date
+                    Width = 80, // set a fixed width to ensure the entire date is visible
+                    TextAlignment = TextAlignment.Center // center the text
                 };
-                _ganttChartCanvas.Children.Add(dateLabel); // name having its own column as name might not fit in the rectangle depending on length of task
+                _ganttChartCanvas.Children.Add(dateLabel); // The name may not fit within the rectangle so it gets its own column.
 
-                // Draw black lines between each row and extend into the first column
+                // Draw grid lines between each row and extend into the first column
                 Rectangle columnLine = new Rectangle
                 {
                     Width = 1,
@@ -140,10 +137,9 @@ namespace PL
                 };
                 _ganttChartCanvas.Children.Add(rect);
 
-                y += rowHeight;
-
                 // Adjust the row position for expanded height
-                y += 20; // Increase space between rows
+                y += rowHeight+20; // Increase space between rows
+               
             }
 
             // Draw a black line at the bottom to add clarity
@@ -161,16 +157,16 @@ namespace PL
 
 
         /// <summary>
-        /// helper method to generate the proper data needed for the gantt chart
+        /// helper method to generate the data needed for the gantt chart
         /// </summary>
-        /// <returns>a list of Data items, one for each task</returns>
+        /// <returns>a list of TaskData items, one for each task</returns>
         private IEnumerable<TaskData> GenerateItems()
         {
-            _coloredRed = new HashSet<int>(); //define this here will be used in this methods helper methods
+            _coloredRed = new HashSet<int>(); //used in helper methods
 
             return from task in s_bl.Task.ReadAll()
                    let fullTask = s_bl.Task.Read(task.ID)
-                   orderby fullTask.ProjectedEnd //try to make it easier for reading dependencies based only off the rectangles
+                   orderby fullTask.ProjectedEnd //makes the graph clearer, purely asthetic.
                    select new TaskData
                    {
                        Name = getName(fullTask),
@@ -182,18 +178,18 @@ namespace PL
 
 
         /// <summary>
-        /// helper method to get the proper name
+        /// Method to get the proper name of a task for display on the gantt chart
         /// </summary>
         /// <param name="task"></param>
         /// <returns>a data item name</returns>
         private string getName(BO.Task task)
         {
             StringBuilder nameBuilder = new StringBuilder();
-            nameBuilder.Append(task.ID).Append(": ").Append(task.Name).Append("\n"); //the actual task name an ID
+            nameBuilder.Append(task.ID).Append(": ").Append(task.Name).Append("\n"); //the actual task name and ID
 
             nameBuilder.Append("{ ");
 
-            //getting the dependencies
+            //get the dependencies
             int dependencyCount = task.Dependencies.Count;
             for (int i = 0; i < dependencyCount; i++)
             {
@@ -227,7 +223,7 @@ namespace PL
 
 
         /// <summary>
-        /// helper method to get a proper end date for a task
+        /// helper method to get the proper end date for a task
         /// </summary>
         /// <param name="task"></param>
         /// <returns>DateTime</returns>
@@ -242,61 +238,55 @@ namespace PL
 
 
         /// <summary>
-        /// helper method to get what color the task should be, gray if not started, green on schedule, blue completed, red behind schedule or a requisite task is behind schedule
+        /// helper method to determine what color the task should be
+        /// Gray if not started
+        /// Green on schedule
+        /// Blue if already completed
+        /// Red if behind schedule or a requisite task is behind schedule
         /// </summary>
         /// <param name="task"></param>
         /// <returns>Color</returns>
         private Color getColor(BO.Task task)
         {
-            //#6e6c67-gray
-            //#37e031-green
-            //#e60b07-red
-            //#361c9e-blue
 
-            //return ColorConverter.ConvertFromString(item.Color)
+            const string gray = "#6e6c67";
+            const string green = "#37e031";
+            const string red = "#e60b07";
+            const string blue = "#361c9e";
 
             //a requisite task is overdue
             foreach (var dependency in task.Dependencies)
-            {
                 if (_coloredRed.Contains(dependency.ID))
-                    return (Color)ColorConverter.ConvertFromString("#e60b07");
+                    return (Color)ColorConverter.ConvertFromString(red);
                     
-            }
-
-            //completed task
+            
+            //the task is completed 
             if (task.Status == BO.Status.Completed)
-            {
-                return (Color)ColorConverter.ConvertFromString("#361c9e");
+                return (Color)ColorConverter.ConvertFromString(blue);
                
-            }
-
-            //in progress on schedule
-            if (task.Status == BO.Status.OnTrack && task.ProjectedEnd >= s_bl.Clock.Date)
-            {
-                return (Color)ColorConverter.ConvertFromString("#37e031");
-          
-            }
-
-            //in progress behind schedule
-            if (task.Status == BO.Status.OnTrack && task.ProjectedEnd < s_bl.Clock.Date)
-            {
-                //add it to the to the hash set
-                _coloredRed.Add(task.ID);
-
-                return (Color)ColorConverter.ConvertFromString("#e60b07");
-
-               
-            }
-
             
 
+            //the task is in progress and on schedule
+            if (task.Status == BO.Status.OnTrack && task.ProjectedEnd >= s_bl.Clock.Date)
+                return (Color)ColorConverter.ConvertFromString(green);
+          
+
+            //the task is in progress and behind schedule
+            if (task.Status == BO.Status.OnTrack && task.ProjectedEnd < s_bl.Clock.Date)
+            {
+                //add the task id to the to the hash set
+                _coloredRed.Add(task.ID);
+                return (Color)ColorConverter.ConvertFromString(red);
+            }
+
+
             //gray we have not started yet
-            return (Color)ColorConverter.ConvertFromString("#6e6c67");
+            return (Color)ColorConverter.ConvertFromString(gray);
         }
 
 
         /// <summary>
-        /// class that holds data we need to draw the gantt chart for each Task
+        /// A data class to hold the relevant information needed to draw the gantt chart 
         /// </summary>
         private class TaskData
         {

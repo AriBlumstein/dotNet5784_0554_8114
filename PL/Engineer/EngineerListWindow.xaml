@@ -21,11 +21,15 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
             <!--Label for filter name-->
             <Label  Content="Experience" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+            
             <!--the value of the filter-->
             <ComboBox Grid.Column="1" Style="{StaticResource ComboBoxCenter}" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged" />
+            
         </Grid>
+        
         <!--the list of Engineers-->
         <ListView MouseDoubleClick="listClickUpdateEngineer" Grid.Row="1"  ItemsSource="{Binding EngineerList}">
             <ListView.View>
@@ -34,6 +38,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        
         <!--add Engineers-->
         <Button Style="{StaticResource OperationButtonsStyle}" Content="Add" Click="btnAddNewEngineer" Grid.Row="2" HorizontalAlignment="Center"/>
     </Grid>

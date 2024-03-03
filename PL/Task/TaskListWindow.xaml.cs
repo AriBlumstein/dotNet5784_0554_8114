@@ -12,32 +12,18 @@ namespace PL.Task
 
         private static readonly BlApi.IBl s_bl = BlApi.Factory.Get(); //business layer/logic access
 
-        public static readonly DependencyProperty TaskProperty =
-        DependencyProperty.Register("Task", typeof(BO.Task), typeof(TaskListWindow), new PropertyMetadata(null));
+        
 
-        public BO.Task Task
-        {
-            get { return (BO.Task)GetValue(TaskProperty); }
-            set { SetValue(TaskProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty AdminPrivilegesProperty =
-            DependencyProperty.Register("AdminPrivileges", typeof(bool), typeof(TaskListWindow), new PropertyMetadata(null));
-
-    
-        public bool AdminPrivileges
-        {
-            get => (bool)GetValue(AdminPrivilegesProperty);
-            set => SetValue(AdminPrivilegesProperty, value);
-        }
+        public BO.Task Task { get; set; }
+        
+        public bool AdminPrivileges { get; init; }
 
 
     public TaskListWindow(BO.Task task=null, bool adminPrivileges=true)
         {
-
-            this.Task = task;
+            Task = task;
             AdminPrivileges = adminPrivileges;
+
             InitializeComponent();
           
             if (task == null) 
@@ -50,6 +36,8 @@ namespace PL.Task
                 TaskList = task.Dependencies;
                 
             }
+
+           
         }
 
 
@@ -81,7 +69,7 @@ namespace PL.Task
             if(Task!= null)
             {
                 Task=s_bl?.Task.Read(Task.ID)!;
-                TaskList= Task.Dependencies;
+                TaskList = Task.Dependencies;
             }
             else
             {

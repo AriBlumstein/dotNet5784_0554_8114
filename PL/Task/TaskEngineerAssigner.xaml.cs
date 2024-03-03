@@ -59,7 +59,7 @@ namespace PL.Task
         /// </summary>
         /// <param name="sender">the object that raised the event</param>
         /// <param name="e">Mouse related events</param>
-        private void ListAddEngineer_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void listAddEngineer_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             BO.EngineerInTask? engineer = (sender as ListView)?.SelectedItem as BO.EngineerInTask;
             if (engineer != null)

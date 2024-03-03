@@ -27,37 +27,42 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+            
         <!--ID-->
         <Label Content="ID" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBox Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding ID, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" IsEnabled="{Binding ID, Mode=OneTime, Converter={StaticResource ConvertIdToUpdatableKey}}"  VerticalAlignment="Center" Width="120"/>
         <!--Name-->
         <Label Content="Name" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-        <!--Email-->
+            <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}"  Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+        
+         <!--Email-->
         <Label Content="Email" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+        
         <!--Experience-->
         <Label Content="Experience" HorizontalAlignment="Center"  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
-            <ComboBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}" Grid.Column="1" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, 
+            <ComboBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, 
                 ValidatesOnExceptions=true}"  />
+        
         <!--Salary-->
         <Label Content="Salary" HorizontalAlignment="Center"  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
        
             
         <!--Assigned Task--> <!--On adding this is never visible logic will be be bad with the experience level and adding-->
         <Label Content="Task" Visibility="{Binding ID, Mode=OneTime, Converter={StaticResource ZeroToInvisibilityConverterKey}}" HorizontalAlignment="Center"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
             
             <!--Button to assign a task that was not yet assigned-->
-            <Button Content="Assign a Task" Click="AssignTaskClick" Grid.Row="6" Grid.Column="1" Style="{StaticResource OperationButtonsStyle}">
+            <Button Content="Assign a Task" Click="assignTaskClick" Grid.Row="6" Grid.Column="1" Style="{StaticResource OperationButtonsStyle}">
                 <Button.Visibility>
                     <MultiBinding Converter="{StaticResource CannotAssignATaskConverterKey}">
-                        <Binding Path="ID" Mode="OneTime"/>
-                        <Binding Path="Task" Mode="TwoWay"/>
+                        <Binding Path="ID" Mode="OneTime"/> <!--if the task does not fully exist yet-->
+                        <Binding Path="Task" Mode="TwoWay"/> <!--if I already have a task-->
                     </MultiBinding>
                 </Button.Visibility>
             </Button>
 
+            <!--the task an the button to view the task details-->
             <Border BorderBrush="Gray" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" BorderThickness="1" Margin="5">
                 <StackPanel>
                     <TextBlock Text="{Binding Task.Alias, Mode=TwoWay}"  
@@ -71,6 +76,8 @@
 
 
         </Grid>
+        
+        <!--add/update button, only viewable to admin-->
         <Button Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding AdminPrivileges, Converter={StaticResource AdminPrivilegesToVisibilityConverterKey}, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConverIdToContentKey}}" Click="btnAddUpdate_Click"/>
     </Grid>
 </Window>

@@ -20,7 +20,9 @@ internal class EngineerImplementation : IEngineer
     private DalApi.IDal _dal = DalApi.Factory.Get;
     public BO.Engineer Create(BO.Engineer engineer)
     {
-        validEngineer(engineer);
+       
+
+        validEngineer(engineer, true);
 
         //try adding it to the database
         try
@@ -216,7 +218,7 @@ internal class EngineerImplementation : IEngineer
     /// method that checks the validity of an engineer, throw appropriate exception if not valid
     /// </summary>
     /// <param name="engineer"></param>
-    private void validEngineer(BO.Engineer engineer)
+    private void validEngineer(BO.Engineer engineer, bool creating=false)
     {
         //check validity of fields
         if (engineer.ID <= 0)
@@ -298,6 +300,11 @@ internal class EngineerImplementation : IEngineer
 
         }
 
+        //if we are creating, we are done with our check
+        if(creating)
+        {
+            return;
+        }
 
         //we wil now check that the engineers skill level only increases
 

@@ -28,7 +28,7 @@ namespace PL.Engineer
 
             try
             {
-                EngineerList = s_bl.Engineer.ReadAll()!;
+                EngineerList = s_bl.Engineer.ReadAll()!; //getting all the engineers to display
             }
             catch (Exception ex)
             {
@@ -37,6 +37,8 @@ namespace PL.Engineer
             
         }
 
+
+       //the engineerlist dependency property
         public IEnumerable<BO.Engineer> EngineerList
         {
             get { return (IEnumerable<BO.Engineer>)GetValue(EngineerListProperty); }
@@ -46,8 +48,16 @@ namespace PL.Engineer
         public static readonly DependencyProperty EngineerListProperty =
             DependencyProperty.Register("EngineerList", typeof(IEnumerable<BO.Engineer>), typeof(EngineerListWindow), new PropertyMetadata(null));
 
+
+        //the experience property for diplaying the proper engineers
         public BO.EngineerExperience Experience { get; set; } = BO.EngineerExperience.None;
 
+
+        /// <summary>
+        /// event handler to display the engineers of a certain experience
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cbExperience_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EngineerList = (Experience == BO.EngineerExperience.None) ?
@@ -56,13 +66,25 @@ namespace PL.Engineer
         }
 
 
-        //even is different but accomplishes very similar goals of updating this screen properly depending on the selected exp, repeated code, byt decoupled, allows us to handle events differently if we choose to
+        /// <summary>
+        /// event handler when the engineer window closes
+        /// //event is different but accomplishes very similar goals of updating this screen properly depending on the selected exp, repeated code, but decoupled, allows us to handle events differently if we choose to
+        /// </summary>
+        /// <param name="Sender"></param>
+        /// <param name="e"></param>
 
         private void engineerWindow_Closed(Object Sender, EventArgs e)
         {
             EngineerList = (Experience == BO.EngineerExperience.None) ?
             s_bl?.Engineer.ReadAll()! : s_bl?.Engineer.ReadAll(item => (BO.EngineerExperience?)item.Exp == Experience)!;
         }
+
+
+        /// <summary>
+        /// event handler to add a new engineer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void btnAddNewEngineer(object sender, RoutedEventArgs e)
         {
@@ -71,6 +93,13 @@ namespace PL.Engineer
             newWindow.ShowDialog();
             
         }
+
+
+        /// <summary>
+        /// event handler when updating an engineer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void listClickUpdateEngineer(object sender, RoutedEventArgs e)
         {

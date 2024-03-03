@@ -18,9 +18,17 @@ namespace PL.Components
         {
             get { return (DateTime)GetValue(ProjectStartDateProperty); }
             set { SetValue(ProjectStartDateProperty, value); }
-        } 
+        }
+
+        private bool inProduction = s_bl.Schedular.InProduction();
+        public static readonly DependencyProperty InProductionProperty = DependencyProperty.Register("inProduction", typeof(bool), typeof(SchedulerWindow), new PropertyMetadata(null));
+        public bool InProduction
+        {
+            get { return inProduction; }
+        }
 
 
+        public bool NotInProduction { get { return !inProduction; } }
         public SchedulerWindow()
         {
             InitializeComponent();

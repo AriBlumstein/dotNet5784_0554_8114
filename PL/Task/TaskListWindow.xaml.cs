@@ -10,12 +10,11 @@ namespace PL.Task
     public partial class TaskListWindow : Window
     {
 
-        private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private static readonly BlApi.IBl s_bl = BlApi.Factory.Get(); //business layer/logic access
 
         public static readonly DependencyProperty TaskProperty =
         DependencyProperty.Register("Task", typeof(BO.Task), typeof(TaskListWindow), new PropertyMetadata(null));
 
-        
         public BO.Task Task
         {
             get { return (BO.Task)GetValue(TaskProperty); }
@@ -51,10 +50,6 @@ namespace PL.Task
                 TaskList = task.Dependencies;
                 
             }
-
-            
-        
-            
         }
 
 
@@ -71,6 +66,7 @@ namespace PL.Task
 
         public BO.EngineerExperience Experience { get; set; } = BO.EngineerExperience.None; 
 
+        //Method to handle the front end change of the experience level filter.
         private void cbExperience_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TaskList = (Experience == BO.EngineerExperience.None) ?
@@ -78,8 +74,8 @@ namespace PL.Task
 
         }
         
-        //this event handler is specifically for the task window closing, we wanted to decouple this from the selection changed so we can change them freely
-
+        //this event handler is specifically for the task window closing
+        ///we wanted to decouple this from the selection changed so that we can change them freely
         private void windowClosed(object sender, EventArgs e)
         {
             if(Task!= null)
@@ -92,19 +88,16 @@ namespace PL.Task
                 TaskList = (Experience == BO.EngineerExperience.None) ?
                 s_bl?.Task.ReadAll()! : s_bl?.Task.ReadAll(item => (BO.EngineerExperience?)item.Difficulty == Experience)!;
             }
-
-           
-
         }
+
 
         private void listClickUpdateTask(object sender, MouseButtonEventArgs e)
         {
-            if (Task!=null) { return; } //prevent view Task details if we look at them as depe, would lead to a non-user friendly set up
-
+            //Don't allow the user to view the task details if we accessed the page as a dependency
+            //This could allow the user to open a large number of windows, making it non user friendly.
+            if (Task!=null) { return; } 
 
             BO.TaskInList? newTask = (sender as ListView)?.SelectedItem as BO.TaskInList;
-
-
 
             if (newTask != null)
             {
@@ -118,8 +111,6 @@ namespace PL.Task
 
         private void addTaskClick(object sender, RoutedEventArgs e)
         {
-
-
             if (Task == null)
             {
                 TaskWindow newWindow = new TaskWindow();
@@ -135,6 +126,4 @@ namespace PL.Task
 
         }
     }
-
-
 }

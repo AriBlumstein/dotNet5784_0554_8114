@@ -23,14 +23,8 @@ namespace PL.Task
         }
 
 
-        public static readonly DependencyProperty AdminPrivilegesProperty =
-        DependencyProperty.Register("AdminPrivileges", typeof(bool), typeof(TaskWindow), new PropertyMetadata(null));
-
-        //state used to determine if we are accessing the page as an admin
-        public bool AdminPrivileges
-        {
-            get => (bool)GetValue(AdminPrivilegesProperty); set { SetValue(AdminPrivilegesProperty, value); }
-        }
+       
+        public bool AdminPrivileges { get; init; }
 
 
         public TaskWindow(int id = 0, bool adminPrivileges = true)

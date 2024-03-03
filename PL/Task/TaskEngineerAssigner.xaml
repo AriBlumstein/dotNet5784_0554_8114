@@ -14,7 +14,7 @@
             <RowDefinition Height="75*"/>
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource DisplayTitlesKey}">Double Click an Engineer to Select</TextBlock >
-        <ListView ItemsSource="{Binding PossibleEngineers}" MouseDoubleClick="ListAddEngineer_MouseDoubleClick" Grid.Row="1">
+        <ListView ItemsSource="{Binding PossibleEngineers}" MouseDoubleClick="listAddEngineer_MouseDoubleClick" Grid.Row="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

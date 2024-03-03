@@ -19,24 +19,24 @@
         
         
         <!-- Dependency Title  -->
-        <StackPanel Grid.Row="0" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibilityConverterKey}}">
+        <StackPanel Grid.Row="0" Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource NullToInvisibilityConverterKey}}">
             <!-- Static Info -->
-            <TextBlock Text="Dependencies for Task:" Style="{StaticResource DisplayTitlesKey}" FontWeight="Bold" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibilityConverterKey}}"/>
+            <TextBlock Text="Dependencies for Task:" Style="{StaticResource DisplayTitlesKey}" FontWeight="Bold" Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource NullToInvisibilityConverterKey}}"/>
 
             <!-- TextBox with Binding to Dependency Property -->
-            <TextBlock  Text="{Binding Task.ID, Mode=OneTime}" Style="{StaticResource DisplayTitlesKey}" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibilityConverterKey}}" />
+            <TextBlock  Text="{Binding Task.ID, Mode=TwoWay}" Style="{StaticResource DisplayTitlesKey}" Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource NullToInvisibilityConverterKey}}" />
         </StackPanel>
 
         <!--Internal, Upper Grid-->
-        <Grid Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToVisibilityConverterKey }}" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+        <Grid Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource NullToVisibilityConverterKey }}" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
 		        <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--Label for filter name-->
-            <Label Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToVisibilityConverterKey }}"  Content="Experience" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+            <Label Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource NullToVisibilityConverterKey }}"  Content="Experience" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
             <!--the value of the filter-->
-            <ComboBox Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToVisibilityConverterKey }}" Style="{StaticResource ComboBoxCenter}" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged" />
+            <ComboBox Visibility="{Binding Task, Mode=TwoWay, Converter={StaticResource NullToVisibilityConverterKey }}" Style="{StaticResource ComboBoxCenter}" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Experience, Mode=TwoWay}" SelectionChanged="cbExperience_SelectionChanged" />
         </Grid>
         
         
@@ -50,7 +50,7 @@
         </ListView>
         
         <!--add tasks-->
-        <Button Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding AdminPrivileges, Mode=OneTime, Converter={StaticResource AdminPrivilegesToVisibilityConverterKey}}" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Click="addTaskClick"/>
+        <Button Style="{StaticResource OperationButtonsStyle}" Visibility="{Binding AdminPrivileges, Mode=TwoWay, Converter={StaticResource AdminPrivilegesToVisibilityConverterKey}}" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Click="addTaskClick"/>
     </Grid>
 
 </Window>

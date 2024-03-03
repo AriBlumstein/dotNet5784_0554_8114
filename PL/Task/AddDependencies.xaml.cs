@@ -11,6 +11,7 @@ namespace PL.Task
     /// </summary>
     public partial class AddDependencies : Window
     {
+        private BO.Task task;
         private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();  //business layer/logic access
 
         public IEnumerable<BO.TaskInList> TaskList
@@ -19,11 +20,9 @@ namespace PL.Task
             set { SetValue(PossibleTaskListProperty, value); }
         }
 
-
         public static readonly DependencyProperty PossibleTaskListProperty =
             DependencyProperty.Register("PossibleTaskList", typeof(IEnumerable<BO.TaskInList>), typeof(AddDependencies), new PropertyMetadata(null));
 
-        private BO.Task task;
         public AddDependencies(BO.Task task)
         {
             this.task = task;

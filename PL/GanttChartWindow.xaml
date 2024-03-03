@@ -4,9 +4,9 @@
         Title="Gantt Chart" Height="450" Width="800">
     <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
         
-        <!--the grid with event handler that will find the canvas and load it with the proper items we do this so when looking for the children of the grid, we don't need to start from the window-->
-        <Grid Loaded="grid_Loaded">
-            <Canvas/>
+     <!-- gantt chart that will be drawn when we get the direct pointer to it as the sender-->
+        <Grid>
+            <Canvas Loaded="canvas_Loaded"/>
         </Grid>
     </ScrollViewer>
 </Window>

@@ -25,10 +25,10 @@ namespace PL
             InitializeComponent();
         }
 
-        private void grid_Loaded(object sender, RoutedEventArgs e)
+        private void canvas_Loaded(object sender, RoutedEventArgs e)
         {
-            
-            _ganttChartCanvas = VisualTreeHelper.GetChild(sender as Grid, 0) as Canvas; //we get the canvas with this line
+
+            _ganttChartCanvas = sender as Canvas; //we get the canvas with this line
 
             if (_ganttChartCanvas != null) 
             {
@@ -290,7 +290,7 @@ namespace PL
             public Color Color { get; set; }
         }
 
-       
+        
     }
 }
 

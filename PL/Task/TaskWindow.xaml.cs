@@ -11,7 +11,7 @@ namespace PL.Task
     /// </summary>
     public partial class TaskWindow : Window
     {
-        private static readonly IBl s_bl = Factory.Get();
+        private static readonly IBl s_bl = Factory.Get(); //business layer/logic access
 
         public static readonly DependencyProperty TaskProperty =
         DependencyProperty.Register("Task", typeof(BO.Task), typeof(TaskWindow), new PropertyMetadata(null));  //the task itself
@@ -26,6 +26,7 @@ namespace PL.Task
         public static readonly DependencyProperty AdminPrivilegesProperty =
         DependencyProperty.Register("AdminPrivileges", typeof(bool), typeof(TaskWindow), new PropertyMetadata(null));
 
+        //state used to determine if we are accessing the page as an admin
         public bool AdminPrivileges
         {
             get => (bool)GetValue(AdminPrivilegesProperty); set { SetValue(AdminPrivilegesProperty, value); }
@@ -49,11 +50,9 @@ namespace PL.Task
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            if (button.Content.ToString() == "Update")
+            Button button = sender as Button; //the xaml element in TaskWindow.xaml
+            if (button.Content.ToString() == "Update") // ie, if the task already exists we update instead of create
             {
-
-
                 try
                 {
                     Task = s_bl?.Task.Update(Task)!;
@@ -84,16 +83,12 @@ namespace PL.Task
                 }
 
             }
-            else if (button.Content.ToString() == "Add")
-
+            else if (button.Content.ToString() == "Add") //the task hasn't been created yet so we now add it
                 try
                 {
-
                     Task = s_bl?.Task.Create(Task)!;
                     MessageBox.Show($"Successfully added task {Task.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
                     Close();
-
                 }
                 catch (BlDoesNotExistException ex)
                 {
@@ -124,6 +119,7 @@ namespace PL.Task
 
         }
 
+        //Assign an engineer to a task handler
         private void AssignEngineer_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -154,23 +150,18 @@ namespace PL.Task
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
 
-
+        //Handle the completion of a task
         private void updateTaskAsComplete_Click(object sender, RoutedEventArgs e)
         {
-
-
             Task.ActualEnd = s_bl.Clock;
-
             Task.Engineer = null;
-
             s_bl.Task.Update(Task);
-
             Close();
         }
 
+        //If the user clicks on "View Dependencies" we open the TaskListWindow with the corresponding Tasks.
         private void viewDependencies_Click(object sender, RoutedEventArgs e)
         {
             new TaskListWindow(Task, AdminPrivileges).ShowDialog();

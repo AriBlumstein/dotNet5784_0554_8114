@@ -45,7 +45,7 @@
             <TextBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true,  ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
        
             
-        <!--Assigned Task--> <!--On adding this is never visible loginc will be be bad with the experieence level and adding-->
+        <!--Assigned Task--> <!--On adding this is never visible logic will be be bad with the experience level and adding-->
         <Label Content="Task" Visibility="{Binding ID, Mode=OneTime, Converter={StaticResource ZeroToInvisibilityConverterKey}}" HorizontalAlignment="Center"  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
             
             <!--Button to assign a task that was not yet assigned-->

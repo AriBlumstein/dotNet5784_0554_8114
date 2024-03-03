@@ -51,13 +51,25 @@ public partial class Admin : Window
     {
         MessageBoxResult result = MessageBox.Show("Do you want to proceed? (doing so will reset data if there was)", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-        if (result == MessageBoxResult.Yes)
+        try
         {
-            DalTest.Initialization.Do();
+            if (result == MessageBoxResult.Yes)
+            {
+                DalTest.Initialization.Do();
+            }
+        } catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         
     }
 
+
+    /// <summary>
+    /// event handler to reset the database
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void reset_Click(object sender, RoutedEventArgs e)
     {
         MessageBoxResult result = MessageBox.Show("Do you want to proceed? (doing so will clear all data if there was any)", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -68,11 +80,23 @@ public partial class Admin : Window
         }
     }
 
+
+    /// <summary>
+    /// event handler to lead us to the scheduling window
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void beginProduction_Click(object sender, RoutedEventArgs e)
     {
         new SchedulerWindow().ShowDialog();
     }
 
+
+    /// <summary>
+    /// method handler to lead us to the gannt chart
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void showGanttChart_Click(object sender, RoutedEventArgs e)
     {
         if(!s_bl.Schedular.InProduction())

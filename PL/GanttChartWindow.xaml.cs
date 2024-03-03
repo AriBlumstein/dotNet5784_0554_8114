@@ -18,7 +18,7 @@ namespace PL
 
         private HashSet<int> _coloredRed; //helper hash set so we know what to color red
 
-        private Canvas _ganttChartCanvas; //the ganttChart cnavas we need to deal wiht
+        private Canvas _ganttChartCanvas; //the ganttChart canvas we need to deal with
 
         public GanttChartWindow()
         {
@@ -32,27 +32,36 @@ namespace PL
 
             if (_ganttChartCanvas != null) 
             {
-                _items = GenerateItems();
-                DrawGanttChart();
+                try
+                {
+                    _items = GenerateItems();
+                    DrawGanttChart();
+                } catch (Exception)
+                {
+                    MessageBox.Show("Error in system time, please check system clock", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Close();
+                }
             }
-            else //dealing with possible error
+            else //dealing with possible  in xaml file
             {
-                MessageBox.Show("Unknow error. Cannot Display Gantt Chart.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+                MessageBox.Show("Xaml file corrupted. Cannot display Gantt Chart.", "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+                Close();
             }
         }
 
+        /// <summary>
+        /// method to actually draw the gantt chart and added it to the canvas
+        /// </summary>
         private void DrawGanttChart()
         {
-            if (_ganttChartCanvas == null || _items == null||_items.Count()==0)
+            if (_ganttChartCanvas == null || _items == null || _items.Count() == 0)
                 return; // Prevent error
-
-
 
             // Clear any existing content
             _ganttChartCanvas.Children.Clear();
 
             // Define some constants for rendering
-            double rowHeight = 80; // Row height for each bar
+            double rowHeight = 50; // Row height for each bar
             double columnWidth = 150; // Column width for the timing
             double xOffset = 150; // Margin for labels and name column
             double yOffset = 50; // Margin for labels
@@ -68,7 +77,7 @@ namespace PL
 
             // Calculate the width and height of the canvas
             double canvasWidth = numStints * columnWidth + xOffset; // Adding margins for name column so it can be fully displayed
-            double canvasHeight = _items.Count() * rowHeight + yOffset;
+            double canvasHeight = (_items.Count() + 1) * rowHeight + yOffset; // Add additional space for bottom line
 
             // Set the width and height of the canvas
             _ganttChartCanvas.Width = canvasWidth;
@@ -85,20 +94,20 @@ namespace PL
                     Width = 80, // Setting a fixed width to ensure entire date is visible
                     TextAlignment = TextAlignment.Center // Centering the text
                 };
-                _ganttChartCanvas.Children.Add(dateLabel);
+                _ganttChartCanvas.Children.Add(dateLabel); // name having its own column as name might not fit in the rectangle depending on length of task
 
                 // Draw black lines between each row and extend into the first column
                 Rectangle columnLine = new Rectangle
                 {
                     Width = 1,
-                    Height = canvasHeight,
+                    Height = canvasHeight - yOffset,
                     Fill = Brushes.Black,
-                    Margin = new Thickness(xOffset + i * columnWidth, 0, 0, 0)
+                    Margin = new Thickness(xOffset + i * columnWidth, yOffset, 0, 0)
                 };
                 _ganttChartCanvas.Children.Add(columnLine);
             }
 
-            // Draw rows (items)
+            // Draw rows (items) the task rectangle itself
             foreach (var item in _items)
             {
                 // Draw black lines between each row for clarity
@@ -124,10 +133,10 @@ namespace PL
                 // Draw the rectangle
                 Rectangle rect = new Rectangle
                 {
-                    Width = (item.EndDate - item.StartDate).TotalDays / (28) * columnWidth, // Adjust width to 4-week intervals of the chart
+                    Width = (item.EndDate - item.StartDate).TotalDays / 28 * columnWidth, // Adjust width to 4-week intervals of the chart
                     Height = rowHeight,
                     Fill = new SolidColorBrush(item.Color),
-                    Margin = new Thickness(xOffset + (item.StartDate - startDate).TotalDays / (28) * columnWidth, y, 0, 0)
+                    Margin = new Thickness(xOffset + (item.StartDate - startDate).TotalDays / 28 * columnWidth, y, 0, 0)
                 };
                 _ganttChartCanvas.Children.Add(rect);
 
@@ -137,7 +146,7 @@ namespace PL
                 y += 20; // Increase space between rows
             }
 
-            // Draw a black line at the bottom
+            // Draw a black line at the bottom to add clarity
             Rectangle bottomLine = new Rectangle
             {
                 Width = canvasWidth - xOffset,
@@ -147,6 +156,7 @@ namespace PL
             };
             _ganttChartCanvas.Children.Add(bottomLine);
         }
+
 
 
 
@@ -160,13 +170,13 @@ namespace PL
 
             return from task in s_bl.Task.ReadAll()
                    let fullTask = s_bl.Task.Read(task.ID)
-                   orderby fullTask.ProjectedEnd
+                   orderby fullTask.ProjectedEnd //try to make it easier for reading dependencies based only off the rectangles
                    select new TaskData
                    {
-                       Name = GetName(fullTask),
-                       StartDate = GetStart(fullTask),
-                       EndDate = GetEnd(fullTask),
-                       Color = GetColor(fullTask)
+                       Name = getName(fullTask),
+                       StartDate = getStart(fullTask),
+                       EndDate = getEnd(fullTask),
+                       Color = getColor(fullTask)
                    };
         }
 
@@ -176,12 +186,12 @@ namespace PL
         /// </summary>
         /// <param name="task"></param>
         /// <returns>a data item name</returns>
-        private string GetName(BO.Task task)
+        private string getName(BO.Task task)
         {
             StringBuilder nameBuilder = new StringBuilder();
             nameBuilder.Append(task.ID).Append(": ").Append(task.Name).Append("\n"); //the actual task name an ID
-            nameBuilder.Append("Dependencies:\n");
 
+            nameBuilder.Append("{ ");
 
             //getting the dependencies
             int dependencyCount = task.Dependencies.Count;
@@ -194,6 +204,8 @@ namespace PL
                 }
             }
 
+            nameBuilder.Append(" }");
+
             return nameBuilder.ToString();
         }
 
@@ -203,7 +215,7 @@ namespace PL
         /// </summary>
         /// <param name="task"></param>
         /// <returns>datetime</returns>
-        private DateTime GetStart(BO.Task task)
+        private DateTime getStart(BO.Task task)
         {
             if (task.ActualStart != null)
             {
@@ -219,7 +231,7 @@ namespace PL
         /// </summary>
         /// <param name="task"></param>
         /// <returns>DateTime</returns>
-        private DateTime GetEnd(BO.Task task)
+        private DateTime getEnd(BO.Task task)
         {
             if (task.ActualEnd != null)
             {
@@ -234,7 +246,7 @@ namespace PL
         /// </summary>
         /// <param name="task"></param>
         /// <returns>Color</returns>
-        private Color GetColor(BO.Task task)
+        private Color getColor(BO.Task task)
         {
             //#6e6c67-gray
             //#37e031-green
@@ -282,6 +294,10 @@ namespace PL
             return (Color)ColorConverter.ConvertFromString("#6e6c67");
         }
 
+
+        /// <summary>
+        /// class that holds data we need to draw the gantt chart for each Task
+        /// </summary>
         private class TaskData
         {
             public string Name { get; set; }

@@ -1,12 +1,4 @@
-﻿using BlApi;
-using BO;
-using DalApi;
-using DO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,18 +7,17 @@ using System.Windows.Input;
 namespace PL.Task
 {
     /// <summary>
-    /// Interaction logic for AddDependencies.xaml
+    /// Interaction logic for the add dependencies window (AddDependencies.xaml)
     /// </summary>
     public partial class AddDependencies : Window
     {
-        private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private static readonly BlApi.IBl s_bl = BlApi.Factory.Get();  //business layer/logic access
+
         public IEnumerable<BO.TaskInList> TaskList
         {
             get { return (IEnumerable<BO.TaskInList>)GetValue(PossibleTaskListProperty); }
             set { SetValue(PossibleTaskListProperty, value); }
         }
-
-
 
 
         public static readonly DependencyProperty PossibleTaskListProperty =
@@ -56,10 +47,13 @@ namespace PL.Task
 
         }
 
+        /// <summary>
+        /// This method handles the double click selection of a dependent task. It will then add the selected task as a dependency to the task that we orginally came from in the UI.
+        /// </summary>
+        /// <param name="sender">the object that raised the event</param>
+        /// <param name="e">Mouse related events</param>
         private void addDependency_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-
-           
 
             BO.TaskInList? dependency = (sender as ListView)?.SelectedItem as BO.TaskInList;
 

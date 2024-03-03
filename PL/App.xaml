@@ -13,6 +13,7 @@
         <local:AdminPrivilegesToVisibilityConverter x:Key="AdminPrivilegesToVisibilityConverterKey"/>
         <local:CanAssignAnEngineer x:Key="CanAssignAnEngineerKey"/>
         <local:NullToVisibilityConverter x:Key="NullToVisibilityConverterKey"/>
+        <local:NullToInvisibilityConverter x:Key="NullToInvisibilityConverterKey"/>
         <local:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverterKey" />
 
         <!--`Styling the pages with a common theme-->

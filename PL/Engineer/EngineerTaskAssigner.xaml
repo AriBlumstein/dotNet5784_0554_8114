@@ -16,7 +16,7 @@
             <RowDefinition Height="75*"/>
         </Grid.RowDefinitions>
     <TextBlock Style="{StaticResource DisplayTitlesKey}">Double Click a Task to Select</TextBlock >
-    <ListView ItemsSource="{Binding PossibleTasks}" MouseDoubleClick="ListAddTask_MouseDoubleClick" Grid.Row="1">
+    <ListView ItemsSource="{Binding PossibleTasks}" MouseDoubleClick="listAddTask_MouseDoubleClick" Grid.Row="1">
         <ListView.View>
             <GridView>
                 <GridViewColumn/>

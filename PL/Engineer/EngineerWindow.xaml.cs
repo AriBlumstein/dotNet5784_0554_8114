@@ -25,19 +25,12 @@ namespace PL.Engineer
             set { SetValue(EngineerProperty, value); }
         }
 
-
-
-        public static readonly DependencyProperty AdminPrivilegesProperty =
-        DependencyProperty.Register("AdminPrivileges", typeof(bool), typeof(EngineerWindow), new PropertyMetadata(null));
-
-        public bool AdminPrivileges
-        {
-            get => (bool)GetValue(AdminPrivilegesProperty); set { SetValue(AdminPrivilegesProperty, value);}
-        }
+        //editing privileges
+        public bool AdminPrivileges { get; init; }
 
         public EngineerWindow(int id = 0, bool adminPrivileges = true)
         {
-            AdminPrivileges = adminPrivileges;
+            
             InitializeComponent();
             if (id == 0)
             {
@@ -55,15 +48,20 @@ namespace PL.Engineer
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            AdminPrivileges = adminPrivileges;
         }
 
-        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
-        {
 
-          
+        /// <summary>
+        /// event handler for add or update
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        { 
 
             Button button = sender as Button;
-            if (button.Content.ToString() == "Update")
+            if (button.Content.ToString() == "Update") //we want to update
             {
 
 
@@ -97,7 +95,8 @@ namespace PL.Engineer
                 }
 
             }
-            else if (button.Content.ToString() == "Add")
+
+            else if (button.Content.ToString() == "Add")// adding a new engineer
 
                 try
                 {
@@ -132,7 +131,11 @@ namespace PL.Engineer
         }
 
         
-
+        /// <summary>
+        /// event handler that will update this window when the EngineerTaskAssigner window is closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void taskAssigned(object sender, EventArgs e)
         {
             Engineer=s_bl.Engineer.Read(Engineer.ID);
@@ -140,8 +143,12 @@ namespace PL.Engineer
         }
 
 
-
-        private void AssignTaskClick(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// event handler for assigning a task
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void assignTaskClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -169,6 +176,12 @@ namespace PL.Engineer
             }
         }
 
+
+        /// <summary>
+        /// event handler to view the current task we are working on
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void viewTask_Click(object sender, RoutedEventArgs e)
         {
             BO.Task task = s_bl.Task.Read(Engineer.Task.ID);
@@ -182,6 +195,11 @@ namespace PL.Engineer
         }
 
 
+        /// <summary>
+        /// event handler when the task is updated, decoupled from  the assigning event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void updateWindow(object sender, EventArgs e)
         {
             Engineer=s_bl.Engineer.Read(Engineer.ID);

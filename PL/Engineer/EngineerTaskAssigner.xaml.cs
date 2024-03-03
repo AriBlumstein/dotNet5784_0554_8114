@@ -15,6 +15,7 @@ namespace PL.Engineer
 
         private BO.Engineer engineer;
         
+        //dependency property that will show the tasks the engineer can take on
         public static readonly DependencyProperty PossibleTasksProperty = DependencyProperty.Register("PossibleTasks", typeof(IEnumerable<BO.TaskInList>),
             typeof(EngineerTaskAssigner), new PropertyMetadata(null));
 
@@ -34,12 +35,14 @@ namespace PL.Engineer
 
             if (engineer.Level == EngineerExperience.None)
             {
+                //no experience, no tasks
                 PossibleTasks = new ObservableCollection<BO.TaskInList>();
             }
             else
             {
                 try
                 {
+                    //only the tasks that are within his experience
                     PossibleTasks = from item in s_bl.Task.ReadAll(t => (EngineerExperience?)t.Difficulty <= engineer.Level)
                                     let curTask = s_bl.Task.Read(item.ID)
                                     where noDependencies(curTask)
@@ -63,7 +66,8 @@ namespace PL.Engineer
 
 
 
-        private void ListAddTask_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+
+        private void listAddTask_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             BO.TaskInList? task = (sender as ListView)?.SelectedItem as BO.TaskInList;
             if (task != null)
@@ -72,7 +76,7 @@ namespace PL.Engineer
                 if (answer == MessageBoxResult.Yes)
                 {
 
-
+                    //create the taskinengineer
                     engineer.Task = new TaskInEngineer
                     {
                         ID=task.ID,
@@ -108,6 +112,12 @@ namespace PL.Engineer
         }
 
 
+
+        /// <summary>
+        /// helper method, determines if a task has no more dependencies that still need to be handled
+        /// </summary>
+        /// <param name="cur"></param>
+        /// <returns>if a task has no more dependencies that have not been handled</returns>
         private bool noDependencies(BO.Task cur)
         {
             return s_bl.Task.ReadUncompletedDependencies(cur).Count() == 0;

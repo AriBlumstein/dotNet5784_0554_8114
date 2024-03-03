@@ -19,12 +19,12 @@
         
         
         <!-- Dependency Title  -->
-        <StackPanel Grid.Row="0" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}">
+        <StackPanel Grid.Row="0" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibilityConverterKey}}">
             <!-- Static Info -->
-            <TextBlock Text="Dependencies for Task:" Style="{StaticResource DisplayTitlesKey}" FontWeight="Bold" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}"/>
+            <TextBlock Text="Dependencies for Task:" Style="{StaticResource DisplayTitlesKey}" FontWeight="Bold" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibilityConverterKey}}"/>
 
             <!-- TextBox with Binding to Dependency Property -->
-            <TextBlock  Text="{Binding Task.ID, Mode=OneTime}" Style="{StaticResource DisplayTitlesKey}" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibiltyConverterKey}}" />
+            <TextBlock  Text="{Binding Task.ID, Mode=OneTime}" Style="{StaticResource DisplayTitlesKey}" Visibility="{Binding Task, Mode=OneTime, Converter={StaticResource NullToInvisibilityConverterKey}}" />
         </StackPanel>
 
         <!--Internal, Upper Grid-->

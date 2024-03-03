@@ -43,8 +43,10 @@ namespace PL
 
         private void DrawGanttChart()
         {
-            if (_ganttChartCanvas == null || _items == null)
+            if (_ganttChartCanvas == null || _items == null||_items.Count()==0)
                 return; // Prevent error
+
+
 
             // Clear any existing content
             _ganttChartCanvas.Children.Clear();

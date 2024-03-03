@@ -19,6 +19,15 @@ namespace PL.Components
             get { return (DateTime)GetValue(ProjectStartDateProperty); }
             set { SetValue(ProjectStartDateProperty, value); }
         }
+        
+        
+        public static readonly DependencyProperty ActualProjectStartDateProperty = DependencyProperty.Register("ActualProjectStartDate", typeof(DateTime), typeof(SchedulerWindow), new PropertyMetadata(null));
+        public DateTime ActualProjectStartDate
+        {
+            get { return (DateTime)GetValue(ActualProjectStartDateProperty); }
+            set { SetValue(ActualProjectStartDateProperty, value); }
+        }
+
 
         private bool inProduction = s_bl.Schedular.InProduction();
         public static readonly DependencyProperty InProductionProperty = DependencyProperty.Register("inProduction", typeof(bool), typeof(SchedulerWindow), new PropertyMetadata(null));
@@ -33,6 +42,8 @@ namespace PL.Components
         {
             InitializeComponent();
             ProjectStartDate = s_bl.Clock;  //currently datetime.now, logic will change with the clock to be added
+            try { ActualProjectStartDate = s_bl.Schedular.GetProjectStartDate().Date; }
+            catch (Exception){ ActualProjectStartDate = s_bl.Clock; } //date doesn't matter, just not null
         }
 
         private void startProduction_Click(object sender, RoutedEventArgs e)

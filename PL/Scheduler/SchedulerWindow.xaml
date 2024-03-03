@@ -16,7 +16,7 @@
         
             <TextBlock Visibility="{Binding InProduction, Mode=OneWay, Converter={StaticResource BoolToInvisibilityConverterKey}}" Style="{StaticResource DisplayTitlesKey}">Start the production by choosing a date</TextBlock>
             <TextBlock Visibility="{Binding NotInProduction, Mode=OneWay, Converter={StaticResource BoolToInvisibilityConverterKey}}" Style="{StaticResource DisplayTitlesKey}">Production began at</TextBlock>
-        <Label Visibility="{Binding NotInProduction, Mode=OneWay, Converter={StaticResource BoolToInvisibilityConverterKey}}" Content="{Binding  ProjectStartDate}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
+        <Label Visibility="{Binding NotInProduction, Mode=OneWay, Converter={StaticResource BoolToInvisibilityConverterKey}}" Content="{Binding  ActualProjectStartDate}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
             
         </Label>
 

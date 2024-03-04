@@ -153,6 +153,7 @@ namespace PL.Task
             Task.ActualEnd = s_bl.Clock;
             Task.Engineer = null;
             s_bl.Task.Update(Task);
+            Close();
             
         }
 

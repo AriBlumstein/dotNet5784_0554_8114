@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Components"
         mc:Ignorable="d"
-        Title="SchedulerWindow" Height="450" Width="800"
+        Title="Scheduler Window" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         >
     <Grid>

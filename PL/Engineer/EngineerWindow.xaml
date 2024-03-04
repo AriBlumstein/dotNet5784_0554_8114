@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         DataContext="{Binding Engineer, RelativeSource={RelativeSource Self}, Mode=TwoWay}"
 
-        Title="EngineerWindow" Height="450" Width="800">
+        Title="Engineer Window" Height="450" Width="800">
     <!-- displaying the info of a signle engineer-->
     <Grid>
         <Grid.RowDefinitions>

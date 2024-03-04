@@ -72,9 +72,11 @@ namespace PL
             TimeSpan totalDuration = endDate - startDate;
             int numStints = (int)Math.Ceiling(totalDuration.TotalDays / 28); // Calculate number of 4-week intervals
 
-            // Calculate the width and height of the canvas
+            // Calculate the width of the canvas
             double canvasWidth = numStints * columnWidth + xOffset; // Adding margins for name column so it can be fully displayed
-            double canvasHeight = (_items.Count() + 1) * rowHeight + yOffset; // Add additional space for bottom line
+
+            // Calculate the height of the canvas based on the number of items
+            double canvasHeight = _items.Count() * (rowHeight + 20) + yOffset; // Add additional space for bottom line and spacing between rows
 
             // Set the width and height of the canvas
             _ganttChartCanvas.Width = canvasWidth;
@@ -104,7 +106,7 @@ namespace PL
                 _ganttChartCanvas.Children.Add(columnLine);
             }
 
-            // Draw rows (items) the task rectangle itself
+            // Draw rows (items) and the task rectangle itself
             foreach (var item in _items)
             {
                 // Draw black lines between each row for clarity
@@ -138,8 +140,7 @@ namespace PL
                 _ganttChartCanvas.Children.Add(rect);
 
                 // Adjust the row position for expanded height
-                y += rowHeight+20; // Increase space between rows
-               
+                y += rowHeight + 20; // Increase space between rows
             }
 
             // Draw a black line at the bottom to add clarity
@@ -152,8 +153,6 @@ namespace PL
             };
             _ganttChartCanvas.Children.Add(bottomLine);
         }
-
-
 
 
         /// <summary>

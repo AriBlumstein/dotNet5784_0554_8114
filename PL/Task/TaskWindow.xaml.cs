@@ -34,6 +34,7 @@ namespace PL.Task
             if (id == 0)
             {
                 Task = new BO.Task();
+                Task.Complexity = EngineerExperience.Beginner;
                 Task.Created = s_bl.Clock;
             }
             else
@@ -53,7 +54,7 @@ namespace PL.Task
                     MessageBox.Show($"Successfully updated task {Task.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
 
-                    Close();
+                   
                 }
                 catch (BlDoesNotExistException ex)
                 {
@@ -82,7 +83,7 @@ namespace PL.Task
                 {
                     Task = s_bl?.Task.Create(Task)!;
                     MessageBox.Show($"Successfully added task {Task.ID}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Close();
+                   
                 }
                 catch (BlDoesNotExistException ex)
                 {
@@ -152,7 +153,7 @@ namespace PL.Task
             Task.ActualEnd = s_bl.Clock;
             Task.Engineer = null;
             s_bl.Task.Update(Task);
-            Close();
+            
         }
 
         //If the user clicks on "View Dependencies" we open the TaskListWindow with the corresponding Tasks.

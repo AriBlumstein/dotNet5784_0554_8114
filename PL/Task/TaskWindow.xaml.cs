@@ -34,7 +34,7 @@ namespace PL.Task
             if (id == 0)
             {
                 Task = new BO.Task();
-                Task.Complexity = EngineerExperience.Beginner;
+                
                 Task.Created = s_bl.Clock;
             }
             else

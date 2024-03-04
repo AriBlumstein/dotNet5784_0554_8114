@@ -5,6 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:ExperienceCollection x:Key="ExperienceCollectionKey" />
+        <local:ExperienceCollectionForEntities x:Key="ExperienceCollectionForEntitiesKey"/>
         <local:ConvertIdToContent x:Key="ConverIdToContentKey"/>
         <local:ConvertIdToUpdatable x:Key="ConvertIdToUpdatableKey"/>
         <local:ZeroToInvisibilityConverter x:Key="ZeroToInvisibilityConverterKey"/>

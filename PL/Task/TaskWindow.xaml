@@ -82,7 +82,7 @@
 
             <!-- Complexity -->
             <Label Content="Complexity" HorizontalAlignment="Center"  Grid.Row="11" Grid.Column="0" VerticalAlignment="Center"/>
-            <ComboBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Center"  Grid.Row="11" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ExperienceCollectionKey}}" SelectedValue="{Binding Complexity, Mode=TwoWay, NotifyOnValidationError=true, 
+            <ComboBox IsEnabled="{Binding AdminPrivileges, RelativeSource={RelativeSource AncestorType=Window}, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Center"  Grid.Row="11" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ExperienceCollectionForEntitiesKey}}" SelectedValue="{Binding Complexity, Mode=TwoWay, NotifyOnValidationError=true, 
               ValidatesOnExceptions=true}"  />
 
             <!-- Assigned Engineer -->

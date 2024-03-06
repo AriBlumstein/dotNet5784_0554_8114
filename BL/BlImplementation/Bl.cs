@@ -11,11 +11,19 @@ internal class Bl : IBl
 
     private Bl() 
     {
-        //so the clock constantly updates
+        //thread safe clock update
         var timer = new System.Timers.Timer();
         timer.Interval = 1000; // 1 second
-        timer.Elapsed += (sender, e) => Clock=Clock.AddSeconds(1);
+        timer.Elapsed += (sender, e) =>
+        {
+            using (var mutex = new Mutex(true, "ClockMutex")) //making a mutex and I get it first upon initialization
+            {
+                Clock = Clock.AddSeconds(1);
+            }
+        };
         timer.Start();
+
+
     }
     static Bl() { }
     public static Bl Instance { get { return _lazyInstance.Value; } }
@@ -38,7 +46,7 @@ internal class Bl : IBl
 
   
 
-    private static DateTime s_Clock = DateTime.Now;
+    private  static DateTime s_Clock = DateTime.Now;
 
     public DateTime Clock
     {

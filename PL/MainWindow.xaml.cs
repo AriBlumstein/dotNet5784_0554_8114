@@ -17,14 +17,18 @@ namespace PL
         {
             InitializeComponent();
 
-            // Start a DispatcherTimer to update the Clock property periodically
+            // Start a DispatcherTimer to update the Clock property periodically in a thread safe matter
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1); // 1 second
             timer.Tick += (sender, e) =>
             {
-                Clock = s_bl.Clock;
+                using (var mutex = new Mutex(false, "ClockMutex")) //same mutex from backend, but I do not get it first on initialization
+                {
+                    Clock = s_bl.Clock;
+                }
             };
             timer.Start();
+
 
         }
 

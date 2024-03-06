@@ -58,17 +58,29 @@ internal class Bl : IBl
 
     public void MoveForwardHour()
     {
-        Clock=Clock.AddHours(1);
+        using (var mutex = new Mutex(false, "ClockMutex")) //making a mutex and I get it first upon initialization
+        {
+            Clock = Clock.AddHours(1);
+        }
+        
     }
 
     public void MoveForwardDay()
     {
-        Clock=Clock.AddDays(1);
+        using (var mutex = new Mutex(false, "ClockMutex")) //making a mutex and I get it first upon initialization
+        {
+            Clock = Clock.AddDays(1);
+        }
+     
     }
 
     public void TimeReset()
     {
-        Clock= DateTime.Now;
+        using (var mutex = new Mutex(false, "ClockMutex")) //making a mutex and I get it first upon initialization
+        {
+            Clock = DateTime.Now;
+        }
+        
     }
 
 

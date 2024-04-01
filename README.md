@@ -14,3 +14,4 @@ Hello git
 8)	Use of shapes (1 point)
 9)	IMultiValue converter (1 point)
 10)	Different Colors for different statuses in the Gannt Chart (gray for scheduled green for on track, blue for completed, red for behind schedule, as well as all of the tasks that depend on this behind schedule task)
+11) Styles in the PL

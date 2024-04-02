@@ -1,7 +1,4 @@
 # dotNet5784_0554_8114
-Welcome World
-Hello git
-
 
 # Extra Credits 
 1)	TryParse in BL/DalTest (1 point)

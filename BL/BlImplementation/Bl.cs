@@ -7,7 +7,7 @@ using DalApi;
 internal class Bl : IBl
 {
 
-    private static Lazy<Bl> _lazyInstance=new Lazy<Bl>(()=>new Bl());
+    private static Lazy<Bl> _lazyInstance=new Lazy<Bl>(()=>new Bl(), LazyThreadSafetyMode.ExecutionAndPublication);
 
     private Bl() 
     {

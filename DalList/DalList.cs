@@ -7,7 +7,7 @@ using DalApi;
 
 sealed internal class DalList : IDal
 {
-    private static readonly Lazy<DalList> lazyInstance = new Lazy<DalList>(() => new DalList()); //for lazy initialization and thread safety, part of system
+    private static readonly Lazy<DalList> lazyInstance = new Lazy<DalList>(() => new DalList(), LazyThreadSafetyMode.ExecutionAndPublication); //for lazy initialization and thread safety, part of system
 
     public static DalList Instance {get {return lazyInstance.Value;}}
 

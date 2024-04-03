@@ -41,7 +41,7 @@ internal class EngineerImplementation : IEngineer
         List<Engineer> engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(s_engineers_xml);
 
         Engineer? e = engineers.Find(e=>e.ID==id && IsActive(e)) ; //engineer to delete
-        if (e==null) throw new DalDoesNotExistException($"Engineer with ID={e.ID} does not exist");
+        if (e==null) throw new DalDoesNotExistException($"Engineer with ID={id} does not exist");
         int index = engineers.IndexOf(e);
         engineers[index] = e with { Active = false };
         XMLTools.SaveListToXMLSerializer<Engineer>(engineers, s_engineers_xml);

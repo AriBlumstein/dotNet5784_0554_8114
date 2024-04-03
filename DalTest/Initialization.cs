@@ -22,7 +22,7 @@ public static class Initialization
     /// get a random experience level
     /// </summary>
     /// <returns>Experience</returns>
-    private static Experience randExpereince()
+    private static Experience randExperience()
     {
         return (Experience)s_rand.Next(0, Enum.GetValues(typeof(Experience)).Length);
     }
@@ -91,7 +91,7 @@ public static class Initialization
         foreach (string name in names)
         {
             //get a random Experience
-            Experience e=randExpereince();
+            Experience e=randExperience();
 
             //get a create random date
             DateTime create = DateTime.Now.AddDays(-(s_rand.Next(0, 100)));
@@ -109,7 +109,7 @@ public static class Initialization
     }
 
     /// <summary>
-    /// initalize engineers
+    /// initialize engineers
     /// </summary>
     private static void createEngineers() {
 
@@ -137,7 +137,7 @@ public static class Initialization
             while (!unique);
 
             //get random experience
-            Experience e = randExpereince();
+            Experience e = randExperience();
 
             //get random salary
             double rate = (double)s_rand.Next(200, 10000);
@@ -311,7 +311,7 @@ public static class Initialization
 
 
     /// <summary>
-    /// method checks if the depend task is scheduled before the requisite task, ie, the depdendent task is supposed to start before the requisite ends
+    /// method checks if the depend task is scheduled before the requisite task, ie, the dependent task is supposed to start before the requisite ends
     /// </summary>
     /// <param name="cur"></param>
     /// <returns>true if yes, flase if no</returns>
